@@ -93,11 +93,11 @@ const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
   'New Chat Window': '新建聊天窗口',
   'Open Directory...': '打开目录…',
   'Recent Directories': '最近的目录',
-  'Focus Goose Window': '聚焦 Goose 窗口',
+  'Focus Caros Window': '聚焦 Caros 窗口',
   'Quick Launcher': '快速启动器',
   'Always on Top': '窗口置顶',
   'Toggle Navigation': '切换导航',
-  'About Goose': '关于 Goose',
+  'About Caros': '关于 Caros',
   // Electron's default role-based labels we want to translate as well.
   // (The menu role itself still provides the correct behaviour; only the
   // display string is overridden.)
@@ -123,7 +123,7 @@ const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
   'Bring All to Front': '全部置于最前',
   'Emoji & Symbols': '表情符号',
   'Start Dictation…': '开始听写…',
-  'Hide Goose': '隐藏 Goose',
+  'Hide Caros': '隐藏 Caros',
   'Hide Others': '隐藏其他',
   'Show All': '全部显示',
   Services: '服务',
@@ -373,13 +373,13 @@ if (process.env.ENABLE_PLAYWRIGHT) {
 // In production, register normally
 if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
   // Development mode - force registration
-  console.log('[Main] Development mode: Forcing protocol registration for goose://');
-  app.setAsDefaultProtocolClient('goose');
+  console.log('[Main] Development mode: Forcing protocol registration for caros://');
+  app.setAsDefaultProtocolClient('caros');
 
   if (process.platform === 'darwin') {
     try {
       // Reset the default handler to ensure dev version takes precedence
-      spawn('open', ['-a', process.execPath, '--args', '--reset-protocol-handler', 'goose'], {
+      spawn('open', ['-a', process.execPath, '--args', '--reset-protocol-handler', 'caros'], {
         detached: true,
         stdio: 'ignore',
       });
@@ -389,7 +389,7 @@ if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
   }
 } else {
   // Production mode - normal registration
-  app.setAsDefaultProtocolClient('goose');
+  app.setAsDefaultProtocolClient('caros');
 }
 
 // Apply single instance lock on Windows and Linux where it's needed for deep links
@@ -403,7 +403,7 @@ if (process.platform !== 'darwin') {
     app.quit();
   } else {
     app.on('second-instance', (_event, commandLine) => {
-      const protocolUrl = commandLine.find((arg) => arg.startsWith('goose://'));
+      const protocolUrl = commandLine.find((arg) => arg.startsWith('caros://'));
       if (protocolUrl) {
         const parsedUrl = new URL(protocolUrl);
         // If it's a bot/recipe URL, handle it directly by creating a new window
@@ -466,7 +466,7 @@ if (process.platform !== 'darwin') {
   }
 
   // Handle protocol URLs on Windows and Linux startup
-  const protocolUrl = process.argv.find((arg) => arg.startsWith('goose://'));
+  const protocolUrl = process.argv.find((arg) => arg.startsWith('caros://'));
   if (protocolUrl) {
     app.whenReady().then(async () => {
       let parsedUrl: URL;
@@ -505,7 +505,7 @@ function getResumeSessionId(parsedUrl: URL): string | null {
 async function createResumeChatWindow(parsedUrl: URL, dir?: string): Promise<boolean> {
   const resumeSessionId = getResumeSessionId(parsedUrl);
   if (!resumeSessionId) {
-    log.warn('[Main] Ignoring goose://resume URL without a session id');
+    log.warn('[Main] Ignoring caros://resume URL without a session id');
     return false;
   }
 
@@ -653,11 +653,58 @@ app.on('open-url', async (_event, url) => {
   }
 });
 
+// Resolve a bundled legal file (LICENSE / NOTICE). Packaged builds ship them via
+// forge.config.ts `extraResource`; in dev they live at the repo root.
+function resolveLegalFilePath(fileName: string): string | null {
+  const candidates = app.isPackaged
+    ? [path.join(process.resourcesPath, fileName)]
+    : [
+        path.join(app.getAppPath(), '..', '..', fileName),
+        path.join(__dirname, '..', '..', '..', '..', fileName),
+      ];
+  return candidates.find((candidate) => fsSync.existsSync(candidate)) ?? null;
+}
+
+// Help → About Caros → Open-Source Licenses: shows the NOTICE attribution and
+// offers to open the full Apache 2.0 license text.
+async function showOpenSourceLicenses(): Promise<void> {
+  const noticePath = resolveLegalFilePath('NOTICE');
+  const licensePath = resolveLegalFilePath('LICENSE');
+
+  let detail: string;
+  try {
+    detail = noticePath ? fsSync.readFileSync(noticePath, 'utf8') : '';
+  } catch {
+    detail = '';
+  }
+  if (!detail) {
+    detail =
+      'Caros is a derivative work of goose (https://github.com/yixuanzhong/caros), ' +
+      'licensed under the Apache License, Version 2.0.';
+  }
+
+  const buttons = licensePath ? ['View Apache 2.0 License', 'Close'] : ['Close'];
+  const result = await dialog.showMessageBox({
+    type: 'info',
+    title: 'Open-Source Licenses',
+    message: 'Caros — Open-Source Licenses',
+    detail,
+    buttons,
+    defaultId: buttons.length - 1,
+    cancelId: buttons.length - 1,
+    noLink: true,
+  });
+
+  if (licensePath && result.response === 0) {
+    await shell.openPath(licensePath);
+  }
+}
+
 // Handle macOS drag-and-drop onto dock icon
 app.on('will-finish-launching', () => {
   if (process.platform === 'darwin') {
     app.setAboutPanelOptions({
-      applicationName: 'Goose',
+      applicationName: 'Caros',
       applicationVersion: app.getVersion(),
     });
   }
@@ -712,7 +759,7 @@ async function handleFileOpen(filePath: string) {
 
     // Show user-friendly error notification
     new Notification({
-      title: 'Goose',
+      title: 'Caros',
       body: `Could not open directory: ${path.basename(filePath)}`,
     }).show();
   }
@@ -1078,7 +1125,7 @@ const createChat = async (app: App, options: CreateChatOptions = {}) => {
     } else {
       dialog.showMessageBoxSync({
         type: 'error',
-        title: 'Goose Failed to Start',
+        title: 'Caros Failed to Start',
         message: 'The backend server failed to start.',
         detail: failureDetailParts.join('\n\n'),
         buttons: ['OK'],
@@ -2314,7 +2361,7 @@ async function appMain() {
 
   const shortcuts = getKeyboardShortcuts(settings);
 
-  const appMenu = menu?.items.find((item) => item.label === 'Goose');
+  const appMenu = menu?.items.find((item) => item.label === 'Caros');
   if (appMenu?.submenu) {
     appMenu.submenu.insert(1, new MenuItem({ type: 'separator' }));
     if (shortcuts.settings) {
@@ -2442,7 +2489,7 @@ async function appMain() {
     if (shortcuts.focusWindow) {
       fileMenu.submenu.append(
         new MenuItem({
-          label: menuT('Focus Goose Window'),
+          label: menuT('Focus Caros Window'),
           accelerator: shortcuts.focusWindow,
           click() {
             focusWindow();
@@ -2551,7 +2598,7 @@ async function appMain() {
 
       // Create the About Goose menu item with a submenu
       const aboutGooseMenuItem = new MenuItem({
-        label: menuT('About Goose'),
+        label: menuT('About Caros'),
         submenu: Menu.buildFromTemplate([]), // Start with an empty submenu for About
       });
 
@@ -2561,6 +2608,15 @@ async function appMain() {
           new MenuItem({
             label: `Version ${version || app.getVersion()}`,
             enabled: false,
+          })
+        );
+        aboutGooseMenuItem.submenu.append(new MenuItem({ type: 'separator' }));
+        aboutGooseMenuItem.submenu.append(
+          new MenuItem({
+            label: 'Open-Source Licenses',
+            click: () => {
+              void showOpenSourceLicenses();
+            },
           })
         );
       }
@@ -2869,7 +2925,7 @@ app.whenReady().then(async () => {
   try {
     await appMain();
   } catch (error) {
-    dialog.showErrorBox('Goose Error', `Failed to create main window: ${error}`);
+    dialog.showErrorBox('Caros Error', `Failed to create main window: ${error}`);
     app.quit();
   }
 });

@@ -1315,11 +1315,11 @@ pub fn display_session_info(
         .map(|p| p.display().to_string())
         .unwrap_or_else(|| "unknown".to_string());
 
-    // ASCII art goose with session info on the right
+    // Caros wordmark with session info on the right
     println!();
     println!(
         "  {}  {} {} {} {} {}",
-        style("  __( O)>").white(),
+        style("  caros ❯").cyan().bold(),
         style("●").green(),
         style(status).dim(),
         style("·").dim(),
@@ -1330,7 +1330,7 @@ pub fn display_session_info(
     if let Some(id) = session_id {
         println!(
             "  {}  {} {} {}",
-            style(r" \____)").white(),
+            style("         ").white(),
             style(" ").dim(),
             style(id).dim(),
             style(format!("· {}", cwd_display)).dim(),
@@ -1338,15 +1338,15 @@ pub fn display_session_info(
     } else {
         println!(
             "  {}  {} {}",
-            style(r" \____)").white(),
+            style("         ").white(),
             style(" ").dim(),
             style(format!("  {}", cwd_display)).dim(),
         );
     }
     println!(
         "  {}  {}",
-        style("   L L").white(),
-        style("   goose is ready").white()
+        style("         ").white(),
+        style("   caros is ready").white()
     );
 }
 
@@ -1361,7 +1361,7 @@ fn set_terminal_title() {
     // Sanitize: strip control characters (ESC, BEL, etc.) to prevent terminal escape injection
     let sanitized: String = dir_name.chars().filter(|c| !c.is_control()).collect();
     // OSC 0 sets the terminal window/tab title
-    print!("\x1b]0;🪿 {}\x07", sanitized);
+    print!("\x1b]0;caros {}\x07", sanitized);
     let _ = std::io::stdout().flush();
 }
 

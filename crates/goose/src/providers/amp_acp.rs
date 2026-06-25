@@ -33,7 +33,7 @@ impl goose_providers::base::ProviderDescriptor for AmpAcpProvider {
             "Install the Amp CLI: `curl -fsSL https://ampcode.com/install.sh | bash`",
             "Install the ACP adapter: `npm install -g amp-acp`",
             "Ensure your Amp CLI is authenticated (run `amp` to verify)",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: amp-acp\n  GOOSE_MODEL: current\n  amp-acp_configured: true",
+            "Add to your caros config file (`~/.config/caros/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: amp-acp\n  GOOSE_MODEL: current\n  amp-acp_configured: true",
             "Restart goose for changes to take effect",
         ])
         .with_model_selection_hint("Use the Amp CLI to configure models")

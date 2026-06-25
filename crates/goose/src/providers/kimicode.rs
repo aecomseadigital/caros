@@ -343,7 +343,7 @@ impl goose_providers::base::ProviderDescriptor for KimiCodeProvider {
             KIMI_CODE_DEFAULT_MODEL,
             KIMI_CODE_KNOWN_MODELS.to_vec(),
             KIMI_CODE_DOC_URL,
-            // Marker key — the actual token lives in ~/.config/goose/kimicode/token.json.
+            // Marker key — the actual token lives in ~/.config/caros/kimicode/token.json.
             // `oauth_flow=true` routes config through `configure_oauth`;
             // readiness is tracked via the `kimi_code_configured` param.
             vec![ConfigKey::new_oauth_device_code(

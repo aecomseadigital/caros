@@ -52,7 +52,7 @@ fn generate_serve_secret_key() -> String {
 }
 
 #[derive(Parser)]
-#[command(name = "goose", author, version, display_name = "", about, long_about = None)]
+#[command(name = "caros", author, version, display_name = "", about, long_about = None)]
 pub struct Cli {
     #[command(subcommand)]
     command: Option<Command>,
@@ -119,7 +119,7 @@ pub struct SessionOptions {
         long = "container",
         value_name = "CONTAINER_ID",
         help = "Docker container ID to run extensions inside",
-        long_help = "Run extensions (stdio and built-in) inside the specified container. The extension must exist in the container. For built-in extensions, goose must be installed inside the container."
+        long_help = "Run extensions (stdio and built-in) inside the specified container. The extension must exist in the container. For built-in extensions, caros must be installed inside the container."
     )]
     pub container: Option<String>,
 }
@@ -182,7 +182,7 @@ pub struct ExtensionOptions {
         long = "with-builtin",
         value_name = "NAME",
         help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-        long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+        long_help = "Add one or more builtin extensions that are bundled with caros by specifying their names, comma-separated",
         value_delimiter = ','
     )]
     pub builtins: Vec<String>,
@@ -213,8 +213,8 @@ pub struct InputOptions {
         short = 't',
         long = "text",
         value_name = "TEXT",
-        help = "Input text to provide to goose directly",
-        long_help = "Input text containing commands for goose. Use this in lieu of the instructions argument.",
+        help = "Input text to provide to caros directly",
+        long_help = "Input text containing commands for caros. Use this in lieu of the instructions argument.",
         conflicts_with = "instructions",
         conflicts_with = "recipe"
     )]
@@ -245,7 +245,7 @@ pub struct InputOptions {
     #[arg(
         long,
         value_name = "KEY=VALUE",
-        help = "Dynamic parameters (e.g., --params username=alice --params channel_name=goose-channel)",
+        help = "Dynamic parameters (e.g., --params username=alice --params channel_name=caros-channel)",
         long_help = "Key-value parameters to pass to the recipe file. Can be specified multiple times.",
         action = clap::ArgAction::Append,
         value_parser = parse_key_val,
@@ -554,7 +554,7 @@ enum SessionCommand {
 
         #[arg(
             long = "nostr",
-            help = "Publish the JSON session export as an encrypted Nostr event and print a Goose share link"
+            help = "Publish the JSON session export as an encrypted Nostr event and print a Caros share link"
         )]
         nostr: bool,
 
@@ -571,7 +571,7 @@ enum SessionCommand {
     )]
     Import {
         #[arg(
-            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or a goose://sessions/nostr share link"
+            help = "Path to a caros session export, a Claude Code, Codex, or Pi .jsonl transcript, or a caros://sessions/nostr share link"
         )]
         input: String,
 
@@ -711,8 +711,8 @@ enum PluginCommand {
 
 #[derive(Subcommand)]
 enum SkillsCommand {
-    /// List all skills available to the goose agent
-    #[command(about = "List all skills available to the goose agent")]
+    /// List all skills available to the caros agent
+    #[command(about = "List all skills available to the caros agent")]
     List,
 }
 
@@ -744,8 +744,8 @@ enum RecipeCommand {
         params: Vec<String>,
     },
 
-    /// Open a recipe in Goose Desktop
-    #[command(about = "Open a recipe in Goose Desktop")]
+    /// Open a recipe in Caros Desktop
+    #[command(about = "Open a recipe in Caros Desktop")]
     Open {
         /// Recipe name to get recipe file to open
         #[arg(help = "recipe name or full path to the recipe file")]
@@ -784,12 +784,12 @@ enum RecipeCommand {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Configure goose settings
-    #[command(about = "Configure goose settings")]
+    /// Configure caros settings
+    #[command(about = "Configure caros settings")]
     Configure {},
 
-    /// Display goose configuration information
-    #[command(about = "Display goose information")]
+    /// Display caros configuration information
+    #[command(about = "Display caros information")]
     Info {
         /// Show verbose information including current configuration
         #[arg(short, long, help = "Show verbose information including config.yaml")]
@@ -798,25 +798,25 @@ enum Command {
         check: bool,
     },
 
-    #[command(about = "Check that your Goose setup is working")]
+    #[command(about = "Check that your Caros setup is working")]
     Doctor {},
 
     /// Manage system prompts and behaviors
-    #[command(about = "Run one of the mcp servers bundled with goose")]
+    #[command(about = "Run one of the mcp servers bundled with caros")]
     Mcp {
         #[arg(value_parser = clap::value_parser!(McpCommand))]
         server: McpCommand,
     },
 
-    /// Run goose as an ACP (Agent Client Protocol) agent
-    #[command(about = "Run goose as an ACP agent server on stdio")]
+    /// Run caros as an ACP (Agent Client Protocol) agent
+    #[command(about = "Run caros as an ACP agent server on stdio")]
     Acp {
         /// Add builtin extensions by name
         #[arg(
             long = "with-builtin",
             value_name = "NAME",
             help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-            long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+            long_help = "Add one or more builtin extensions that are bundled with caros by specifying their names, comma-separated",
             value_delimiter = ','
         )]
         builtins: Vec<String>,
@@ -835,7 +835,7 @@ enum Command {
             long = "with-builtin",
             value_name = "NAME",
             help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-            long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+            long_help = "Add one or more builtin extensions that are bundled with caros by specifying their names, comma-separated",
             value_delimiter = ',',
             action = clap::ArgAction::Append
         )]
@@ -958,28 +958,28 @@ enum Command {
         command: GatewayCommand,
     },
 
-    /// Update the goose CLI version
+    /// Update the caros CLI version
     #[cfg(feature = "update")]
-    #[command(about = "Update the goose CLI version")]
+    #[command(about = "Update the caros CLI version")]
     Update {
         /// Update to canary version
         #[arg(
             short,
             long,
             help = "Update to canary version",
-            long_help = "Update to the latest canary version of the goose CLI, otherwise updates to the latest stable version."
+            long_help = "Update to the latest canary version of the caros CLI, otherwise updates to the latest stable version."
         )]
         canary: bool,
 
-        /// Enforce to re-configure goose during update
-        #[arg(short, long, help = "Enforce to re-configure goose during update")]
+        /// Enforce to re-configure caros during update
+        #[arg(short, long, help = "Enforce to re-configure caros during update")]
         reconfigure: bool,
     },
 
     /// Terminal-integrated session (one session per terminal)
     #[command(
-        about = "Terminal-integrated goose session",
-        long_about = "Runs a goose session tied to your terminal window.\n\
+        about = "Terminal-integrated caros session",
+        long_about = "Runs a caros session tied to your terminal window.\n\
                       Each terminal maintains its own persistent session that resumes automatically.\n\n\
                       Setup:\n  \
                         eval \"$(goose term init zsh)\"  # zsh/bash\n  \
@@ -994,11 +994,11 @@ enum Command {
         command: TermCommand,
     },
 
-    /// Launch the goose terminal UI (TUI)
+    /// Launch the caros terminal UI (TUI)
     #[cfg(feature = "tui")]
     #[command(
-        about = "Launch the goose terminal UI",
-        long_about = "Launch the goose terminal UI (the @aaif/goose npm package).\n\
+        about = "Launch the caros terminal UI",
+        long_about = "Launch the caros terminal UI (the @aaif/goose npm package).\n\
                       \n\
                       Resolution order:\n  \
                       1. GOOSE_TUI_SCRIPT, if set to an existing dist/tui.js\n  \
@@ -1031,7 +1031,7 @@ enum Command {
         #[arg(value_enum)]
         shell: CompletionShell,
 
-        #[arg(long, default_value = "goose", help = "Provide a custom binary name")]
+        #[arg(long, default_value = "caros", help = "Provide a custom binary name")]
         bin_name: String,
     },
 
@@ -1040,8 +1040,8 @@ enum Command {
     /// Discovers `**/.agents/checks/*.md` subagent reviewers and
     /// `**/.agents/REVIEW.md` scoped prompt overrides, builds a review
     /// request from the working tree (or an explicit diff range), and
-    /// runs the review through goose.
-    #[command(about = "Review the current diff using goose")]
+    /// runs the review through caros.
+    #[command(about = "Review the current diff using caros")]
     Review {
         /// Diff range to review (e.g. "main...HEAD"). Defaults to the working
         /// tree vs HEAD.
@@ -1085,7 +1085,7 @@ enum Command {
         /// Disable the Rust-driven parallel orchestrator and fall back to
         /// the single-prompt path that asks the main agent to delegate
         /// each check via `delegate(... async: true ...)`. The default
-        /// orchestrator dispatches one `goose run` subprocess per check
+        /// orchestrator dispatches one `caros run` subprocess per check
         /// (capped at 4 concurrent), bounding wall-clock to the slowest
         /// single check rather than waiting on the model to issue
         /// dispatches.
@@ -1203,11 +1203,11 @@ enum TermCommand {
         #[arg(short, long, help = "Name for the terminal session")]
         name: Option<String>,
 
-        /// Make goose the default handler for unknown commands
+        /// Make caros the default handler for unknown commands
         #[arg(
             long = "default",
-            help = "Make goose the default handler for unknown commands",
-            long_help = "When enabled, anything you type that isn't a valid command will be sent to goose. Supported for zsh, bash, and nu."
+            help = "Make caros the default handler for unknown commands",
+            long_help = "When enabled, anything you type that isn't a valid command will be sent to caros. Supported for zsh, bash, and nu."
         )]
         default: bool,
     },
@@ -1229,7 +1229,7 @@ enum TermCommand {
                         @g why did that fail  # short alias"
     )]
     Run {
-        /// The prompt to send to goose (multiple words allowed without quotes)
+        /// The prompt to send to caros (multiple words allowed without quotes)
         #[arg(required = true, num_args = 1..)]
         prompt: Vec<String>,
     },

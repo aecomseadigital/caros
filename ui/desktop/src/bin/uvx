@@ -26,7 +26,7 @@ elif [ -n "${GOOSE_CONFIG_DIR:-}" ]; then
     log "GOOSE_CONFIG_DIR is deprecated for desktop shims; prefer GOOSE_PATH_ROOT."
     RESOLVED_GOOSE_CONFIG_DIR="${GOOSE_CONFIG_DIR}"
 else
-    RESOLVED_GOOSE_CONFIG_DIR="${HOME}/.config/goose"
+    RESOLVED_GOOSE_CONFIG_DIR="${HOME}/.config/caros"
 fi
 MCP_HERMIT_DIR="${RESOLVED_GOOSE_CONFIG_DIR}/mcp-hermit"
 mkdir -p "${RESOLVED_GOOSE_CONFIG_DIR}"

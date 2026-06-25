@@ -37,7 +37,7 @@ fn write_secrets_file(path: &Path, content: &str) -> std::io::Result<()> {
 }
 
 #[cfg(feature = "system-keyring")]
-const KEYRING_SERVICE: &str = "goose";
+const KEYRING_SERVICE: &str = "caros";
 #[cfg(feature = "system-keyring")]
 const KEYRING_USERNAME: &str = "secrets";
 pub const CONFIG_YAML_NAME: &str = "config.yaml";
@@ -91,13 +91,13 @@ impl From<keyring::Error> for ConfigError {
 ///
 /// Configuration values are loaded with the following precedence:
 /// 1. Environment variables (exact key match)
-/// 2. Configuration file (~/.config/goose/config.yaml by default)
+/// 2. Configuration file (~/.config/caros/config.yaml by default)
 ///
 /// Secrets are loaded with the following precedence:
 /// 1. Environment variables (exact key match)
 /// 2. System keyring (which can be disabled with GOOSE_DISABLE_KEYRING)
 /// 3. If the keyring is disabled, secrets are stored in a secrets file
-///    (~/.config/goose/secrets.yaml by default)
+///    (~/.config/caros/secrets.yaml by default)
 ///
 /// # Examples
 ///
@@ -151,13 +151,13 @@ static GLOBAL_CONFIG: OnceCell<Config> = OnceCell::new();
 fn system_config_path() -> PathBuf {
     #[cfg(unix)]
     {
-        PathBuf::from("/etc/goose/config.yaml")
+        PathBuf::from("/etc/caros/config.yaml")
     }
     #[cfg(windows)]
     {
         env::var("PROGRAMDATA")
-            .map(|d| PathBuf::from(d).join("goose").join("config.yaml"))
-            .unwrap_or_else(|_| PathBuf::from(r"C:\ProgramData\goose\config.yaml"))
+            .map(|d| PathBuf::from(d).join("caros").join("config.yaml"))
+            .unwrap_or_else(|_| PathBuf::from(r"C:\ProgramData\caros\config.yaml"))
     }
 }
 
@@ -389,7 +389,7 @@ fn secret_storage(config_dir: &Path, _keyring_disabled: bool, _service: &str) ->
 impl Config {
     /// Get the global configuration instance.
     ///
-    /// This will initialize the configuration with the default path (~/.config/goose/config.yaml)
+    /// This will initialize the configuration with the default path (~/.config/caros/config.yaml)
     /// if it hasn't been initialized yet.
     pub fn global() -> &'static Config {
         GLOBAL_CONFIG.get_or_init(Config::default)

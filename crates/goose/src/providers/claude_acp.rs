@@ -32,7 +32,7 @@ impl goose_providers::base::ProviderDescriptor for ClaudeAcpProvider {
         .with_setup_steps(vec![
             "Install the ACP adapter: `npm install -g @agentclientprotocol/claude-agent-acp`",
             "Ensure your Claude CLI is authenticated (run `claude` to verify)",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: claude-acp\n  GOOSE_MODEL: current\n  claude-acp_configured: true",
+            "Add to your caros config file (`~/.config/caros/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: claude-acp\n  GOOSE_MODEL: current\n  claude-acp_configured: true",
             "Restart goose for changes to take effect",
         ])
     }

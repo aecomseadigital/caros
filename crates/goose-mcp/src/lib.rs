@@ -3,12 +3,13 @@ use once_cell::sync::Lazy;
 use rmcp::{ServerHandler, ServiceExt};
 use std::collections::HashMap;
 
-// NOTE: "Block" is kept here for backwards compatibility with existing
-// user config/data directories. Changing this would orphan existing installations.
+// NOTE: "Block" is the org qualifier kept from upstream; the app dir leaf is "caros"
+// so MCP cache/memory live alongside the main config dir (~/.config/caros, etc.).
+// Must stay in sync with crates/goose/src/config/paths.rs.
 pub static APP_STRATEGY: Lazy<AppStrategyArgs> = Lazy::new(|| AppStrategyArgs {
     top_level_domain: "Block".to_string(),
     author: "Block".to_string(),
-    app_name: "goose".to_string(),
+    app_name: "caros".to_string(),
 });
 
 pub mod autovisualiser;

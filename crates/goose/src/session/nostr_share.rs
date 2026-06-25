@@ -238,19 +238,19 @@ where
 
 pub fn build_deeplink(nevent: &str, decryption_key: &str) -> String {
     format!(
-        "goose://sessions/nostr?nevent={}&key={}",
+        "caros://sessions/nostr?nevent={}&key={}",
         urlencoding::encode(nevent),
         urlencoding::encode(decryption_key)
     )
 }
 
 pub fn parse_deeplink(deeplink: &str) -> Result<ParsedShareLink> {
-    let parsed = url::Url::parse(deeplink).context("Invalid Goose session share link")?;
-    if parsed.scheme() != "goose"
+    let parsed = url::Url::parse(deeplink).context("Invalid Caros session share link")?;
+    if parsed.scheme() != "caros"
         || parsed.host_str() != Some("sessions")
         || parsed.path() != "/nostr"
     {
-        return Err(anyhow!("Invalid Goose Nostr session share link"));
+        return Err(anyhow!("Invalid Caros Nostr session share link"));
     }
 
     let nevent = parsed
@@ -325,7 +325,7 @@ mod tests {
         .await
         .unwrap();
 
-        assert!(share.deeplink.starts_with("goose://sessions/nostr?"));
+        assert!(share.deeplink.starts_with("caros://sessions/nostr?"));
         assert!(share.nevent.starts_with("nevent1"));
         assert_eq!(share.relays, vec!["wss://relay.example"]);
         assert_eq!(*relays.lock().unwrap(), vec!["wss://relay.example"]);
@@ -363,7 +363,7 @@ mod tests {
 
     #[test]
     fn parses_deeplink() {
-        let parsed = parse_deeplink("goose://sessions/nostr?nevent=abc&key=def").unwrap();
+        let parsed = parse_deeplink("caros://sessions/nostr?nevent=abc&key=def").unwrap();
         assert_eq!(parsed.nevent, "abc");
         assert_eq!(parsed.decryption_key, "def");
     }

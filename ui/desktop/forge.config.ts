@@ -6,7 +6,9 @@ const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
 let cfg = {
   asar: true,
-  extraResource: ['src/bin', 'src/images'],
+  // LICENSE + NOTICE are bundled so the Apache 2.0 attribution ships with the app
+  // (surfaced via Help → About Caros → Open-Source Licenses).
+  extraResource: ['src/bin', 'src/images', '../../LICENSE', '../../NOTICE'],
   icon: 'src/images/icon',
   // Windows specific configuration
   win32: {
@@ -19,8 +21,8 @@ let cfg = {
   // Protocol registration
   protocols: [
     {
-      name: 'GooseProtocol',
-      schemes: ['goose'],
+      name: 'CarosProtocol',
+      schemes: ['caros'],
     },
   ],
   // macOS Info.plist extensions for drag-and-drop support
@@ -36,9 +38,9 @@ let cfg = {
     ],
     // Usage descriptions for macOS TCC (Transparency, Consent, and Control)
     NSCalendarsUsageDescription:
-      'Goose needs access to your calendars to help manage and query calendar events.',
+      'Caros needs access to your calendars to help manage and query calendar events.',
     NSRemindersUsageDescription:
-      'Goose needs access to your reminders to help manage and query reminders.',
+      'Caros needs access to your reminders to help manage and query reminders.',
   },
 };
 
@@ -65,8 +67,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: process.env.GITHUB_OWNER || 'aaif-goose',
-          name: process.env.GITHUB_REPO || 'goose',
+          owner: process.env.GITHUB_OWNER || 'yixuanzhong',
+          name: process.env.GITHUB_REPO || 'caros',
         },
         prerelease: false,
         draft: true,
@@ -87,8 +89,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
+        name: 'Caros',
+        bin: 'Caros',
         maintainer: 'AAIF (Agentic AI Foundation)',
         homepage: 'https://goose-docs.ai/',
         categories: ['Development'],
@@ -103,8 +105,8 @@ module.exports = {
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
+        name: 'Caros',
+        bin: 'Caros',
         maintainer: 'AAIF (Agentic AI Foundation)',
         homepage: 'https://goose-docs.ai/',
         categories: ['Development'],
@@ -129,7 +131,7 @@ module.exports = {
           homepage: 'https://goose-docs.ai/',
           runtimeVersion: '25.08',
           baseVersion: '25.08',
-          bin: 'Goose',
+          bin: 'Caros',
           modules: [
             {
               name: 'libbz2-shim',

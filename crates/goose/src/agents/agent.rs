@@ -629,7 +629,7 @@ impl Agent {
         tool_inspection_manager.add_inspector(Box::new(SecurityInspector::new()));
         tool_inspection_manager.add_inspector(Box::new(EgressInspector::new()));
 
-        // Add adversary inspector (LLM-based review, enabled by ~/.config/goose/adversary.md)
+        // Add adversary inspector (LLM-based review, enabled by ~/.config/caros/adversary.md)
         tool_inspection_manager.add_inspector(Box::new(AdversaryInspector::new(
             provider.clone(),
             session_manager.clone(),

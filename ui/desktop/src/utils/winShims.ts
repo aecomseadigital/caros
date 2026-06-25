@@ -4,8 +4,8 @@ import os from 'node:os';
 import log from './logger';
 
 /**
- * Ensures Windows shims are available in %LOCALAPPDATA%\Goose\bin
- * This allows the bundled executables to be found via PATH regardless of where Goose is installed
+ * Ensures Windows shims are available in %LOCALAPPDATA%\Caros\bin
+ * This allows the bundled executables to be found via PATH regardless of where Caros is installed
  */
 export async function ensureWinShims(): Promise<void> {
   if (process.platform !== 'win32') return;
@@ -13,7 +13,7 @@ export async function ensureWinShims(): Promise<void> {
   const srcDir = path.join(process.resourcesPath, 'bin'); // existing dir
   const tgtDir = path.join(
     process.env.LOCALAPPDATA ?? path.join(os.homedir(), 'AppData', 'Local'),
-    'Goose',
+    'Caros',
     'bin'
   );
 

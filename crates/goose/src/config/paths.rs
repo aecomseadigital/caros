@@ -16,15 +16,16 @@ impl Paths {
                 DirType::AgentsHome => base.join(".agents"),
             }
         } else {
-            // NOTE: "Block" is kept here for backwards compatibility with existing
-            // user config/data directories (e.g. ~/Library/Application Support/Block/goose/).
-            // Changing this would orphan existing installations.
+            // NOTE: "Block" is the org qualifier kept from upstream; the app dir leaf is
+            // "caros" so user config/data live under e.g. ~/Library/Application Support/Block/caros/
+            // (Linux: ~/.config/caros/). Renaming the leaf starts a fresh config dir — existing
+            // goose installs are not migrated (see CAROS_PLAN.md).
             let strategy = choose_app_strategy(AppStrategyArgs {
                 top_level_domain: "Block".to_string(),
                 author: "Block".to_string(),
-                app_name: "goose".to_string(),
+                app_name: "caros".to_string(),
             })
-            .expect("goose requires a home dir");
+            .expect("caros requires a home dir");
 
             match dir_type {
                 DirType::Config => strategy.config_dir(),

@@ -12,35 +12,35 @@ use std::process::Command;
 fn asset_name() -> &'static str {
     #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
     {
-        "goose-aarch64-apple-darwin.tar.bz2"
+        "caros-aarch64-apple-darwin.tar.bz2"
     }
     #[cfg(all(target_os = "macos", target_arch = "x86_64"))]
     {
-        "goose-x86_64-apple-darwin.tar.bz2"
+        "caros-x86_64-apple-darwin.tar.bz2"
     }
     #[cfg(all(target_os = "linux", target_arch = "x86_64", target_env = "gnu"))]
     {
-        "goose-x86_64-unknown-linux-gnu.tar.bz2"
+        "caros-x86_64-unknown-linux-gnu.tar.bz2"
     }
     #[cfg(all(target_os = "linux", target_arch = "aarch64", target_env = "gnu"))]
     {
-        "goose-aarch64-unknown-linux-gnu.tar.bz2"
+        "caros-aarch64-unknown-linux-gnu.tar.bz2"
     }
     #[cfg(all(target_os = "linux", target_arch = "x86_64", target_env = "musl"))]
     {
-        "goose-x86_64-unknown-linux-musl.tar.bz2"
+        "caros-x86_64-unknown-linux-musl.tar.bz2"
     }
     #[cfg(all(target_os = "linux", target_arch = "aarch64", target_env = "musl"))]
     {
-        "goose-aarch64-unknown-linux-musl.tar.bz2"
+        "caros-aarch64-unknown-linux-musl.tar.bz2"
     }
     #[cfg(all(target_os = "windows", target_arch = "x86_64", feature = "cuda"))]
     {
-        "goose-x86_64-pc-windows-msvc-cuda.zip"
+        "caros-x86_64-pc-windows-msvc-cuda.zip"
     }
     #[cfg(all(target_os = "windows", target_arch = "x86_64", not(feature = "cuda")))]
     {
-        "goose-x86_64-pc-windows-msvc.zip"
+        "caros-x86_64-pc-windows-msvc.zip"
     }
 }
 
@@ -48,11 +48,11 @@ fn asset_name() -> &'static str {
 fn binary_name() -> &'static str {
     #[cfg(target_os = "windows")]
     {
-        "goose.exe"
+        "caros.exe"
     }
     #[cfg(not(target_os = "windows"))]
     {
-        "goose"
+        "caros"
     }
 }
 
@@ -81,7 +81,7 @@ const GITHUB_ACTIONS_ISSUER: &str = "https://token.actions.githubusercontent.com
 
 async fn fetch_attestations(digest: &str, token: Option<&str>) -> Result<Vec<serde_json::Value>> {
     let url = format!(
-        "https://api.github.com/repos/aaif-goose/goose/attestations/sha256:{digest}\
+        "https://api.github.com/repos/yixuanzhong/caros/attestations/sha256:{digest}\
          ?per_page=30&predicate_type=https://slsa.dev/provenance/v1"
     );
 
@@ -90,7 +90,7 @@ async fn fetch_attestations(digest: &str, token: Option<&str>) -> Result<Vec<ser
         .get(&url)
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
-        .header("User-Agent", "goose-cli");
+        .header("User-Agent", "caros-cli");
 
     if let Some(tok) = token {
         req = req.header("Authorization", format!("Bearer {tok}"));
@@ -207,7 +207,7 @@ async fn verify_provenance(archive_data: &[u8], tag: &str) -> Result<bool> {
     ))
 }
 
-/// Update the goose binary to the latest release.
+/// Update the caros binary to the latest release.
 ///
 /// Downloads the platform-appropriate archive from GitHub releases, verifies
 /// its SLSA provenance via Sigstore, extracts it with path-traversal
@@ -222,7 +222,7 @@ pub async fn update(canary: bool, reconfigure: bool) -> Result<()> {
     {
         let tag = if canary { "canary" } else { "stable" };
         let asset = asset_name();
-        let url = format!("https://github.com/aaif-goose/goose/releases/download/{tag}/{asset}");
+        let url = format!("https://github.com/yixuanzhong/caros/releases/download/{tag}/{asset}");
 
         println!("Downloading {asset} from {tag} release...");
 
@@ -275,20 +275,20 @@ pub async fn update(canary: bool, reconfigure: bool) -> Result<()> {
         copy_dlls(&extracted_binary, &current_exe)?;
 
         if provenance_verified {
-            println!("goose updated successfully (verified with Sigstore SLSA provenance).");
+            println!("caros updated successfully (verified with Sigstore SLSA provenance).");
         } else {
-            println!("goose updated successfully.");
+            println!("caros updated successfully.");
         }
 
         // --- Reconfigure if requested -------------------------------------------
         if reconfigure {
-            println!("Running goose configure...");
+            println!("Running caros configure...");
             let status = Command::new(current_exe)
                 .arg("configure")
                 .status()
-                .context("Failed to run goose configure")?;
+                .context("Failed to run caros configure")?;
             if !status.success() {
-                eprintln!("Warning: goose configure exited with {status}");
+                eprintln!("Warning: caros configure exited with {status}");
             }
         }
 
@@ -398,12 +398,12 @@ fn extract_tar_bz2(data: &[u8], dest: &Path) -> Result<()> {
 /// Find the binary inside the extracted archive.
 ///
 /// The archive may place it in:
-///   1. A `goose-package/` subdirectory (Windows releases)
+///   1. A `caros-package/` subdirectory (Windows releases)
 ///   2. Directly at the top level
 ///   3. In some other single subdirectory
 fn find_binary(extract_dir: &Path, binary_name: &str) -> Option<PathBuf> {
-    // 1. Check goose-package subdir (matches download_cli.sh / download_cli.ps1)
-    let package_dir = extract_dir.join("goose-package");
+    // 1. Check caros-package subdir (matches download_cli.sh / download_cli.ps1)
+    let package_dir = extract_dir.join("caros-package");
     if package_dir.is_dir() {
         let p = package_dir.join(binary_name);
         if p.exists() {
@@ -451,7 +451,7 @@ fn replace_binary(new_binary: &Path, current_exe: &Path) -> Result<()> {
         if old_exe.exists() {
             fs::remove_file(&old_exe).with_context(|| {
                 format!(
-                    "Failed to remove old backup {}. Is another goose process running?",
+                    "Failed to remove old backup {}. Is another caros process running?",
                     old_exe.display()
                 )
             })?;
@@ -460,7 +460,7 @@ fn replace_binary(new_binary: &Path, current_exe: &Path) -> Result<()> {
         // Rename the running binary out of the way
         fs::rename(current_exe, &old_exe).with_context(|| {
             format!(
-                "Failed to rename running binary to {}. Try closing Goose Desktop if it's open.",
+                "Failed to rename running binary to {}. Try closing Caros Desktop if it's open.",
                 old_exe.display()
             )
         })?;
@@ -558,7 +558,7 @@ mod tests {
     fn test_asset_name_valid() {
         let name = asset_name();
         assert!(!name.is_empty());
-        assert!(name.starts_with("goose-"));
+        assert!(name.starts_with("caros-"));
         #[cfg(target_os = "windows")]
         assert!(name.ends_with(".zip"));
         #[cfg(not(target_os = "windows"))]
@@ -569,15 +569,15 @@ mod tests {
     fn test_binary_name() {
         let name = binary_name();
         #[cfg(target_os = "windows")]
-        assert_eq!(name, "goose.exe");
+        assert_eq!(name, "caros.exe");
         #[cfg(not(target_os = "windows"))]
-        assert_eq!(name, "goose");
+        assert_eq!(name, "caros");
     }
 
     #[test]
     fn test_find_binary_in_package_subdir() {
         let tmp = tempdir().unwrap();
-        let pkg = tmp.path().join("goose-package");
+        let pkg = tmp.path().join("caros-package");
         fs::create_dir_all(&pkg).unwrap();
         fs::write(pkg.join(binary_name()), b"fake").unwrap();
 
@@ -633,7 +633,7 @@ mod tests {
     #[test]
     fn test_replace_binary_windows_rename_away() {
         let tmp = tempdir().unwrap();
-        let current = tmp.path().join("goose.exe");
+        let current = tmp.path().join("caros.exe");
         let new_bin = tmp.path().join("new_goose.exe");
 
         fs::write(&current, b"old version").unwrap();
@@ -656,7 +656,7 @@ mod tests {
     #[test]
     fn test_replace_binary_windows_cleanup_old() {
         let tmp = tempdir().unwrap();
-        let current = tmp.path().join("goose.exe");
+        let current = tmp.path().join("caros.exe");
         let old = current.with_extension("exe.old");
         let new_bin = tmp.path().join("new_goose.exe");
 
@@ -683,7 +683,7 @@ mod tests {
 
         let tmp = tempdir().unwrap();
 
-        // Create a zip in memory with goose-package/ structure
+        // Create a zip in memory with caros-package/ structure
         let mut buf = Vec::new();
         {
             let cursor = Cursor::new(&mut buf);
@@ -691,13 +691,13 @@ mod tests {
             let options = zip::write::SimpleFileOptions::default()
                 .compression_method(zip::CompressionMethod::Stored);
 
-            writer.add_directory("goose-package/", options).unwrap();
+            writer.add_directory("caros-package/", options).unwrap();
             writer
-                .start_file("goose-package/goose.exe", options)
+                .start_file("caros-package/caros.exe", options)
                 .unwrap();
             writer.write_all(b"fake goose binary").unwrap();
             writer
-                .start_file("goose-package/libtest.dll", options)
+                .start_file("caros-package/libtest.dll", options)
                 .unwrap();
             writer.write_all(b"fake dll").unwrap();
             writer.finish().unwrap();
@@ -705,14 +705,14 @@ mod tests {
 
         extract_zip(&buf, tmp.path()).unwrap();
 
-        let binary = find_binary(tmp.path(), "goose.exe");
+        let binary = find_binary(tmp.path(), "caros.exe");
         assert!(binary.is_some());
 
         let content = fs::read_to_string(binary.unwrap()).unwrap();
         assert_eq!(content, "fake goose binary");
 
-        // DLL should be in goose-package too
-        assert!(tmp.path().join("goose-package/libtest.dll").exists());
+        // DLL should be in caros-package too
+        assert!(tmp.path().join("caros-package/libtest.dll").exists());
     }
 
     // -----------------------------------------------------------------------
@@ -743,8 +743,8 @@ mod tests {
 
     #[test]
     fn test_validate_entry_path_accepts_safe_paths() {
-        assert!(validate_entry_path(Path::new("goose")).is_ok());
-        assert!(validate_entry_path(Path::new("goose-package/goose")).is_ok());
+        assert!(validate_entry_path(Path::new("caros")).is_ok());
+        assert!(validate_entry_path(Path::new("caros-package/caros")).is_ok());
         assert!(validate_entry_path(Path::new("subdir/nested/file.txt")).is_ok());
     }
 
@@ -788,14 +788,14 @@ mod tests {
             header.set_mode(0o755);
             header.set_cksum();
             builder
-                .append_data(&mut header, "goose-package/goose", &data[..])
+                .append_data(&mut header, "caros-package/caros", &data[..])
                 .unwrap();
             builder.into_inner().unwrap().finish().unwrap();
         }
 
         extract_tar_bz2(&builder_buf, tmp.path()).unwrap();
 
-        let extracted = tmp.path().join("goose-package/goose");
+        let extracted = tmp.path().join("caros-package/caros");
         assert!(extracted.exists());
         assert_eq!(
             fs::read_to_string(extracted).unwrap(),

@@ -93,7 +93,7 @@ const env = {
   XDG_DATA_HOME: join(sandbox, ".local/share"),
   XDG_STATE_HOME: join(sandbox, ".local/state"),
   XDG_CACHE_HOME: join(sandbox, ".cache"),
-  GOOSE_CONFIG_DIR: join(sandbox, ".config/goose"),
+  GOOSE_CONFIG_DIR: join(sandbox, ".config/caros"),
 };
 
 console.log(`[compat] using binary: ${GOOSE_BINARY}`);

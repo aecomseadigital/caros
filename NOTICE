@@ -1,0 +1,23 @@
+Caros
+Copyright 2026 AECOM SINGAPORE PTE. LTD.
+
+This product is a derivative work based on goose, an open-source AI agent:
+  https://github.com/yixuanzhong/caros
+  Copyright the goose contributors (originally Block, Inc.; now stewarded by the
+  Agentic AI Foundation at the Linux Foundation).
+
+goose is licensed under the Apache License, Version 2.0. A copy of the License is
+included in the LICENSE file in this repository.
+
+Modifications made by AECOM SINGAPORE PTE. LTD. (per Apache License 2.0, Section 4(b))
+include, but are not limited to:
+  - Rebranding the user-facing application, CLI, protocol scheme, and assets from
+    "goose" to "Caros".
+  - Replacing BYOK provider configuration with Microsoft Entra ID (MSAL) sign-in.
+  - Routing model traffic through an Azure-hosted gateway with task classification
+    and per-user usage logging.
+  - Additional Microsoft Office automation tooling.
+
+"goose" and the goose logo are marks of their respective owners and are not claimed
+by AECOM SINGAPORE PTE. LTD. Use of the upstream project does not imply its
+endorsement of Caros.
