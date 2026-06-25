@@ -27,8 +27,8 @@ _your native open source AI agent — desktop app, CLI, and API — for code, wo
     ><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg"></a>
   <a href="https://discord.gg/goose-oss"
     ><img src="https://img.shields.io/discord/1287729918100246654?logo=discord&logoColor=white&label=Join+Us&color=blueviolet" alt="Discord"></a>
-  <a href="https://github.com/yixuanzhong/caros/actions/workflows/ci.yml"
-     ><img src="https://img.shields.io/github/actions/workflow/status/yixuanzhong/caros/ci.yml?branch=main" alt="CI"></a>
+  <a href="https://github.com/aaif-goose/goose/actions/workflows/ci.yml"
+     ><img src="https://img.shields.io/github/actions/workflow/status/aaif-goose/goose/ci.yml?branch=main" alt="CI"></a>
   <a href="https://insights.linuxfoundation.org/project/goose"><img src="https://insights.linuxfoundation.org/api/badge/health-score?project=goose"></a>
   <a href="https://repology.org/project/goose-cli/versions"><img src="https://repology.org/badge/tiny-repos/goose-cli.svg" alt="Packaging status"></a>
 </p>
@@ -49,7 +49,7 @@ goose is part of the [Agentic AI Foundation (AAIF)](https://aaif.io/) at the Lin
 Or install the CLI:
 
 ```bash
-curl -fsSL https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.sh | bash
+curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
 ```
 
 # Quick links
@@ -57,8 +57,8 @@ curl -fsSL https://github.com/yixuanzhong/caros/releases/download/stable/downloa
 - [Installation](https://goose-docs.ai/docs/getting-started/installation)
 - [Tutorials](https://goose-docs.ai/docs/category/tutorials)
 - [Documentation](https://goose-docs.ai/docs/category/getting-started)
-- [Governance](https://github.com/yixuanzhong/caros/blob/main/GOVERNANCE.md)
-- [Custom Distributions](https://github.com/yixuanzhong/caros/blob/main/CUSTOM_DISTROS.md) — build your own goose distro with preconfigured providers, extensions, and branding
+- [Governance](https://github.com/aaif-goose/goose/blob/main/GOVERNANCE.md)
+- [Custom Distributions](https://github.com/aaif-goose/goose/blob/main/CUSTOM_DISTROS.md) — build your own goose distro with preconfigured providers, extensions, and branding
 
 ## Need help?
 - [Diagnostics & Reporting](https://goose-docs.ai/docs/troubleshooting/diagnostics-and-reporting)
