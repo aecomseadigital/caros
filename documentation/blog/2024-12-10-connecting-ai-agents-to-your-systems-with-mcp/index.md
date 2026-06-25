@@ -62,7 +62,7 @@ As MCP adoption expands, so does goose’s potential to deliver even more powerf
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta property="twitter:domain" content="aaif-goose.github.io" />
+  <meta property="twitter:domain" content="yixuanzhong.github.io" />
   <meta property="twitter:url" content="https://goose-docs.ai/blog/2024/12/10/connecting-ai-agents-to-your-systems-with-mcp" />
   <meta name="twitter:title" content="Connecting AI Agents to Your Systems with MCP" />
   <meta name="twitter:description" content="Learn how MCP standardizes integrations and fosters an ecosystem for the future of AI-enabled tools." />

@@ -8,7 +8,7 @@ sidebar_label: Configuration Files
 
 goose uses YAML [configuration files](#configuration-files) to manage settings and extensions. The primary config file is located at:
 
-* macOS/Linux: `~/.config/goose/config.yaml`
+* macOS/Linux: `~/.config/caros/config.yaml`
 * Windows: `%APPDATA%\Block\goose\config\config.yaml`
 
 The configuration files allow you to set default behaviors, configure language models, set tool permissions, and manage extensions. While many settings can also be set using [environment variables](/docs/guides/environment-variables), the config files provide a persistent way to maintain your preferences.
@@ -79,7 +79,7 @@ GOOSE_TOOLSHIM: true
 GOOSE_CLI_MIN_PRIORITY: 0.2
 
 # Recipe Configuration
-GOOSE_RECIPE_GITHUB_REPO: "aaif-goose/goose-recipes"
+GOOSE_RECIPE_GITHUB_REPO: "yixuanzhong/caros-recipes"
 
 # Search Path Configuration
 GOOSE_SEARCH_PATHS:

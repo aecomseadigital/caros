@@ -35,7 +35,7 @@ Assign a custom command to a recipe.
 
   Configure slash commands in your [configuration file](/docs/guides/config-files). List the command (without the leading `/`) along with the path to the recipe file on your computer:
 
-```yaml title="~/.config/goose/config.yaml"
+```yaml title="~/.config/caros/config.yaml"
 slash_commands:
   - command: "run-tests"
     recipe_path: "/path/to/recipe.yaml"

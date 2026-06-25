@@ -220,7 +220,7 @@ Here's an example configuration that enables oversight:
 
 1. **Set the [permission mode](/docs/guides/managing-tools/goose-permissions)** to Smart Approval or Manual Approval:
    ```yaml
-   # ~/.config/goose/config.yaml
+   # ~/.config/caros/config.yaml
    GOOSE_MODE: smart_approve  # or approve
    ```
 

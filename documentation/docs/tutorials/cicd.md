@@ -68,14 +68,14 @@ jobs:
          - name: Install goose CLI
            run: |
               mkdir -p /home/runner/.local/bin
-              curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh \
+              curl -fsSL https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.sh \
                 | GOOSE_VERSION=REPLACE_WITH_VERSION CONFIGURE=false GOOSE_BIN_DIR=/home/runner/.local/bin bash
               echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
          - name: Configure goose
            run: |
-              mkdir -p ~/.config/goose
-              cat <<EOF > ~/.config/goose/config.yaml
+              mkdir -p ~/.config/caros
+              cat <<EOF > ~/.config/caros/config.yaml
               GOOSE_PROVIDER: REPLACE_WITH_PROVIDER
               GOOSE_MODEL: REPLACE_WITH_MODEL
               keyring: false
@@ -102,7 +102,7 @@ jobs:
               # Remove ANSI color codes
               sed -E 's/\x1B\[[0-9;]*[mK]//g' | \
               # Remove session/logging lines
-              grep -v "logging to /home/runner/.config/goose/sessions/" | \
+              grep -v "logging to /home/runner/.config/caros/sessions/" | \
               grep -v "^starting session" | \
               grep -v "^Closing session" | \
               # Trim trailing whitespace
@@ -158,14 +158,14 @@ steps:
     - name: Install goose CLI
       run: |
           mkdir -p /home/runner/.local/bin
-          curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh \
+          curl -fsSL https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.sh \
             | GOOSE_VERSION=REPLACE_WITH_VERSION CONFIGURE=false GOOSE_BIN_DIR=/home/runner/.local/bin bash
           echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
     - name: Configure goose
       run: |
-          mkdir -p ~/.config/goose
-          cat <<EOF > ~/.config/goose/config.yaml
+          mkdir -p ~/.config/caros
+          cat <<EOF > ~/.config/caros/config.yaml
           GOOSE_PROVIDER: REPLACE_WITH_PROVIDER
           GOOSE_MODEL: REPLACE_WITH_MODEL
           keyring: false
@@ -214,7 +214,7 @@ Now, run goose with the formatted instructions and clean the output by removing 
             # Remove ANSI color codes
             sed -E 's/\x1B\[[0-9;]*[mK]//g' | \
             # Remove session/logging lines
-            grep -v "logging to /home/runner/.config/goose/sessions/" | \
+            grep -v "logging to /home/runner/.config/caros/sessions/" | \
             grep -v "^starting session" | \
             grep -v "^Closing session" | \
             # Trim trailing whitespace

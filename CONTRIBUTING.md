@@ -135,19 +135,19 @@ cargo build
 When that completes, debug builds of the binaries are available, including the goose CLI:
 
 ```
-./target/debug/goose --help
+./target/debug/caros --help
 ```
 
 For first-time setup, run the configure command:
 
 ```
-./target/debug/goose configure
+./target/debug/caros configure
 ```
 
 Once a connection to an LLM provider is working, start a session:
 
 ```
-./target/debug/goose session
+./target/debug/caros session
 ```
 
 These same commands can be recompiled and immediately run using `cargo run -p goose-cli` for iteration.
@@ -224,7 +224,7 @@ and stepping through the server code while interacting with the UI.
 
 To fork the repository:
 
-1. Go to https://github.com/aaif-goose/goose and click “Fork” (top-right corner).
+1. Go to https://github.com/yixuanzhong/caros and click “Fork” (top-right corner).
 2. This creates https://github.com/<your-username>/goose under your GitHub account.
 3. Clone your fork (not the main repo):
 
@@ -236,7 +236,7 @@ cd goose
 4. Add the main repository as upstream:
 
 ```
-git remote add upstream https://github.com/aaif-goose/goose.git
+git remote add upstream https://github.com/yixuanzhong/caros.git
 ```
 
 5. Create a branch in your fork for your changes:
@@ -261,7 +261,7 @@ git merge upstream/main
 git push origin my-feature-branch
 ```
 
-8. Open a Pull Request from your branch on your fork to aaif-goose/goose’s main branch.
+8. Open a Pull Request from your branch on your fork to yixuanzhong/caros’s main branch.
 
 ## Keeping Your Fork Up-to-Date
 
@@ -273,7 +273,7 @@ repository. This helps avoid conflicts and allows us to merge your pull requests
 1. **Add the Main Repository as a Remote** (Skip if you have already set this up):
 
    ```bash
-   git remote add upstream https://github.com/aaif-goose/goose.git
+   git remote add upstream https://github.com/yixuanzhong/caros.git
    ```
 
 2. **Fetch the Latest Changes from the Main Repository**:
@@ -333,7 +333,7 @@ When testing changes or running multiple goose configurations, use `GOOSE_PATH_R
 ```bash
 # Test with a clean environment
 export GOOSE_PATH_ROOT="/tmp/goose-test"
-./target/debug/goose session
+./target/debug/caros session
 
 # Or for a single command
 GOOSE_PATH_ROOT="/tmp/goose-dev" cargo run -p goose-cli -- session
@@ -357,7 +357,7 @@ Then you can view your traces at http://localhost:3000
 
 This project follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for PR titles. Conventional Commits make it easier to understand the history of a project and facilitate automation around versioning and changelog generation.
 
-[issues]: https://github.com/aaif-goose/goose/issues
+[issues]: https://github.com/yixuanzhong/caros/issues
 [hermit]: https://cashapp.github.io/hermit/
 [just]: https://github.com/casey/just?tab=readme-ov-file#installation
 
@@ -367,7 +367,7 @@ There are numerous ways to be an open source contributor and contribute to goose
 
 - **Stars on GitHub:** If you resonate with our project and find it valuable, consider starring our goose on GitHub! 🌟
 - **Ask Questions:** Your questions not only help us improve but also benefit the community. If you have a question, don't hesitate to ask it on [Discord](https://discord.gg/goose-oss).
-- **Give Feedback:** Have a feature you want to see or encounter an issue with goose, [click here to open an issue](https://github.com/aaif-goose/goose/issues/new/choose), [start a discussion](https://github.com/aaif-goose/goose/discussions) or tell us on Discord.
+- **Give Feedback:** Have a feature you want to see or encounter an issue with goose, [click here to open an issue](https://github.com/yixuanzhong/caros/issues/new/choose), [start a discussion](https://github.com/yixuanzhong/caros/discussions) or tell us on Discord.
 - **Participate in Community Events:** We host a variety of community events and livestreams on Discord every month, ranging from workshops to brainstorming sessions. You can subscribe to our [events calendar](https://calget.com/c/t7jszrie) or follow us on [social media](https://linktr.ee/goose_oss) to stay in touch.
 - **Improve Documentation:** Good documentation is key to the success of any project. You can help improve the quality of our existing docs or add new pages.
 - **Help Other Members:** See another community member stuck? Or a contributor blocked by a question you know the answer to? Reply to community threads or do a code review for others to help.

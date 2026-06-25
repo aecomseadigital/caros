@@ -89,10 +89,10 @@ Combine with cron jobs or task schedulers for regular automated maintenance.
 
 ```bash
 # Daily security scan (add to crontab)
-0 2 * * * /usr/local/bin/goose run --no-session -t "Run comprehensive security audit, check for vulnerabilities, and email report to security team"
+0 2 * * * /usr/local/bin/caros run --no-session -t "Run comprehensive security audit, check for vulnerabilities, and email report to security team"
 
 # Weekly dependency updates
-0 9 * * 1 /usr/local/bin/goose run -t "Check for outdated dependencies, create update PRs for non-breaking changes, and schedule review for major updates"
+0 9 * * 1 /usr/local/bin/caros run -t "Check for outdated dependencies, create update PRs for non-breaking changes, and schedule review for major updates"
 ```
 
 ## Best Practices for Headless Success

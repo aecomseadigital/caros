@@ -16,7 +16,7 @@
 //! Or with a custom goose binary path:
 //!
 //! ```bash
-//! cargo run -p goose-sdk --example acp_client -- --goose-bin ./target/debug/goose "Explain Rust's ownership model in one sentence"
+//! cargo run -p goose-sdk --example acp_client -- --goose-bin ./target/debug/caros "Explain Rust's ownership model in one sentence"
 //! ```
 
 use agent_client_protocol::schema::{

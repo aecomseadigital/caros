@@ -12,7 +12,7 @@ echo "======================================"
 RECIPE_FILE="/input/recipe.yaml"
 OUTPUT_DIR="/output"
 WORKSPACE="/workspace"
-GOOSE_BIN="/usr/local/bin/goose"
+GOOSE_BIN="/usr/local/bin/caros"
 BASE_RECIPE="/docker/base_recipe.yaml"
 
 # Globals used for meta
@@ -204,8 +204,8 @@ if [ ! -f "$GOOSE_BIN" ]; then
     echo "⬇️ Installing Goose CLI..."
 
     if curl -fsSL --connect-timeout 30 --max-time 300 \
-       https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash; then
-        for path in "$HOME/.local/bin/goose" "/usr/local/bin/goose" "$(which goose 2>/dev/null || true)"; do
+       https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.sh | bash; then
+        for path in "$HOME/.local/bin/caros" "/usr/local/bin/caros" "$(which caros 2>/dev/null || true)"; do
             if [ -n "$path" ] && [ -f "$path" ] && [ -x "$path" ]; then
                 cp "$path" "$GOOSE_BIN"
                 chmod +x "$GOOSE_BIN"
@@ -219,10 +219,10 @@ if [ ! -f "$GOOSE_BIN" ]; then
         echo "⚠️ Trying direct download..."
         temp_dir=$(mktemp -d)
         if curl -fsSL --connect-timeout 30 --max-time 300 \
-           "https://github.com/aaif-goose/goose/releases/download/stable/goose-x86_64-unknown-linux-gnu.tar.bz2" \
+           "https://github.com/yixuanzhong/caros/releases/download/stable/caros-x86_64-unknown-linux-gnu.tar.bz2" \
            -o "$temp_dir/goose.tar.bz2"; then
             tar -xjf "$temp_dir/goose.tar.bz2" -C "$temp_dir"
-            goose_binary=$(find "$temp_dir" -name "goose" -type f -executable | head -1)
+            goose_binary=$(find "$temp_dir" -name "caros" -type f -executable | head -1)
             if [ -n "$goose_binary" ]; then
                 cp "$goose_binary" "$GOOSE_BIN"
                 chmod +x "$GOOSE_BIN"
@@ -262,8 +262,8 @@ export GOOSE_TELEMETRY_ENABLED=false
 export GOOSE_PROJECT_TRACKER_ENABLED=false
 export RUST_LOG=error
 
-if [ -f "$HOME/.config/goose/config.yaml" ]; then
-    cp "$HOME/.config/goose/config.yaml" "$GOOSE_TMP/config/config.yaml" 2>/dev/null || true
+if [ -f "$HOME/.config/caros/config.yaml" ]; then
+    cp "$HOME/.config/caros/config.yaml" "$GOOSE_TMP/config/config.yaml" 2>/dev/null || true
     export GOOSE_CONFIG_DIR="$GOOSE_TMP/config"
 fi
 

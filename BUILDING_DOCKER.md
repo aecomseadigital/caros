@@ -10,17 +10,17 @@ The easiest way to use goose with Docker is to pull the pre-built image from Git
 
 ```bash
 # Pull the latest image
-docker pull ghcr.io/aaif-goose/goose:latest
+docker pull ghcr.io/yixuanzhong/caros:latest
 
 # Run goose CLI
-docker run --rm ghcr.io/aaif-goose/goose:latest --version
+docker run --rm ghcr.io/yixuanzhong/caros:latest --version
 
 # Run with LLM configuration
 docker run --rm \
   -e GOOSE_PROVIDER=openai \
   -e GOOSE_MODEL=gpt-4o \
   -e OPENAI_API_KEY=$OPENAI_API_KEY \
-  ghcr.io/aaif-goose/goose:latest run -t "Hello, world!"
+  ghcr.io/yixuanzhong/caros:latest run -t "Hello, world!"
 ```
 
 ## Building from Source
@@ -35,7 +35,7 @@ docker run --rm \
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/aaif-goose/goose.git
+git clone https://github.com/yixuanzhong/caros.git
 cd goose
 ```
 
@@ -110,14 +110,14 @@ version: '3.8'
 
 services:
   goose:
-    image: ghcr.io/aaif-goose/goose:latest
+    image: ghcr.io/yixuanzhong/caros:latest
     environment:
       - GOOSE_PROVIDER=${GOOSE_PROVIDER:-openai}
       - GOOSE_MODEL=${GOOSE_MODEL:-gpt-4o}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
       - ./workspace:/workspace
-      - goose-config:/home/goose/.config/goose
+      - goose-config:/home/goose/.config/caros
     working_dir: /workspace
     stdin_open: true
     tty: true
@@ -146,7 +146,7 @@ The Docker image accepts all standard goose environment variables:
 Mount the configuration directory to persist settings:
 ```bash
 docker run --rm \
-  -v ~/.config/goose:/home/goose/.config/goose \
+  -v ~/.config/caros:/home/goose/.config/caros \
   goose:local configure
 ```
 
@@ -163,7 +163,7 @@ docker run --rm \
   -c "apt-get update && apt-get install -y vim && goose --version"
 
 # Or create a custom Dockerfile
-FROM ghcr.io/aaif-goose/goose:latest
+FROM ghcr.io/yixuanzhong/caros:latest
 USER root
 RUN apt-get update && apt-get install -y \
     vim \
@@ -181,7 +181,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/aaif-goose/goose:latest
+      image: ghcr.io/yixuanzhong/caros:latest
       env:
         GOOSE_PROVIDER: openai
         GOOSE_MODEL: gpt-4o
@@ -197,7 +197,7 @@ jobs:
 
 ```yaml
 analyze:
-  image: ghcr.io/aaif-goose/goose:latest
+  image: ghcr.io/yixuanzhong/caros:latest
   variables:
     GOOSE_PROVIDER: openai
     GOOSE_MODEL: gpt-4o
@@ -212,7 +212,7 @@ analyze:
 - **Base image**: Debian Bookworm Slim (minimal runtime dependencies)
 - **Final size**: ~340MB
 - **Optimizations**: Link-Time Optimization (LTO), binary stripping, size optimization
-- **Binary included**: `/usr/local/bin/goose` (32MB)
+- **Binary included**: `/usr/local/bin/caros` (32MB)
 
 ### Security
 
@@ -298,7 +298,7 @@ For production deployments:
 
 Example production Dockerfile:
 ```dockerfile
-FROM ghcr.io/aaif-goose/goose:v1.6.0
+FROM ghcr.io/yixuanzhong/caros:v1.6.0
 # Add any additional tools needed for your use case
 USER root
 RUN apt-get update && apt-get install -y your-tools && rm -rf /var/lib/apt/lists/*

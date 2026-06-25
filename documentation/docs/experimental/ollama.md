@@ -46,5 +46,5 @@ The tool shim works by instructing the primary model to output json for intended
 Start a new goose session with your tool shim preferences:
 
   ```bash
-  GOOSE_TOOLSHIM=1 GOOSE_TOOLSHIM_OLLAMA_MODEL=llama3.2 cargo run --bin goose session
+  GOOSE_TOOLSHIM=1 GOOSE_TOOLSHIM_OLLAMA_MODEL=llama3.2 cargo run --bin caros session
   ```

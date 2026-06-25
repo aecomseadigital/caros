@@ -14,13 +14,13 @@
 #   RALPH_REVIEWER_MODEL  - Model for review phase (prompts if not set)
 #   RALPH_REVIEWER_PROVIDER - Provider for review phase (prompts if not set)
 #   RALPH_MAX_ITERATIONS  - Max iterations (default: 10)
-#   RALPH_RECIPE_DIR      - Recipe directory (default: ~/.config/goose/recipes)
+#   RALPH_RECIPE_DIR      - Recipe directory (default: ~/.config/caros/recipes)
 #
 
 set -e
 
 INPUT="$1"
-RECIPE_DIR="${RALPH_RECIPE_DIR:-$HOME/.config/goose/recipes}"
+RECIPE_DIR="${RALPH_RECIPE_DIR:-$HOME/.config/caros/recipes}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

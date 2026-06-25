@@ -152,7 +152,7 @@ You may need to uninstall goose or clear existing data before re-installing. goo
 
 **Data Locations**
 
-- **Logs and Config**: `~/.config/goose`
+- **Logs and Config**: `~/.config/caros`
 - **Application Data**: `~/Library/Application Support/Goose`
 - **Secrets**: macOS Keychain (credential named "goose").
 
@@ -166,7 +166,7 @@ You may need to uninstall goose or clear existing data before re-installing. goo
 3. Remove data directories:
 
 ```
-rm -rf ~/.config/goose
+rm -rf ~/.config/caros
 rm -rf ~/Library/Application\ Support/goose
 ```
 4. Delete the "goose" app from your Applications folder (if using goose Desktop).
@@ -176,7 +176,7 @@ rm -rf ~/Library/Application\ Support/goose
 
 - **Data/Sessions**: `~/.local/share/goose/`
 - **Logs**: `~/.local/state/goose/`
-- **Config**: `~/.config/goose/`
+- **Config**: `~/.config/caros/`
 - **Secrets**: System keyring (if available)
 
 #### Removal Steps
@@ -188,7 +188,7 @@ rm -rf ~/Library/Application\ Support/goose
 ```
 rm -rf ~/.local/share/goose/
 rm -rf ~/.local/state/goose/
-rm -rf ~/.config/goose/
+rm -rf ~/.config/caros/
 ```
 #### Windows
 
@@ -264,7 +264,7 @@ If you still receive keyring errors, use one of the following options:
 
 When the keyring is disabled (or cannot be accessed and goose falls back to file-based secret storage), secrets are stored here:
 
-- macOS/Linux: `~/.config/goose/secrets.yaml`
+- macOS/Linux: `~/.config/caros/secrets.yaml`
 - Windows: `%APPDATA%\Block\goose\config\secrets.yaml`
 
 See [Configuration Files](/docs/guides/config-files) for details.
@@ -348,7 +348,7 @@ Blocked malicious package: package-name@1.0.0 (npm). OSV MAL advisories: MAL-202
 Steps to resolve:
 1. **Find an alternative**: Look for similar extensions in the [extensions directory][extensions-directory] or [PulseMCP](https://www.pulsemcp.com/servers)
 2. **Optional verification**: Verify the source of the blocked extension or the package name/publisher
-3. **Report false positives**: If you believe this is an error, please [open an issue](https://github.com/aaif-goose/goose/issues)
+3. **Report false positives**: If you believe this is an error, please [open an issue](https://github.com/yixuanzhong/caros/issues)
 
 This security check only applies to locally-executed external extensions that use PyPI (`uvx`) or NPM (`npx`). The check uses real-time data from the OSV database; if the security service is unavailable, extensions will still install normally.
 

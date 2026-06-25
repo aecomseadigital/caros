@@ -51,12 +51,12 @@ copy-binary BUILD_MODE="release":
         echo "Binary not found in target/{{BUILD_MODE}}"; \
         exit 1; \
     fi
-    @if [ -f ./target/{{BUILD_MODE}}/goose ]; then \
-        echo "Copying goose CLI binary from target/{{BUILD_MODE}}..."; \
-        rm -f ./ui/desktop/src/bin/goose; \
-        cp -p ./target/{{BUILD_MODE}}/goose ./ui/desktop/src/bin/; \
+    @if [ -f ./target/{{BUILD_MODE}}/caros ]; then \
+        echo "Copying caros CLI binary from target/{{BUILD_MODE}}..."; \
+        rm -f ./ui/desktop/src/bin/caros; \
+        cp -p ./target/{{BUILD_MODE}}/caros ./ui/desktop/src/bin/; \
     else \
-        echo "goose CLI binary not found in target/{{BUILD_MODE}}"; \
+        echo "caros CLI binary not found in target/{{BUILD_MODE}}"; \
         exit 1; \
     fi
 
@@ -70,12 +70,12 @@ copy-binary-intel:
         echo "Intel release binary not found."; \
         exit 1; \
     fi
-    @if [ -f ./target/x86_64-apple-darwin/release/goose ]; then \
-        echo "Copying Intel goose CLI binary to ui/desktop/src/bin..."; \
-        rm -f ./ui/desktop/src/bin/goose; \
-        cp -p ./target/x86_64-apple-darwin/release/goose ./ui/desktop/src/bin/; \
+    @if [ -f ./target/x86_64-apple-darwin/release/caros ]; then \
+        echo "Copying Intel caros CLI binary to ui/desktop/src/bin..."; \
+        rm -f ./ui/desktop/src/bin/caros; \
+        cp -p ./target/x86_64-apple-darwin/release/caros ./ui/desktop/src/bin/; \
     else \
-        echo "Intel goose CLI binary not found."; \
+        echo "Intel caros CLI binary not found."; \
         exit 1; \
     fi
 

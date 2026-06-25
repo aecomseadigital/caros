@@ -47,7 +47,7 @@ Understanding Cognee's search types is crucial for effective usage:
 
 Use instruction files for consistent behavior across sessions. This method uses fewer tokens but has slower startup.
 
-Create `~/.config/goose/cognee-instructions.md`:
+Create `~/.config/caros/cognee-instructions.md`:
 
 ````markdown
 You are an LLM agent with access to a Cognee knowledge graph for memory.
@@ -90,7 +90,7 @@ You are an LLM agent with access to a Cognee knowledge graph for memory.
 
 Start goose with instructions:
 ```bash
-goose run -i ~/.config/goose/cognee-instructions.md -s
+goose run -i ~/.config/caros/cognee-instructions.md -s
 ```
 
 </TabItem>

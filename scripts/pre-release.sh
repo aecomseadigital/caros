@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-REPO="${GOOSE_GITHUB_REPO:-aaif-goose/goose}"
+REPO="${GOOSE_GITHUB_REPO:-yixuanzhong/caros}"
 DEST="$HOME/Downloads"
 TMPDIR=$(mktemp -d)
 PLIST=$(mktemp /tmp/entitlements.XXXXXX)

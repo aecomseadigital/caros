@@ -27,7 +27,7 @@ ACP sessions are saved to goose's session history where you can access and manag
 :::
 
 :::tip Reference Implementation
-The [goose for VS Code](/docs/experimental/vs-code-extension) extension uses ACP to communicate with goose. See the [vscode-goose](https://github.com/aaif-goose/vscode-goose) repository for implementation details.
+The [goose for VS Code](/docs/experimental/vs-code-extension) extension uses ACP to communicate with goose. See the [vscode-goose](https://github.com/yixuanzhong/vscode-goose) repository for implementation details.
 :::
 
 ## Setup in ACP Clients
@@ -204,7 +204,7 @@ For servers that support the draft standard ACP over Streamable HTTP https://git
 npm start -- --server http://HOST:PORT
 
 # example server
-cargo run -p goose-cli --bin goose -- serve
+cargo run -p goose-cli --bin caros -- serve
 ```
 
 ### Server Authentication

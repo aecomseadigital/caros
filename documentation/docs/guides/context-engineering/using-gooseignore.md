@@ -16,7 +16,7 @@ This guide will show you how to use `.gooseignore` files to prevent goose from c
 ## Creating your `.gooseignore` file
 
 goose supports two types of `.gooseignore` files:
-- **Global ignore file** - Create a `.gooseignore` file in `~/.config/goose`. These restrictions will apply to all your sessions with goose, regardless of directory.
+- **Global ignore file** - Create a `.gooseignore` file in `~/.config/caros`. These restrictions will apply to all your sessions with goose, regardless of directory.
 - **Local ignore file** - Create a `.gooseignore` file at the root of the directory you'd like it applied to. These restrictions will only apply when working in a specific directory.
 
 :::tip
@@ -82,7 +82,7 @@ goose respects ignore rules from global and local `.gooseignore` files, using a 
 When `.gooseignore` files exist, patterns are applied in this order:
 
 1. **Global `.gooseignore`** (applied first)
-   - Located at `~/.config/goose/.gooseignore`
+   - Located at `~/.config/caros/.gooseignore`
    - Affects all projects on your machine
 
 2. **Local `.gooseignore`** (applied second, can override global)
@@ -90,7 +90,7 @@ When `.gooseignore` files exist, patterns are applied in this order:
    - Project-specific rules that can override global patterns
 
 ```
-~/.config/goose/
+~/.config/caros/
 └── .gooseignore      ← Global patterns applied first
 
 Project/
@@ -103,7 +103,7 @@ Because patterns are processed in order, you can use negation patterns in your l
 **Example: Override global restrictions in a specific project**
 
 ```plaintext
-# In ~/.config/goose/.gooseignore (global)
+# In ~/.config/caros/.gooseignore (global)
 **/.env*              # Block all .env files everywhere
 
 # In your-project/.gooseignore (local)

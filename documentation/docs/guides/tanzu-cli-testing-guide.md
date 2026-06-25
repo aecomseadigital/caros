@@ -10,7 +10,7 @@
 **macOS:**
 ```bash
 # If built from source:
-export GOOSE_CLI=~/claude/goose-fork/target/release/goose
+export GOOSE_CLI=~/claude/goose-fork/target/release/caros
 
 # Verify:
 $GOOSE_CLI --version
@@ -19,10 +19,10 @@ $GOOSE_CLI --version
 **Linux:**
 ```bash
 # If installed via .deb:
-export GOOSE_CLI=/usr/bin/goose
+export GOOSE_CLI=/usr/bin/caros
 
 # If built from source:
-export GOOSE_CLI=~/goose-fork/target/release/goose
+export GOOSE_CLI=~/goose-fork/target/release/caros
 
 # Verify:
 $GOOSE_CLI --version

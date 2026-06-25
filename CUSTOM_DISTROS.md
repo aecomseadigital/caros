@@ -154,7 +154,7 @@ GOOSE_MODEL: claude-sonnet-4-20250514
 2. **Inject secrets at install time** or via your MDM/configuration management:
 
 ```bash
-# Secrets are stored in system keyring or ~/.config/goose/secrets.yaml
+# Secrets are stored in system keyring or ~/.config/caros/secrets.yaml
 # if GOOSE_DISABLE_KEYRING=1
 goose configure set-secret ANTHROPIC_API_KEY "your-corporate-key"
 ```
@@ -165,7 +165,7 @@ goose configure set-secret ANTHROPIC_API_KEY "your-corporate-key"
 
 - Secret storage: `crates/goose/src/config/base.rs` (SecretStorage enum)
 - Keyring integration: Uses system keyring by default, file-based fallback available
-- Config file location: `~/.config/goose/config.yaml`
+- Config file location: `~/.config/caros/config.yaml`
 
 ---
 
@@ -483,7 +483,7 @@ settings:
 
 ### Option 1: Declarative Provider (No Code)
 
-Create a JSON file in `~/.config/goose/custom_providers/` or bundle in your distribution:
+Create a JSON file in `~/.config/caros/custom_providers/` or bundle in your distribution:
 
 ```json
 {

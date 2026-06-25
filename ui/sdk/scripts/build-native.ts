@@ -61,7 +61,7 @@ function buildTarget(platform: string): void {
       ? " --features vulkan"
       : "";
     execSync(
-      `cargo build --release --target ${rustTarget} --bin goose${featureArgs}`,
+      `cargo build --release --target ${rustTarget} --bin caros${featureArgs}`,
       {
         cwd: ROOT,
         stdio: "inherit",
@@ -76,7 +76,7 @@ function buildTarget(platform: string): void {
 
   const ext = platform.startsWith("win32") ? ".exe" : "";
   const binaryName = `goose${ext}`;
-  const srcPath = resolve(ROOT, "target", rustTarget, "release", binaryName);
+  const srcPath = resolve(ROOT, "target", rustTarget, "release", `caros${ext}`);
   const destPath = resolve(binDir, binaryName);
 
   if (!existsSync(srcPath)) {

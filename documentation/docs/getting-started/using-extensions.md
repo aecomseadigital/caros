@@ -315,7 +315,7 @@ All parameters in the deeplink must be URL-encoded. For example, spaces should b
 
 
 ### Config Entry
-For advanced users, you can also directly edit the config file (`~/.config/goose/config.yaml`) to add, remove, or update an extension:
+For advanced users, you can also directly edit the config file (`~/.config/caros/config.yaml`) to add, remove, or update an extension:
 
 ```yaml
 extensions:
@@ -543,7 +543,7 @@ goose relies on extension properties to determine how to handle an extension. Yo
 
   <TabItem value="cli" label="Config file">
   
-  1. Navigate to the goose [configuration file](/docs/guides/config-files). For example, navigate to `~/.config/goose/config.yaml` on macOS.
+  1. Navigate to the goose [configuration file](/docs/guides/config-files). For example, navigate to `~/.config/caros/config.yaml` on macOS.
   2. Edit the extension properties as needed and save your changes.
 
   </TabItem>

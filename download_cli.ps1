@@ -8,7 +8,7 @@
 # Supported Architectures: x86_64
 #
 # Usage:
-#   Invoke-WebRequest -Uri "https://github.com/aaif-goose/goose/releases/download/stable/download_cli.ps1" -OutFile "download_cli.ps1"; .\download_cli.ps1
+#   Invoke-WebRequest -Uri "https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.ps1" -OutFile "download_cli.ps1"; .\download_cli.ps1
 #   Or simply: .\download_cli.ps1
 #
 # Environment variables:
@@ -25,8 +25,8 @@
 $ErrorActionPreference = "Stop"
 
 # --- 1) Variables ---
-$REPO = "aaif-goose/goose"
-$OUT_FILE = "goose.exe"
+$REPO = "yixuanzhong/caros"
+$OUT_FILE = "caros.exe"
 
 # Set default bin directory if not specified
 if (-not $env:GOOSE_BIN_DIR) {
@@ -70,7 +70,7 @@ if ($WINDOWS_VARIANT -ne "standard" -and $WINDOWS_VARIANT -ne "cuda") {
 }
 
 # --- 3) Build download URL ---
-$FILE = if ($WINDOWS_VARIANT -eq "cuda") { "goose-$ARCH-pc-windows-msvc-cuda.zip" } else { "goose-$ARCH-pc-windows-msvc.zip" }
+$FILE = if ($WINDOWS_VARIANT -eq "cuda") { "caros-$ARCH-pc-windows-msvc-cuda.zip" } else { "caros-$ARCH-pc-windows-msvc.zip" }
 $DOWNLOAD_URL = "https://github.com/$REPO/releases/download/$RELEASE_TAG/$FILE"
 
 Write-Host "Downloading $RELEASE_TAG release: $FILE..." -ForegroundColor Green
@@ -110,9 +110,9 @@ Remove-Item -Path $FILE -Force
 
 # --- 7) Determine extraction directory ---
 $EXTRACT_DIR = $TMP_DIR
-if (Test-Path (Join-Path $TMP_DIR "goose-package")) {
-    Write-Host "Found goose-package subdirectory, using that as extraction directory" -ForegroundColor Yellow
-    $EXTRACT_DIR = Join-Path $TMP_DIR "goose-package"
+if (Test-Path (Join-Path $TMP_DIR "caros-package")) {
+    Write-Host "Found caros-package subdirectory, using that as extraction directory" -ForegroundColor Yellow
+    $EXTRACT_DIR = Join-Path $TMP_DIR "caros-package"
 }
 
 # --- 8) Create bin directory if it doesn't exist ---
@@ -128,7 +128,7 @@ if (-not (Test-Path $env:GOOSE_BIN_DIR)) {
 }
 
 # --- 9) Install goose binary ---
-$SOURCE_GOOSE = Join-Path $EXTRACT_DIR "goose.exe"
+$SOURCE_GOOSE = Join-Path $EXTRACT_DIR "caros.exe"
 $DEST_GOOSE = Join-Path $env:GOOSE_BIN_DIR $OUT_FILE
 
 if (Test-Path $SOURCE_GOOSE) {

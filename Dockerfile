@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-# goose CLI and Server Docker Image
+# caros CLI and Server Docker Image
 # Multi-stage build for minimal final image size
 
 # Build stage
@@ -50,27 +50,27 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy binary from builder
-COPY --from=builder /build/target/release/goose /usr/local/bin/goose
+COPY --from=builder /build/target/release/caros /usr/local/bin/caros
 
 # Create non-root user
-RUN useradd -m -u 1000 -s /bin/bash goose && \
-    mkdir -p /home/goose/.config/goose && \
-    chown -R goose:goose /home/goose
+RUN useradd -m -u 1000 -s /bin/bash caros && \
+    mkdir -p /home/caros/.config/caros && \
+    chown -R caros:caros /home/caros
 
 # Set up environment
 ENV PATH="/usr/local/bin:${PATH}"
-ENV HOME="/home/goose"
+ENV HOME="/home/caros"
 
 # Switch to non-root user
-USER goose
-WORKDIR /home/goose
+USER caros
+WORKDIR /home/caros
 
-# Default to goose CLI
-ENTRYPOINT ["/usr/local/bin/goose"]
+# Default to caros CLI
+ENTRYPOINT ["/usr/local/bin/caros"]
 CMD ["--help"]
 
 # Labels for metadata
-LABEL org.opencontainers.image.title="goose"
-LABEL org.opencontainers.image.description="goose CLI"
+LABEL org.opencontainers.image.title="caros"
+LABEL org.opencontainers.image.description="caros CLI"
 LABEL org.opencontainers.image.vendor="AAIF"
-LABEL org.opencontainers.image.source="https://github.com/aaif-goose/goose"
+LABEL org.opencontainers.image.source="https://github.com/yixuanzhong/caros"

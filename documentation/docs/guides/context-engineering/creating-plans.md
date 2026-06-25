@@ -65,7 +65,7 @@ goose Version:
   Version:          1.0.18
 
 goose Locations:
-  Config file:      /Users/alincoln/.config/goose/config.yaml
+  Config file:      /Users/alincoln/.config/caros/config.yaml
   Sessions dir:     /Users/alincoln/.local/share/goose/sessions
   Logs dir:         /Users/alincoln/.local/state/goose/logs
 

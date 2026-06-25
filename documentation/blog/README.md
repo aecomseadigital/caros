@@ -9,7 +9,7 @@ This guide explains how to write and structure blog posts for the goose document
 
 1. Clone the goose repository:
 ```bash
-git clone https://github.com/aaif-goose/goose.git
+git clone https://github.com/yixuanzhong/caros.git
 cd goose
 ```
 

@@ -104,7 +104,7 @@ And if *you* have a wild idea for what goose could do? The **[goose grant progra
   <meta property="og:description" content="Introducing a privacy-first, local AI home assistant powered by Goose on edge hardware." />
   <meta property="og:image" content="https://goose-docs.ai/assets/images/banner-ae6f66bdec317d7e20264c4a62ad0013.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta property="twitter:domain" content="aaif-goose.github.io" />
+  <meta property="twitter:domain" content="yixuanzhong.github.io" />
   <meta name="twitter:title" content="Meet the Goose Grant Winner: Goose In A Pond" />
   <meta name="twitter:description" content="Introducing a privacy-first, local AI home assistant powered by Goose on edge hardware." />
   <meta name="twitter:image" content="https://goose-docs.ai/assets/images/banner-ae6f66bdec317d7e20264c4a62ad0013.png" />

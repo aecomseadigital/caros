@@ -58,21 +58,21 @@ jobs:
 
           for platform in "${!PLATFORM_MAP[@]}"; do
             target="${PLATFORM_MAP[$platform]}"
-            artifact_dir="/tmp/cli-artifacts/goose-${target}"
+            artifact_dir="/tmp/cli-artifacts/caros-${target}"
             pkg_dir="ui/goose-binary/goose-binary-${platform}/bin"
             mkdir -p "${pkg_dir}"
 
             if [[ "${platform}" == "win32-x64" ]]; then
-              archive="${artifact_dir}/goose-${target}.zip"
+              archive="${artifact_dir}/caros-${target}.zip"
               if [[ ! -f "${archive}" ]]; then
                 echo "::error::Missing Windows CLI artifact: ${archive}"
                 exit 1
               fi
               rm -rf /tmp/goose-extract
               unzip -o "${archive}" -d /tmp/goose-extract
-              cp /tmp/goose-extract/goose-package/goose.exe "${pkg_dir}/goose.exe"
+              cp /tmp/goose-extract/caros-package/caros.exe "${pkg_dir}/goose.exe"
             else
-              archive="${artifact_dir}/goose-${target}.tar.bz2"
+              archive="${artifact_dir}/caros-${target}.tar.bz2"
               if [[ ! -f "${archive}" ]]; then
                 echo "::error::Missing CLI artifact: ${archive}"
                 exit 1
@@ -80,7 +80,7 @@ jobs:
               rm -rf /tmp/goose-extract
               mkdir -p /tmp/goose-extract
               tar -xjf "${archive}" -C /tmp/goose-extract
-              cp /tmp/goose-extract/goose "${pkg_dir}/goose"
+              cp /tmp/goose-extract/caros "${pkg_dir}/goose"
               chmod +x "${pkg_dir}/goose"
             fi
 

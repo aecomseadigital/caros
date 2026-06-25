@@ -1,10 +1,10 @@
-//! Generate manpages for the goose CLI.
+//! Generate manpages for the caros CLI.
 //!
 //! This binary generates ROFF-formatted manpages from the clap CLI definitions.
 //! Manpages are an essential part of the Linux/Unix ecosystem, providing users with
-//! offline documentation accessible via the `man` command (e.g., `man goose`).
+//! offline documentation accessible via the `man` command (e.g., `man caros`).
 //!
-//! When goose is packaged for Linux distributions (deb, rpm, etc.), the generated
+//! When caros is packaged for Linux distributions (deb, rpm, etc.), the generated
 //! manpages should be installed to `/usr/share/man/man1/` so users can access help
 //! without an internet connection, following Unix conventions that have existed
 //! since the 1970s.
@@ -14,7 +14,7 @@
 //!   # or
 //!   just generate-manpages
 //!
-//! Output: target/man/goose.1, target/man/goose-session.1, etc.
+//! Output: target/man/caros.1, target/man/caros-session.1, etc.
 
 use clap::CommandFactory;
 use clap_mangen::Man;
@@ -116,25 +116,25 @@ fn generate_see_also(
     let mut references: Vec<String> = Vec::new();
 
     // Always reference the main goose command if we're not it
-    if current_name != "goose" {
-        references.push("goose".to_string());
+    if current_name != "caros" {
+        references.push("caros".to_string());
     }
 
     // Reference parent command if exists and not already added
     if let Some(parent) = parent_name {
-        if parent != "goose" && !references.contains(&parent.to_string()) {
+        if parent != "caros" && !references.contains(&parent.to_string()) {
             references.push(parent.to_string());
         }
     }
 
     // For the main command, list immediate subcommands
     // For subcommands, list sibling commands
-    if current_name == "goose" {
+    if current_name == "caros" {
         // Add all immediate subcommands (skip hidden ones)
         for subcmd in cmd.get_subcommands() {
             let subcmd_name = subcmd.get_name();
             if subcmd_name != "help" && !subcmd.is_hide_set() {
-                let full_name = format!("goose-{}", subcmd_name);
+                let full_name = format!("caros-{}", subcmd_name);
                 if !references.contains(&full_name) {
                     references.push(full_name);
                 }

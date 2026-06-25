@@ -69,7 +69,7 @@ Test various ways to start a conversation:
 
 #### Recipe from File
 
-- [ ] Create a file `~/.config/goose/recipes/test-recipe.yaml` with the following content:
+- [ ] Create a file `~/.config/caros/recipes/test-recipe.yaml` with the following content:
 
 ```yaml
 recipe:

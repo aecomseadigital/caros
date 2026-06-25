@@ -773,7 +773,7 @@ You can use any editor that accepts a file path argument, such as vim, nano, ema
 
   Persists across all sessions unless overridden by the environment variable.
   
-  1. Navigate to the goose [configuration file](/docs/guides/config-files). For example, navigate to `~/.config/goose/config.yaml` on macOS.
+  1. Navigate to the goose [configuration file](/docs/guides/config-files). For example, navigate to `~/.config/caros/config.yaml` on macOS.
   2. Add `GOOSE_PROMPT_EDITOR` and set it to your preferred editor:
   
   ```yaml

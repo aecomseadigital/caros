@@ -22,13 +22,13 @@ In this tutorial, we'll use Ralph Loop to build a simple Electron-based browser 
 Copy and paste this in your terminal to download the Ralph Loop recipes:
 
 ```bash
-mkdir -p ~/.config/goose/recipes
+mkdir -p ~/.config/caros/recipes
 
-curl -sL https://raw.githubusercontent.com/aaif-goose/goose/main/documentation/src/pages/recipes/data/recipes/ralph-loop.sh -o ~/.config/goose/recipes/ralph-loop.sh
-curl -sL https://raw.githubusercontent.com/aaif-goose/goose/main/documentation/src/pages/recipes/data/recipes/ralph-work.yaml -o ~/.config/goose/recipes/ralph-work.yaml
-curl -sL https://raw.githubusercontent.com/aaif-goose/goose/main/documentation/src/pages/recipes/data/recipes/ralph-review.yaml -o ~/.config/goose/recipes/ralph-review.yaml
+curl -sL https://raw.githubusercontent.com/yixuanzhong/caros/main/documentation/src/pages/recipes/data/recipes/ralph-loop.sh -o ~/.config/caros/recipes/ralph-loop.sh
+curl -sL https://raw.githubusercontent.com/yixuanzhong/caros/main/documentation/src/pages/recipes/data/recipes/ralph-work.yaml -o ~/.config/caros/recipes/ralph-work.yaml
+curl -sL https://raw.githubusercontent.com/yixuanzhong/caros/main/documentation/src/pages/recipes/data/recipes/ralph-review.yaml -o ~/.config/caros/recipes/ralph-review.yaml
 
-chmod +x ~/.config/goose/recipes/ralph-loop.sh
+chmod +x ~/.config/caros/recipes/ralph-loop.sh
 ```
 
 </details>
@@ -42,14 +42,14 @@ Ralph Loop runs your agent multiple times in a loop (up to 10 iterations by defa
 To start the process, run the script from your terminal and provide your prompt in quotes. This command triggers the first iteration of the worker and reviewer cycle:
 
 ```bash
-~/.config/goose/recipes/ralph-loop.sh "Create a simple browser using Electron and React"
+~/.config/caros/recipes/ralph-loop.sh "Create a simple browser using Electron and React"
 ```
 
 :::tip For Complex Tasks
 You can pass a file path instead of a string. This works well for PRDs, detailed specs, or any multi-step task that benefits from iterative development:
 
 ```bash
-~/.config/goose/recipes/ralph-loop.sh ./prd.md
+~/.config/caros/recipes/ralph-loop.sh ./prd.md
 ```
 :::
 
@@ -86,7 +86,7 @@ RALPH_WORKER_MODEL="gpt-4o" \
 RALPH_WORKER_PROVIDER="openai" \
 RALPH_REVIEWER_MODEL="claude-sonnet-4-20250514" \
 RALPH_REVIEWER_PROVIDER="anthropic" \
-~/.config/goose/recipes/ralph-loop.sh "Create a simple browser using Electron and React"
+~/.config/caros/recipes/ralph-loop.sh "Create a simple browser using Electron and React"
 ```
 :::
 
@@ -189,13 +189,13 @@ The Ralph Loop uses three files: a bash script that orchestrates the work/review
 #   RALPH_REVIEWER_MODEL  - Model for review phase (prompts if not set)
 #   RALPH_REVIEWER_PROVIDER - Provider for review phase (prompts if not set)
 #   RALPH_MAX_ITERATIONS  - Max iterations (default: 10)
-#   RALPH_RECIPE_DIR      - Recipe directory (default: ~/.config/goose/recipes)
+#   RALPH_RECIPE_DIR      - Recipe directory (default: ~/.config/caros/recipes)
 #
 
 set -e
 
 INPUT="$1"
-RECIPE_DIR="${RALPH_RECIPE_DIR:-$HOME/.config/goose/recipes}"
+RECIPE_DIR="${RALPH_RECIPE_DIR:-$HOME/.config/caros/recipes}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

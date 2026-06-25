@@ -46,9 +46,9 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     uv --version && uvx --version
 
 # Pre-download and install Goose CLI to avoid network issues during runtime
-RUN curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | \
+RUN curl -fsSL https://github.com/yixuanzhong/caros/releases/download/stable/download_cli.sh | \
     CONFIGURE=false GOOSE_BIN_DIR=/usr/local/bin bash && \
-    echo "✅ Goose CLI pre-installed: $(/usr/local/bin/goose --version)"
+    echo "✅ Goose CLI pre-installed: $(/usr/local/bin/caros --version)"
 
 # Create ClamAV configuration directory and basic config
 # Allow non-root 'scanner' to install packages via sudo without password
@@ -69,8 +69,8 @@ RUN freshclam || true
 
 # Create non-root user and setup directories
 RUN useradd -m -u 1000 scanner && \
-    mkdir -p /home/scanner/.config/goose && \
-    mkdir -p /home/scanner/.local/share/goose && \
+    mkdir -p /home/scanner/.config/caros && \
+    mkdir -p /home/scanner/.local/share/caros && \
     mkdir -p /output && \
     mkdir -p /tmp/goose && \
     mkdir -p /tmp/goose_home && \
@@ -81,7 +81,7 @@ RUN useradd -m -u 1000 scanner && \
 RUN setcap cap_net_raw,cap_net_admin=eip /usr/bin/tcpdump
 
 # Copy Goose configuration
-COPY config.yaml /home/scanner/.config/goose/config.yaml
+COPY config.yaml /home/scanner/.config/caros/config.yaml
 
 # Copy scanning script, base recipe, and training data decoder
 COPY scan-recipe.sh /usr/local/bin/scan-recipe.sh
@@ -90,7 +90,7 @@ COPY decode-training-data.py /usr/local/bin/decode-training-data.py
 RUN chmod +x /usr/local/bin/scan-recipe.sh /usr/local/bin/decode-training-data.py
 
 # Set proper ownership
-RUN chown scanner:scanner /home/scanner/.config/goose/config.yaml /docker/base_recipe.yaml
+RUN chown scanner:scanner /home/scanner/.config/caros/config.yaml /docker/base_recipe.yaml
 
 # Switch to non-root user
 USER scanner

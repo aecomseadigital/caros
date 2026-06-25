@@ -679,7 +679,7 @@ async function showOpenSourceLicenses(): Promise<void> {
   }
   if (!detail) {
     detail =
-      'Caros is a derivative work of goose (https://github.com/yixuanzhong/caros), ' +
+      'Caros is a derivative work of goose (https://github.com/aaif-goose/goose), ' +
       'licensed under the Apache License, Version 2.0.';
   }
 

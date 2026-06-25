@@ -326,7 +326,7 @@ You can customize how goose generates recipes by editing the `recipe.md` [prompt
      <TabItem value="config" label="Using config file">
 
        Add to your config file:
-       ```yaml title="~/.config/goose/config.yaml"
+       ```yaml title="~/.config/caros/config.yaml"
        GOOSE_RECIPE_GITHUB_REPO: "owner/repo"
        ```
 

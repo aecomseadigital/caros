@@ -60,7 +60,7 @@ To change your usage data collection preference:
     │  Yes 
     │
     └  Telemetry enabled - thank you for helping improve goose!
-    └  Configuration saved successfully to /Users/julesv/.config/goose/config.yaml
+    └  Configuration saved successfully to /Users/julesv/.config/caros/config.yaml
     ```
   </TabItem>
 </Tabs>

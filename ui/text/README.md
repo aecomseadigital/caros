@@ -2,8 +2,8 @@
 
 Early stage and part of goose's broader move to ACP
 
-https://github.com/aaif-goose/goose/issues/6642
-https://github.com/aaif-goose/goose/discussions/7309
+https://github.com/yixuanzhong/caros/issues/6642
+https://github.com/yixuanzhong/caros/discussions/7309
 
 ## Running
 
@@ -22,7 +22,7 @@ The TUI pins a specific `@aaif/goose-sdk` version, so `pnpm start` always runs a
 
 ### Building goose from local source
 
-To test local Rust changes, run the dev launcher directly. It builds a debug binary (`cargo build -p goose-cli` → `target/debug/goose`) from the workspace root and points the TUI at it via `GOOSE_BINARY`:
+To test local Rust changes, run the dev launcher directly. It builds a debug binary (`cargo build -p goose-cli` → `target/debug/caros`) from the workspace root and points the TUI at it via `GOOSE_BINARY`:
 
 ```bash
 node scripts/dev-start.mjs

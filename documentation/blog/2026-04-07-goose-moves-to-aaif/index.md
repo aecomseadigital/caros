@@ -20,9 +20,9 @@ The documentation has moved to a new site: [https://goose-docs.ai/](https://goos
 ## Updated GitHub repository
 The GitHub repository and related projects have moved from `block/goose` to a new org:
 
-> **[https://github.com/aaif-goose/goose](https://github.com/aaif-goose/goose)**
+> **[https://github.com/yixuanzhong/caros](https://github.com/yixuanzhong/caros)**
 
-This includes related repositories in the [aaif-goose](https://github.com/aaif-goose) organization.
+This includes related repositories in the [yixuanzhong](https://github.com/yixuanzhong) organization.
 
 Everything else — the project, the community, the mission — remains the same. goose is still open source, still actively developed, and still the same agent you know.
 
@@ -31,7 +31,7 @@ Everything else — the project, the community, the mission — remains the same
 If you have a local clone, update your git remote:
 
 ```bash
-git remote set-url origin git@github.com:aaif-goose/goose.git
+git remote set-url origin git@github.com:yixuanzhong/caros.git
 ```
 
 ## Migration in progress

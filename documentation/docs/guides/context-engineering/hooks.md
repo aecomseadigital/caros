@@ -301,7 +301,7 @@ The example prints hook events to stderr and appends full payloads to:
 
 To disable a plugin, add its name to `disabledPlugins` in your goose settings file:
 
-```json title="~/.config/goose/settings.json"
+```json title="~/.config/caros/settings.json"
 {
   "disabledPlugins": ["session-logger"]
 }
@@ -310,7 +310,7 @@ To disable a plugin, add its name to `disabledPlugins` in your goose settings fi
 For project-specific settings, use:
 
 ```text
-<project>/.config/goose/settings.json
+<project>/.config/caros/settings.json
 ```
 
 A plugin listed in `disabledPlugins` is skipped during plugin discovery, so its hooks will not run.

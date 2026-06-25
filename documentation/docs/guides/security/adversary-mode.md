@@ -20,7 +20,7 @@ The adversary uses the same model and provider goose is already configured with.
 
 ## Enabling Adversary Mode
 
-Create a file at `~/.config/goose/adversary.md` with your rules:
+Create a file at `~/.config/caros/adversary.md` with your rules:
 
 ```markdown
 BLOCK if the tool call:

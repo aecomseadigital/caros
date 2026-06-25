@@ -141,10 +141,10 @@ jobs:
         uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32  # v4.1.0
         with:
           subject-path: |
-            goose-*.tar.bz2
-            goose-*.tar.gz
-            goose-*.zip
-            Goose*.zip
+            caros-*.tar.bz2
+            caros-*.tar.gz
+            caros-*.zip
+            Caros*.zip
             *.deb
             *.rpm
             *.flatpak
@@ -158,10 +158,10 @@ jobs:
           name: Canary
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
-            goose-*.tar.bz2
-            goose-*.tar.gz
-            goose-*.zip
-            Goose*.zip
+            caros-*.tar.bz2
+            caros-*.tar.gz
+            caros-*.zip
+            Caros*.zip
             *.deb
             *.rpm
             *.flatpak

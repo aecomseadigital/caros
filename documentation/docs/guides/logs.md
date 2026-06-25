@@ -9,7 +9,7 @@ goose uses a unified storage system for conversations and interactions. All conv
 
 | **Type**            | **Unix-like (macOS, Linux)**              | **Windows**                              |
 |---------------------|----------------------------------------|---------------------------------------------|
-| **Command History** | `~/.config/goose/history.txt`          | `%APPDATA%\Block\goose\data\history.txt`    |
+| **Command History** | `~/.config/caros/history.txt`          | `%APPDATA%\Block\goose\data\history.txt`    |
 | **Session Records** | `~/.local/share/goose/sessions/sessions.db` | `%APPDATA%\Block\goose\data\sessions\sessions.db` |
 | **System Logs**     | `~/.local/state/goose/logs/`           | `%APPDATA%\Block\goose\data\logs\`          |
 
@@ -24,7 +24,7 @@ goose stores command history persistently across chat sessions, allowing goose t
 
 Command history logs are stored in:
 
-* Unix-like: ` ~/.config/goose/history.txt`
+* Unix-like: ` ~/.config/caros/history.txt`
 * Windows: `%APPDATA%\Block\goose\data\history.txt`
 
 ## Session Records

@@ -23,7 +23,7 @@ Before saving recipes, it's important to understand where they can be stored and
 
 | Type | Location | Availability | Best For |
 |------|----------|-------------|----------|
-| **Global** | `~/.config/goose/recipes/` | All projects and sessions | Personal workflows, general-purpose recipes |
+| **Global** | `~/.config/caros/recipes/` | All projects and sessions | Personal workflows, general-purpose recipes |
 | **Local** | `YOUR_WORKING_DIRECTORY/.goose/recipes/` | Only when working in that project | Project-specific workflows, team recipes |
 
 **Choose Global Storage When:**
@@ -141,7 +141,7 @@ goose searches for recipes in the following locations (in order):
 
 1. **Current directory**: `.` (looks for `*.yaml` and `*.json` files)
 2. **Custom paths**: Directories specified in [`GOOSE_RECIPE_PATH`](/docs/guides/environment-variables#recipe-configuration) environment variable
-3. **Global recipe library**: `~/.config/goose/recipes/` (or equivalent on your OS)
+3. **Global recipe library**: `~/.config/caros/recipes/` (or equivalent on your OS)
 4. **Local project recipes**: `./.goose/recipes/`
 5. **GitHub repository**: If [`GOOSE_RECIPE_GITHUB_REPO`](/docs/guides/environment-variables#recipe-configuration) environment variable is configured
 
@@ -152,8 +152,8 @@ goose searches for recipes in the following locations (in order):
 $ goose recipe list
 Available recipes:
 goose-self-test - A comprehensive meta-testing recipe - local: ./goose-self-test.yaml
-hello-world - A sample recipe demonstrating basic usage - local: ~/.config/goose/recipes/hello-world.yaml
-job-finder - Find software engineering positions - local: ~/.config/goose/recipes/job-finder.yaml
+hello-world - A sample recipe demonstrating basic usage - local: ~/.config/caros/recipes/hello-world.yaml
+job-finder - Find software engineering positions - local: ~/.config/caros/recipes/job-finder.yaml
 ```
 
 *Verbose mode:*
@@ -163,9 +163,9 @@ Available recipes:
   goose-self-test - A comprehensive meta-testing recipe - local: ./goose-self-test.yaml
     Title: goose Self-Testing Integration Suite
     Path: ./goose-self-test.yaml
-  hello-world - A sample recipe demonstrating basic usage - local: ~/.config/goose/recipes/hello-world.yaml
+  hello-world - A sample recipe demonstrating basic usage - local: ~/.config/caros/recipes/hello-world.yaml
     Title: Hello World Recipe
-    Path: /Users/username/.config/goose/recipes/hello-world.yaml
+    Path: /Users/username/.config/caros/recipes/hello-world.yaml
 ```
 
 *JSON format for automation:*
@@ -210,7 +210,7 @@ If you need to browse recipe directories manually:
 
 ```bash
 # List recipes in default global location
-ls ~/.config/goose/recipes/
+ls ~/.config/caros/recipes/
 
 # List recipes in current project
 ls .goose/recipes/

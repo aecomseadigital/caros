@@ -56,10 +56,10 @@ build_macos() {
   local pkg_dir="${NATIVE_DIR}/goose-binary-${platform}/bin"
 
   echo "==> Building goose for ${platform} (${target}) natively"
-  cargo build --release --target "${target}" --bin goose --manifest-path "${REPO_ROOT}/Cargo.toml"
+  cargo build --release --target "${target}" --bin caros --manifest-path "${REPO_ROOT}/Cargo.toml"
 
   mkdir -p "${pkg_dir}"
-  cp "${REPO_ROOT}/target/${target}/release/goose" "${pkg_dir}/goose"
+  cp "${REPO_ROOT}/target/${target}/release/caros" "${pkg_dir}/goose"
   chmod +x "${pkg_dir}/goose"
   echo "    ✅ ${pkg_dir}/goose"
 }
@@ -78,8 +78,8 @@ apt-get install -y -qq --no-install-recommends \
   libclang-dev protobuf-compiler libprotobuf-dev ca-certificates \
   libvulkan-dev libvulkan1 glslc >/dev/null 2>&1
 echo "==> Compiling goose (this takes a while)..."
-cargo build --release --bin goose --features vulkan
-cp /build/target/release/goose /output/goose
+cargo build --release --bin caros --features vulkan
+cp /build/target/release/caros /output/goose
 echo "==> Done"
 '
 
@@ -123,8 +123,8 @@ RUN apt-get update -qq && \
 WORKDIR /build
 COPY . .
 RUN mkdir -p /output && \
-    cargo build --release --bin goose --features vulkan && \
-    cp target/release/goose /output/goose
+    cargo build --release --bin caros --features vulkan && \
+    cp target/release/caros /output/goose
 DEOF
 
   # Build in Docker and extract the binary

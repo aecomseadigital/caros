@@ -33,7 +33,7 @@ To make use of the hints file, you need to have the `Developer` extension [enabl
 ## Creating Your Hints File
 
 goose supports two types of hint files:
-- **Global hints file** - These hints will apply to all your sessions with goose, regardless of directory. Global hints are stored in `~/.config/goose/.goosehints`.
+- **Global hints file** - These hints will apply to all your sessions with goose, regardless of directory. Global hints are stored in `~/.config/caros/.goosehints`.
 - **Local hints files** -  These hints will only apply when working in a specific directory or directory hierarchy.
 
 You can use both global and local hints at the same time. When both exist, goose will consider both your global preferences and project-specific requirements. If the instructions in your local hints file conflict with your global preferences, goose will prioritize the local hints.
@@ -46,7 +46,7 @@ You can use other agent rule files with goose by using the [`CONTEXT_FILE_NAMES`
     <TabItem value="ui" label="goose Desktop" default>
 
     #### Global hints file
-    1. Create a `.goosehints` file in `~/.config/goose`
+    1. Create a `.goosehints` file in `~/.config/caros`
 
     #### Local hints file
 
@@ -64,7 +64,7 @@ You can use other agent rule files with goose by using the [`CONTEXT_FILE_NAMES`
     </TabItem>
     <TabItem value="manual" label="Manual">
     
-    - **Global hints file** - Create a `.goosehints` file in `~/.config/goose`.
+    - **Global hints file** - Create a `.goosehints` file in `~/.config/caros`.
     - **Local hints file** -  Create a `.goosehints` file at the root of your project and/or in any directory in the hierarchy.
 
     </TabItem>
@@ -229,7 +229,7 @@ goose looks for `AGENTS.md` then `.goosehints` files by default, but you can con
 - **Project conventions**: Use context files from your project's established toolchain (`.cursorrules`)
 
 Here's how it works:
-1. goose looks for each configured filename in both global (`~/.config/goose/`) and local project locations
+1. goose looks for each configured filename in both global (`~/.config/caros/`) and local project locations
 2. At session start, goose loads matching files from your working directory hierarchy
 3. During the session, goose can load additional matching files when it accesses nested subdirectories
 4. All found files are loaded and combined into the context

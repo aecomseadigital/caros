@@ -2,7 +2,7 @@ import Link from "@docusaurus/Link";
 import { IconDownload } from "@site/src/components/icons/download";
 import { useState, useEffect } from "react";
 
-const FALLBACK_URL = "https://github.com/aaif-goose/goose/releases/latest";
+const FALLBACK_URL = "https://github.com/yixuanzhong/caros/releases/latest";
 
 const isStandardLinuxAsset = (asset) => !asset.name.includes('-vulkan');
 
@@ -28,7 +28,7 @@ const LinuxDesktopInstallButtons = () => {
         }
 
         // Fetch latest release from GitHub API
-        const response = await fetch('https://api.github.com/repos/aaif-goose/goose/releases/latest');
+        const response = await fetch('https://api.github.com/repos/yixuanzhong/caros/releases/latest');
         if (!response.ok) throw new Error('API request failed');
 
         const release = await response.json();
