@@ -1,0 +1,25 @@
+{
+  "name": "caros-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Caros LLM gateway: auth-aware task classifier + router + per-user usage logging in front of Azure OpenAI",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.5.0",
+    "applicationinsights": "^3.5.0",
+    "dotenv": "^17.0.0",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
+  }
+}

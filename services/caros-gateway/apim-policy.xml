@@ -1,0 +1,67 @@
+<!--
+  Caros APIM inbound policy for the gateway API (applied on the `caros` API in apim-caros).
+
+  Access gating uses contralib-api APP ROLES (not the Hackathon security group / groups claim):
+  the user's access token carries `roles: ["...","hackathon",...]` when they are assigned the
+  `hackathon` app role on contralib-api. Tokens are v1.0 (iss = sts.windows.net, claim `upn`).
+
+  Prerequisites:
+    - Backend (API "Web service URL") = https://caros-gw.graybush-e753c860.westus.azurecontainerapps.io
+    - Named value `gw-secret` exists in apim-caros (plain, or Key Vault-backed once the APIM MI has
+      Key Vault Secrets User on kv-caros). Must match the Container App secret `gw-secret`.
+    - (Optional, for emit-token-metric) an Application Insights logger attached to apim-caros.
+
+  Captured values baked in:
+    tenant   16ed5ab4-2b59-4e40-806d-8a30bdc9cf26
+    audience api://ea4c58eb-9223-46bd-89cc-06bf4652f43c
+    role     hackathon
+-->
+<policies>
+  <inbound>
+    <base />
+
+    <!-- 1. Authenticate + authorize: valid Entra token, correct audience, has the `hackathon` app role -->
+    <validate-jwt header-name="Authorization" require-scheme="Bearer"
+                  failed-validation-httpcode="403"
+                  failed-validation-error-message="Not authorized for Caros (the 'hackathon' app role is required)."
+                  output-token-variable-name="jwt">
+      <openid-config url="https://login.microsoftonline.com/16ed5ab4-2b59-4e40-806d-8a30bdc9cf26/.well-known/openid-configuration" />
+      <audiences>
+        <audience>api://ea4c58eb-9223-46bd-89cc-06bf4652f43c</audience>
+      </audiences>
+      <required-claims>
+        <claim name="roles" match="any">
+          <value>hackathon</value>
+        </claim>
+      </required-claims>
+    </validate-jwt>
+
+    <!-- 2. Forward the validated user identity to the gateway for per-user usage logging -->
+    <set-header name="x-user-oid" exists-action="override">
+      <value>@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{""}).FirstOrDefault())</value>
+    </set-header>
+    <set-header name="x-user-upn" exists-action="override">
+      <value>@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("upn", new string[]{""}).FirstOrDefault())</value>
+    </set-header>
+
+    <!-- 3. Prove to the external gateway that the caller is APIM -->
+    <set-header name="x-gateway-secret" exists-action="override">
+      <value>{{gw-secret}}</value>
+    </set-header>
+
+    <!-- 4. (Optional) Per-user token cap. Add when desired:
+    <azure-openai-token-limit
+        counter-key="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{"anon"}).FirstOrDefault())"
+        tokens-per-minute="150000" estimate-prompt-tokens="true" remaining-tokens-header-name="x-tokens-remaining" />
+    -->
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
