@@ -1,6 +1,6 @@
 # Caros
 
-**Caros is an internal AECOM fork of [goose](https://github.com/yixuanzhong/caros),** the
+**Caros is an internal AECOM fork of [goose](https://github.com/aaif-goose/goose),** the
 open-source AI agent. It is a modified derivative work distributed under the Apache
 License, Version 2.0 — see [`LICENSE`](LICENSE) for the full license text and
 [`NOTICE`](NOTICE) for attribution and a summary of changes.
@@ -8,6 +8,8 @@ License, Version 2.0 — see [`LICENSE`](LICENSE) for the full license text and
 Caros is maintained by AECOM SINGAPORE PTE. LTD. for internal use. "goose" and the
 goose logo are marks of their respective owners; this project is not endorsed by or
 affiliated with the goose project, the Agentic AI Foundation, or Block, Inc.
+
+**Caros** means "expensive" in Spanish and Italian languages. It is an anagram of **Oscar**, AECOM's internal AI assistant. 
 
 The remainder of this README is retained from the upstream goose project and describes
 the underlying agent; some branding, links, and references still point to goose.
