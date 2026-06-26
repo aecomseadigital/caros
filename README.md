@@ -5,11 +5,13 @@ open-source AI agent. It is a modified derivative work distributed under the Apa
 License, Version 2.0 — see [`LICENSE`](LICENSE) for the full license text and
 [`NOTICE`](NOTICE) for attribution and a summary of changes.
 
-Caros is maintained by AECOM SINGAPORE PTE. LTD. for internal use. "goose" and the
-goose logo are marks of their respective owners; this project is not endorsed by or
-affiliated with the goose project, the Agentic AI Foundation, or Block, Inc.
+Caros is maintained by AECOM SINGAPORE PTE. LTD. for internal use. 
+"goose" and the goose logo are marks of their respective owners; this project is not endorsed by or affiliated with the goose project, the Agentic AI Foundation, or Block, Inc.
+
+## Parody: Caros wins Oscar
 
 **Caros** means "expensive" in Spanish and Italian languages. It is an anagram of **Oscar**, AECOM's internal AI assistant. 
+The icon avatar features an otter, which is an iconic wild animal in Singapore.
 
 ## Installation (Windows)
 
