@@ -1041,6 +1041,11 @@ impl Config {
             || lower.contains("org.freedesktop.secrets")
             || lower.contains("platform secure storage")
             || lower.contains("no secret service")
+            // Windows Credential Manager caps a credential blob at 2560 UTF-16 chars;
+            // large secrets (e.g. Entra JWT access/refresh tokens) exceed it. Treat that
+            // as "keyring can't hold this" and spill to file storage instead of failing.
+            || lower.contains("platform limit")
+            || lower.contains("is longer than")
     }
 
     /// Get a keyring entry for the specified service
@@ -2062,6 +2067,22 @@ mod tests {
         assert_eq!(mode, 0o600);
 
         Ok(())
+    }
+
+    #[test]
+    #[cfg(feature = "system-keyring")]
+    fn test_keyring_size_limit_triggers_file_fallback() {
+        let config_file = NamedTempFile::new().unwrap();
+        let secrets = NamedTempFile::new().unwrap();
+        let config = Config::new_with_file_secrets(config_file.path(), secrets.path()).unwrap();
+        // Windows Credential Manager caps a blob at 2560 chars; a large Entra JWT
+        // exceeds it and must spill to file storage rather than hard-failing.
+        assert!(config.is_keyring_availability_error(
+            "Attribute 'password encoded as UTF-16' is longer than platform limit of 2560 chars"
+        ));
+        // Existing availability errors still match; unrelated errors must not.
+        assert!(config.is_keyring_availability_error("platform secure storage error"));
+        assert!(!config.is_keyring_availability_error("invalid type: expected a string"));
     }
 
     #[test]
