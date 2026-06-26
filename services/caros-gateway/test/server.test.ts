@@ -35,6 +35,9 @@ const simple = "what is the capital of France?";
 beforeEach(() => mockCall.mockReset());
 afterEach(() => {
   config.sharedSecret = "";
+  config.reasoning.mini = "";
+  config.reasoning.nano = "";
+  config.promptCacheKey = false;
   vi.restoreAllMocks();
 });
 
@@ -150,5 +153,43 @@ describe("T2.G gateway server", () => {
     const logged = spy.mock.calls.map((c) => String(c[0])).find((s) => s.includes("CarosUsage"));
     expect(logged).toBeDefined();
     expect(JSON.parse(logged!)).toMatchObject({ oid: "user-42", upn: "u@x.com" });
+  });
+
+  it("T2.G12 injects the per-tier reasoning_effort floor when the caller omitted it", async () => {
+    config.reasoning.nano = "low";
+    mockCall.mockResolvedValue(jsonResp({ choices: [], usage }));
+    await request(app).post("/chat/completions").send({ messages: [{ role: "user", content: simple }] });
+    expect((mockCall.mock.calls[0]![1] as Record<string, unknown>).reasoning_effort).toBe("low");
+  });
+
+  it("T2.G12b preserves a caller-specified reasoning_effort", async () => {
+    config.reasoning.nano = "low";
+    mockCall.mockResolvedValue(jsonResp({ choices: [], usage }));
+    await request(app)
+      .post("/chat/completions")
+      .send({ reasoning_effort: "high", messages: [{ role: "user", content: simple }] });
+    expect((mockCall.mock.calls[0]![1] as Record<string, unknown>).reasoning_effort).toBe("high");
+  });
+
+  it("T2.G12c leaves reasoning_effort unset when no floor is configured", async () => {
+    mockCall.mockResolvedValue(jsonResp({ choices: [], usage }));
+    await request(app).post("/chat/completions").send({ messages: [{ role: "user", content: simple }] });
+    expect((mockCall.mock.calls[0]![1] as Record<string, unknown>).reasoning_effort).toBeUndefined();
+  });
+
+  it("T2.G13 sets prompt_cache_key=<oid>:<tier> when enabled", async () => {
+    config.promptCacheKey = true;
+    mockCall.mockResolvedValue(jsonResp({ choices: [], usage }));
+    await request(app)
+      .post("/chat/completions")
+      .set("x-user-oid", "user-42")
+      .send({ messages: [{ role: "user", content: simple }] });
+    expect((mockCall.mock.calls[0]![1] as Record<string, unknown>).prompt_cache_key).toBe("user-42:nano");
+  });
+
+  it("T2.G13b leaves prompt_cache_key unset by default", async () => {
+    mockCall.mockResolvedValue(jsonResp({ choices: [], usage }));
+    await request(app).post("/chat/completions").send({ messages: [{ role: "user", content: simple }] });
+    expect((mockCall.mock.calls[0]![1] as Record<string, unknown>).prompt_cache_key).toBeUndefined();
   });
 });

@@ -31,6 +31,16 @@ export const config = {
     nanoFallback: optional("CLASSIFIER_NANO_FALLBACK", "true") === "true",
     largeTokenThreshold: parseInt(optional("CLASSIFIER_LARGE_TOKENS", "6000"), 10),
   },
+  // Per-tier reasoning-effort floor, injected only when the caller didn't set one.
+  // Empty = leave unset (deployment default, typically "medium"). gpt-5.4 accepts
+  // low|medium|high|xhigh — no "minimal" — so "low" is the safe floor. Off by default.
+  reasoning: {
+    mini: optional("REASONING_EFFORT_MINI", ""),
+    nano: optional("REASONING_EFFORT_NANO", ""),
+  },
+  // Pin each caller's traffic to one AOAI replica (prompt_cache_key) so the cached
+  // prompt prefix is reused instead of scattered across replicas. Off by default.
+  promptCacheKey: optional("PROMPT_CACHE_KEY", "false") === "true",
   sharedSecret: optional("GATEWAY_SHARED_SECRET", ""),
   // Secure by default: if no shared secret is configured, requests are REJECTED
   // (the gateway has a public ingress). Local dev opts out with ALLOW_INSECURE_NO_SECRET=true.

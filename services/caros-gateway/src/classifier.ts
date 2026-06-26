@@ -110,7 +110,12 @@ async function nanoClassify(text: string): Promise<Tier> {
 
   const res = await callChatCompletions(config.aoai.deployments.nano, {
     messages: [{ role: "user", content: prompt }],
-    max_completion_tokens: 4,
+    // gpt-5.x is a reasoning model: max_completion_tokens caps reasoning + visible
+    // output *combined*. A tiny cap is consumed entirely by hidden reasoning, leaving
+    // empty content that silently routes everything to nano. Pin reasoning to its
+    // floor ("low" — gpt-5.4 has no "minimal") and leave headroom for the one-word verdict.
+    reasoning_effort: "low",
+    max_completion_tokens: 256,
   });
   if (!res.ok) throw new Error(`nano classify failed: ${res.status}`);
 

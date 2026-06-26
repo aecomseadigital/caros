@@ -1,6 +1,13 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
+
+vi.mock("../src/aoai", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../src/aoai")>();
+  return { ...actual, callChatCompletions: vi.fn() };
+});
+
 import { heuristicTier, concatMessages, classify, hasImageContent, ensureImageDetailHigh } from "../src/classifier";
 import { config } from "../src/config";
+import { callChatCompletions } from "../src/aoai";
 
 function body(messages: unknown, extra: Record<string, unknown> = {}): Record<string, unknown> {
   return { messages, ...extra };
@@ -115,5 +122,29 @@ describe("T1.A7 classify with nanoFallback disabled (no network)", () => {
     config.classifier.nanoFallback = false;
     const mid = "alpha ".repeat(2500);
     await expect(classify(body(userMsg(mid)))).resolves.toEqual({ tier: "nano", reason: "default_nano" });
+  });
+});
+
+describe("T1.A11 nanoClassify (reasoning-safe budget)", () => {
+  const mockCall = vi.mocked(callChatCompletions);
+  const original = config.classifier.nanoFallback;
+  afterEach(() => {
+    config.classifier.nanoFallback = original;
+    mockCall.mockReset();
+  });
+
+  it("sends reasoning_effort:low + headroom so reasoning can't starve the verdict", async () => {
+    config.classifier.nanoFallback = true;
+    mockCall.mockResolvedValue(
+      new Response(JSON.stringify({ choices: [{ message: { content: "complex" } }] }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
+    );
+    const mid = "alpha ".repeat(2500); // ambiguous -> exercises the nano classifier
+    await expect(classify(body(userMsg(mid)))).resolves.toEqual({ tier: "mini", reason: "nano_classifier" });
+    const sent = mockCall.mock.calls[0]![1] as { reasoning_effort?: string; max_completion_tokens?: number };
+    expect(sent.reasoning_effort).toBe("low");
+    expect(sent.max_completion_tokens ?? 0).toBeGreaterThanOrEqual(16);
   });
 });

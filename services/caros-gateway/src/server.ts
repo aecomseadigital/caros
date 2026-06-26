@@ -42,6 +42,18 @@ async function handleChatCompletions(req: Request, res: Response): Promise<void>
     outBody.stream_options = { ...(body.stream_options as object | undefined), include_usage: true };
   }
 
+  // Per-tier reasoning-effort floor: cut reasoning-token spend without overriding an
+  // explicit caller value. gpt-5.4 has no "minimal"; "low" is the safe floor.
+  const effortFloor = tier === "nano" ? config.reasoning.nano : config.reasoning.mini;
+  if (effortFloor && outBody.reasoning_effort === undefined) {
+    outBody.reasoning_effort = effortFloor;
+  }
+
+  // Pin this caller to one AOAI replica so the cached prompt prefix is reused.
+  if (config.promptCacheKey && caller.oid) {
+    outBody.prompt_cache_key = `${caller.oid}:${tier}`;
+  }
+
   let upstream: globalThis.Response;
   try {
     upstream = await callChatCompletions(deployment, outBody);
