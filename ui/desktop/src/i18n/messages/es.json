@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Turnos máximos del agente antes de que Caros pida la intervención del usuario"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "Datos de costo no disponibles para {model} ({inputTokens} de entrada, {outputTokens} tokens de salida)"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "Entrada: {inputTokens} tokens ({inputCost}) | Salida: {outputTokens} tokens ({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "Datos de precios no disponibles para {model}"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "Costo total de la sesión: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Haz clic para generar el deeplink"
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

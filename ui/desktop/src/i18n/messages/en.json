@@ -335,17 +335,8 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Maximum agent turns before Caros asks for user input"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "Cost data not available for {model} ({inputTokens} input, {outputTokens} output tokens)"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "Input: {inputTokens} tokens ({inputCost}) | Output: {outputTokens} tokens ({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "Pricing data unavailable for {model}"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "Total session cost: {cost}"
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Click to generate deeplink"

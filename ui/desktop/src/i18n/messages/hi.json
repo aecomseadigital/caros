@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Caros द्वारा उपयोगकर्ता इनपुट मांगने से पहले अधिकतम एजेंट मुड़ता है"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "{model} ({inputTokens} इनपुट, {outputTokens} आउटपुट टोकन) के लिए लागत डेटा उपलब्ध नहीं है"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "इनपुट: {inputTokens} टोकन ({inputCost}) | आउटपुट: {outputTokens} टोकन ({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "{model} के लिए मूल्य निर्धारण डेटा उपलब्ध नहीं है"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "कुल सत्र लागत: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "डीपलिंक जनरेट करने के लिए क्लिक करें"
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

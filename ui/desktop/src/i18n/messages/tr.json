@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Caros kullanıcı girişi istemeden önce maksimum aracı dönüşü"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "{model} için maliyet verileri mevcut değil ({inputTokens} girişi, {outputTokens} çıkış jetonları)"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "Girdi: {inputTokens} belirteçleri ({inputCost}) | Çıktı: {outputTokens} belirteçleri ({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "{model} için fiyatlandırma verileri mevcut değil"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "Toplam oturum maliyeti: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Derin bağlantı oluşturmak için tıklayın"
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

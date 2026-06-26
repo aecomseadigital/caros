@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "caros가 사용자 입력을 요청하기 전 최대 에이전트 턴 수"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "{model}({inputTokens} 입력, {outputTokens} 출력 토큰)에 대한 비용 데이터는 제공되지 않습니다."
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "입력: {inputTokens} 토큰({inputCost}) | 출력: {outputTokens} 토큰({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "{model}에 대한 가격 데이터가 없습니다."
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "총 세션 비용: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "딥링크를 생성하려면 클릭하세요."
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

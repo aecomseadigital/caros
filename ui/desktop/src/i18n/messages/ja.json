@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Carosがユーザー入力を求めるまでのエージェントの最大ターン数"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "{model} のコストデータは利用できません（入力 {inputTokens} トークン、出力 {outputTokens} トークン）"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "入力: {inputTokens} トークン（{inputCost}） | 出力: {outputTokens} トークン（{outputCost}）"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "{model} の料金データは利用できません"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "セッション合計コスト: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "クリックしてディープリンクを生成"
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

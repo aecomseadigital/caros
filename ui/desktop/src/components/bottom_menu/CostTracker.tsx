@@ -1,26 +1,11 @@
 import { useState, useEffect } from 'react';
-import { CoinIcon } from '../icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/Tooltip';
-import { fetchCanonicalModelInfo } from '../../utils/canonical';
-import type { ModelInfoData } from '../../api';
 import { defineMessages, useIntl } from '../../i18n';
 
 const i18n = defineMessages({
-  pricingUnavailable: {
-    id: 'costTracker.pricingUnavailable',
-    defaultMessage: 'Pricing data unavailable for {model}',
-  },
-  costUnavailable: {
-    id: 'costTracker.costUnavailable',
-    defaultMessage: 'Cost data not available for {model} ({inputTokens} input, {outputTokens} output tokens)',
-  },
-  totalSessionCost: {
-    id: 'costTracker.totalSessionCost',
-    defaultMessage: 'Total session cost: {cost}',
-  },
-  inputOutputTooltip: {
-    id: 'costTracker.inputOutputTooltip',
-    defaultMessage: 'Input: {inputTokens} tokens ({inputCost}) | Output: {outputTokens} tokens ({outputCost})',
+  tokensTooltip: {
+    id: 'costTracker.tokensTooltip',
+    defaultMessage: 'Input: {inputTokens} tokens · Output: {outputTokens} tokens',
   },
 });
 
@@ -32,169 +17,55 @@ interface CostTrackerProps {
   provider: string | null;
 }
 
-export function CostTracker({
-  inputTokens = 0,
-  outputTokens = 0,
-  accumulatedCost,
-  model: currentModel,
-  provider: currentProvider,
-}: CostTrackerProps) {
-  const intl = useIntl();
-  const [costInfo, setCostInfo] = useState<ModelInfoData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPricing, setShowPricing] = useState(true);
-  const [pricingFailed, setPricingFailed] = useState(false);
+/** Format a token count to 3 significant figures with a K/M/B suffix, e.g. 12345 -> "12.3K". */
+function formatTokens(n: number): string {
+  if (n < 1000) return String(n);
+  const units = [
+    { v: 1_000_000_000, s: 'B' },
+    { v: 1_000_000, s: 'M' },
+    { v: 1_000, s: 'K' },
+  ];
+  const unit = units.find((u) => n >= u.v)!;
+  const scaled = n / unit.v;
+  const digits = scaled >= 100 ? 0 : scaled >= 10 ? 1 : 2;
+  return `${scaled.toFixed(digits)}${unit.s}`;
+}
 
-  // Check if pricing is enabled
+export function CostTracker({ inputTokens = 0, outputTokens = 0 }: CostTrackerProps) {
+  const intl = useIntl();
+  const [showPricing, setShowPricing] = useState(true);
+
+  // The "Show model pricing and usage costs" setting also gates this token counter.
   useEffect(() => {
-    const loadPricingSetting = async () => {
+    const loadSetting = async () => {
       const enabled = await window.electron.getSetting('showPricing');
       setShowPricing(enabled);
     };
-
-    loadPricingSetting();
-
-    const handlePricingChange = () => {
-      loadPricingSetting();
-    };
-
-    window.addEventListener('showPricingChanged', handlePricingChange);
-    return () => window.removeEventListener('showPricingChanged', handlePricingChange);
+    loadSetting();
+    const handleChange = () => loadSetting();
+    window.addEventListener('showPricingChanged', handleChange);
+    return () => window.removeEventListener('showPricingChanged', handleChange);
   }, []);
 
-  useEffect(() => {
-    const loadCostInfo = async () => {
-      if (!currentModel || !currentProvider) {
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const costData = await fetchCanonicalModelInfo(currentProvider, currentModel);
-        if (costData) {
-          setCostInfo(costData);
-          setPricingFailed(false);
-        } else {
-          setPricingFailed(true);
-          setCostInfo(null);
-        }
-      } catch {
-        setPricingFailed(true);
-        setCostInfo(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadCostInfo();
-  }, [currentModel, currentProvider]);
-
-  // Return null early if pricing is disabled
   if (!showPricing) {
     return null;
   }
-
-  const calculateCost = (): number => {
-    return accumulatedCost ?? 0;
-  };
-
-  const formatCost = (cost: number): string => cost.toFixed(2);
-
-  // Show loading state or when we don't have model/provider info
-  if (!currentModel || !currentProvider) {
-    return null;
-  }
-
-  // If still loading, show a placeholder
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full text-text-secondary translate-y-[1px]">
-        <span className="text-xs font-mono">...</span>
-      </div>
-    );
-  }
-
-  if (
-    accumulatedCost == null &&
-    (!costInfo ||
-      (costInfo.input_token_cost === undefined && costInfo.output_token_cost === undefined))
-  ) {
-    const freeProviders = ['ollama', 'local', 'localhost'];
-    if (freeProviders.includes(currentProvider.toLowerCase())) {
-      return (
-        <div className="flex items-center justify-center h-full text-text-primary/70 transition-colors cursor-default translate-y-[1px]">
-          <span className="text-xs font-mono">
-            {inputTokens.toLocaleString()}↑ {outputTokens.toLocaleString()}↓
-          </span>
-        </div>
-      );
-    }
-
-    // Otherwise show as unavailable
-    const getUnavailableTooltip = () => {
-      if (pricingFailed) {
-        return intl.formatMessage(i18n.pricingUnavailable, { model: currentModel });
-      }
-      return intl.formatMessage(i18n.costUnavailable, {
-        model: currentModel,
-        inputTokens: inputTokens.toLocaleString(),
-        outputTokens: outputTokens.toLocaleString(),
-      });
-    };
-
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="flex items-center justify-center h-full transition-colors cursor-default translate-y-[1px] text-text-primary/70 hover:text-text-primary">
-            <CoinIcon className="mr-1" size={16} />
-            <span className="text-xs font-mono">0.0000</span>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>{getUnavailableTooltip()}</TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  const totalCost = calculateCost();
-
-  // Build tooltip content
-  const getTooltipContent = (): string => {
-    if (pricingFailed) {
-      return intl.formatMessage(i18n.pricingUnavailable, { model: `${currentProvider}/${currentModel}` });
-    }
-
-    const currency = costInfo?.currency || '$';
-
-    if (accumulatedCost != null) {
-      return intl.formatMessage(i18n.totalSessionCost, { cost: `${currency}${totalCost.toFixed(4)}` })
-        + `\n` + intl.formatMessage(i18n.inputOutputTooltip, {
-          inputTokens: inputTokens.toLocaleString(),
-          inputCost: `${currency}${((inputTokens * (costInfo?.input_token_cost || 0)) / 1_000_000).toFixed(6)}`,
-          outputTokens: outputTokens.toLocaleString(),
-          outputCost: `${currency}${((outputTokens * (costInfo?.output_token_cost || 0)) / 1_000_000).toFixed(6)}`,
-        });
-    }
-
-    const inputCostStr = `${currency}${((inputTokens * (costInfo?.input_token_cost || 0)) / 1_000_000).toFixed(6)}`;
-    const outputCostStr = `${currency}${((outputTokens * (costInfo?.output_token_cost || 0)) / 1_000_000).toFixed(6)}`;
-    return intl.formatMessage(i18n.inputOutputTooltip, {
-      inputTokens: inputTokens.toLocaleString(),
-      inputCost: inputCostStr,
-      outputTokens: outputTokens.toLocaleString(),
-      outputCost: outputCostStr,
-    });
-  };
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <div className="flex items-center justify-center h-full transition-colors cursor-default translate-y-[1px] text-text-primary/70 hover:text-text-primary">
-          <CoinIcon className="mr-1" size={16} />
-          <span className="text-xs font-mono">{formatCost(totalCost)}</span>
+          <span className="text-xs font-mono">
+            {formatTokens(inputTokens)} / {formatTokens(outputTokens)} tokens
+          </span>
         </div>
       </TooltipTrigger>
-      <TooltipContent>{getTooltipContent()}</TooltipContent>
+      <TooltipContent>
+        {intl.formatMessage(i18n.tokensTooltip, {
+          inputTokens: inputTokens.toLocaleString(),
+          outputTokens: outputTokens.toLocaleString(),
+        })}
+      </TooltipContent>
     </Tooltip>
   );
 }

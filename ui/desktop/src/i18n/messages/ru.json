@@ -308,18 +308,6 @@
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Максимальное число ходов агента до запроса ввода от пользователя"
   },
-  "costTracker.costUnavailable": {
-    "defaultMessage": "Данные о стоимости недоступны для {model} ({inputTokens} входных, {outputTokens} выходных токенов)"
-  },
-  "costTracker.inputOutputTooltip": {
-    "defaultMessage": "Ввод: {inputTokens} токенов ({inputCost}) | Вывод: {outputTokens} токенов ({outputCost})"
-  },
-  "costTracker.pricingUnavailable": {
-    "defaultMessage": "Данные о ценах недоступны для {model}"
-  },
-  "costTracker.totalSessionCost": {
-    "defaultMessage": "Итоговая стоимость сеанса: {cost}"
-  },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Нажмите, чтобы создать диплинк"
   },
@@ -4678,5 +4666,8 @@
   },
   "settingsView.tabAccount": {
     "defaultMessage": "Account"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }
