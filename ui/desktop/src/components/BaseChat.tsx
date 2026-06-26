@@ -411,10 +411,10 @@ export default function BaseChat({
 
         {/* Chat container with sticky recipe header */}
         <div className="flex flex-col flex-1 min-h-0 relative">
-          {/* Goose watermark - top right */}
+          {/* Caros watermark - top right */}
           <div className="absolute top-[14px] right-4 z-[60] flex flex-row items-center gap-1">
             <a
-              href="https://goose-docs.ai"
+              href="https://github.com/yixuanzhong/caros"
               target="_blank"
               rel="noopener noreferrer"
               className="no-drag flex flex-row items-center gap-1 hover:opacity-80 transition-opacity"
