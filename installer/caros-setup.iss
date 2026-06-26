@@ -40,13 +40,13 @@ ChangesEnvironment=yes
 SignTool=signtool
 
 [Types]
+Name: "default"; Description: "Desktop app only"
 Name: "full";    Description: "Desktop app and CLI"
-Name: "desktop"; Description: "Desktop app only"
 Name: "cli";     Description: "CLI only"
 Name: "custom";  Description: "Custom"; Flags: iscustom
 
 [Components]
-Name: "desktop"; Description: "Caros Desktop app";     Types: full desktop custom
+Name: "desktop"; Description: "Caros Desktop app";     Types: default full custom
 Name: "cli";     Description: "Caros CLI (caros.exe)";  Types: full cli custom
 
 [Files]
