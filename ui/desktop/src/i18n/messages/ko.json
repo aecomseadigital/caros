@@ -4657,5 +4657,20 @@
   },
   "userMessage.forkSessionTitle": {
     "defaultMessage": "편집한 메시지로 새 세션 만들기"
+  },
+  "carosSignIn.button": {
+    "defaultMessage": "Sign in with Microsoft"
+  },
+  "carosSignIn.description": {
+    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
+  },
+  "carosSignIn.signingIn": {
+    "defaultMessage": "Waiting for sign-in…"
+  },
+  "carosSignIn.title": {
+    "defaultMessage": "Sign in to continue"
+  },
+  "onboardingGuard.manualDivider": {
+    "defaultMessage": "Or connect a provider manually"
   }
 }

@@ -5,6 +5,7 @@ import { useModelAndProvider } from '../ModelAndProviderContext';
 import { Goose } from '../icons';
 import { Button } from '../ui/button';
 import ProviderSelector from './ProviderSelector';
+import MicrosoftSignIn from './MicrosoftSignIn';
 import OnboardingSuccess from './OnboardingSuccess';
 import {
   trackOnboardingStarted,
@@ -35,6 +36,10 @@ const i18n = defineMessages({
   retry: {
     id: 'onboardingGuard.retry',
     defaultMessage: 'Retry',
+  },
+  manualDivider: {
+    id: 'onboardingGuard.manualDivider',
+    defaultMessage: 'Or connect a provider manually',
   },
 });
 
@@ -194,6 +199,17 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
                 {intl.formatMessage(i18n.welcomeDescription)}
               </p>
             </div>
+
+            {!hasSelection && (
+              <div className="mb-8">
+                <MicrosoftSignIn onConfigured={handleConfigured} />
+                <div className="flex items-center gap-3 mt-8 text-text-muted text-sm">
+                  <div className="h-px flex-1 bg-border-subtle" />
+                  {intl.formatMessage(i18n.manualDivider)}
+                  <div className="h-px flex-1 bg-border-subtle" />
+                </div>
+              </div>
+            )}
 
             <ProviderSelector
               onConfigured={handleConfigured}

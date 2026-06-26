@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { IntlProvider } from 'react-intl';
 import { ConfigProvider } from './components/ConfigContext';
+import CarosAuthRenewal from './components/CarosAuthRenewal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import SuspenseLoader from './suspense-loader';
 import { client } from './api/client.gen';
@@ -72,6 +73,7 @@ function handleIntlError(err: { code: string; message?: string }) {
       >
         <Suspense fallback={SuspenseLoader()}>
           <ConfigProvider>
+            <CarosAuthRenewal />
             <ErrorBoundary>
               <App />
             </ErrorBoundary>

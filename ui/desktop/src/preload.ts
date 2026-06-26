@@ -82,6 +82,18 @@ interface FileResponse {
   found: boolean;
 }
 
+export interface CarosToken {
+  accessToken: string;
+  expiresAt: number;
+  username: string;
+}
+
+export interface CarosAuthStatus {
+  signedIn: boolean;
+  username?: string;
+  expiresAt?: number;
+}
+
 const config = JSON.parse(process.argv.find((arg) => arg.startsWith('{')) || '{}');
 
 interface UpdaterEvent {
@@ -182,6 +194,14 @@ type ElectronAPI = {
   addRecentDir: (dir: string) => Promise<boolean>;
   listRecentDirs: () => Promise<string[]>;
   listGitWorktreeDirs: (dir: string) => Promise<string[]>;
+  // Caros Microsoft Entra sign-in (handled in the main process via msal-node).
+  carosAuth: {
+    signIn: () => Promise<CarosToken>;
+    signOut: () => Promise<void>;
+    status: () => Promise<CarosAuthStatus>;
+    /** Subscribe to background-renewed tokens; returns an unsubscribe fn. */
+    onTokenRenewed: (callback: (token: CarosToken) => void) => () => void;
+  };
 };
 
 type AppConfigAPI = {
@@ -340,6 +360,16 @@ const electronAPI: ElectronAPI = {
   addRecentDir: (dir: string) => ipcRenderer.invoke('add-recent-dir', dir),
   listRecentDirs: () => ipcRenderer.invoke('list-recent-dirs'),
   listGitWorktreeDirs: (dir: string) => ipcRenderer.invoke('list-git-worktree-dirs', dir),
+  carosAuth: {
+    signIn: () => ipcRenderer.invoke('caros:sign-in'),
+    signOut: () => ipcRenderer.invoke('caros:sign-out'),
+    status: () => ipcRenderer.invoke('caros:status'),
+    onTokenRenewed: (callback: (token: CarosToken) => void) => {
+      const handler = (_event: Electron.IpcRendererEvent, token: CarosToken) => callback(token);
+      ipcRenderer.on('caros:token-renewed', handler);
+      return () => ipcRenderer.removeListener('caros:token-renewed', handler);
+    },
+  },
 };
 
 function getAppLocale(): unknown {

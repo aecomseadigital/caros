@@ -27,6 +27,7 @@ import { execFileSync, spawn, execFile } from 'child_process';
 import 'dotenv/config';
 import { checkServerStatus } from './goosed';
 import { startGoosed } from './goosed';
+import { registerCarosAuthIpc } from './msal';
 import { createClient, createConfig } from './api/client';
 import { expandTilde } from './utils/pathUtils';
 import log from './utils/logger';
@@ -1808,6 +1809,9 @@ ipcMain.handle('get-secret-key', () => {
   const settings = getSettings();
   return getServerSecret(settings);
 });
+
+// Caros Microsoft Entra sign-in (loopback MSAL) + background token renewal.
+registerCarosAuthIpc();
 
 ipcMain.handle('get-goosed-host-port', async (event) => {
   const windowId = BrowserWindow.fromWebContents(event.sender)?.id;
