@@ -4103,20 +4103,11 @@
   "settingsView.tabApp": {
     "defaultMessage": "앱"
   },
-  "settingsView.tabAuth": {
-    "defaultMessage": "인증"
-  },
   "settingsView.tabChat": {
     "defaultMessage": "채팅"
   },
   "settingsView.tabKeyboard": {
     "defaultMessage": "키보드"
-  },
-  "settingsView.tabLocalInference": {
-    "defaultMessage": "로컬 추론"
-  },
-  "settingsView.tabModels": {
-    "defaultMessage": "모델"
   },
   "settingsView.tabPrompts": {
     "defaultMessage": "프롬프트"
@@ -4670,7 +4661,22 @@
   "carosSignIn.title": {
     "defaultMessage": "Sign in to continue"
   },
-  "onboardingGuard.manualDivider": {
-    "defaultMessage": "Or connect a provider manually"
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   }
 }

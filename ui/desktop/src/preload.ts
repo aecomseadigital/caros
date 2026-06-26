@@ -86,11 +86,14 @@ export interface CarosToken {
   accessToken: string;
   expiresAt: number;
   username: string;
+  name: string;
 }
 
 export interface CarosAuthStatus {
   signedIn: boolean;
-  username?: string;
+  name?: string;
+  email?: string;
+  avatarDataUrl?: string;
   expiresAt?: number;
 }
 

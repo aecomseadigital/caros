@@ -1,4 +1,19 @@
 {
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
   "alertBox.autoCompactAt": {
     "defaultMessage": "Auto compact at"
   },
@@ -2363,14 +2378,11 @@
   "onboardingGuard.checkProviderErrorTitle": {
     "defaultMessage": "Unable to connect to Caros server"
   },
-  "onboardingGuard.manualDivider": {
-    "defaultMessage": "Or connect a provider manually"
-  },
   "onboardingGuard.retry": {
     "defaultMessage": "Retry"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Your local AI agent. Connect an AI model provider to get started."
+    "defaultMessage": "Your AI agent for work. Sign in with your Microsoft account to get started."
   },
   "onboardingGuard.welcomeTitle": {
     "defaultMessage": "Welcome to caros"
@@ -4115,23 +4127,17 @@
   "settings.version.title": {
     "defaultMessage": "Version"
   },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
+  },
   "settingsView.tabApp": {
     "defaultMessage": "App"
-  },
-  "settingsView.tabAuth": {
-    "defaultMessage": "Auth"
   },
   "settingsView.tabChat": {
     "defaultMessage": "Chat"
   },
   "settingsView.tabKeyboard": {
     "defaultMessage": "Keyboard"
-  },
-  "settingsView.tabLocalInference": {
-    "defaultMessage": "Local Inference"
-  },
-  "settingsView.tabModels": {
-    "defaultMessage": "Models"
   },
   "settingsView.tabPrompts": {
     "defaultMessage": "Prompts"

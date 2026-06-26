@@ -4103,20 +4103,11 @@
   "settingsView.tabApp": {
     "defaultMessage": "アプリ"
   },
-  "settingsView.tabAuth": {
-    "defaultMessage": "認証"
-  },
   "settingsView.tabChat": {
     "defaultMessage": "チャット"
   },
   "settingsView.tabKeyboard": {
     "defaultMessage": "キーボード"
-  },
-  "settingsView.tabLocalInference": {
-    "defaultMessage": "ローカル推論"
-  },
-  "settingsView.tabModels": {
-    "defaultMessage": "モデル"
   },
   "settingsView.tabPrompts": {
     "defaultMessage": "プロンプト"
@@ -4670,7 +4661,22 @@
   "carosSignIn.title": {
     "defaultMessage": "Sign in to continue"
   },
-  "onboardingGuard.manualDivider": {
-    "defaultMessage": "Or connect a provider manually"
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   }
 }

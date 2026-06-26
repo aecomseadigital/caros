@@ -16,6 +16,7 @@ import { InlineEditText } from '../common/InlineEditText';
 import { SessionIndicators } from '../SessionIndicators';
 import { acpRenameSession, type SessionListItem } from '../../acp/sessions';
 import { cn } from '../../utils';
+import { useCarosProfile, profileInitials } from '../../hooks/useCarosProfile';
 import { defineMessages, useIntl } from '../../i18n';
 
 type StreamState = 'idle' | 'loading' | 'streaming' | 'error';
@@ -65,6 +66,42 @@ const NavRow: React.FC<NavRowProps> = ({ item, active, onClick }) => {
       {item.getTag && (
         <span className="text-xs font-mono text-text-secondary">{item.getTag()}</span>
       )}
+    </button>
+  );
+};
+
+const CarosProfileChip: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const profile = useCarosProfile();
+  if (!profile?.signedIn) return null;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={profile.email}
+      className={cn(
+        'flex flex-row items-center gap-3 outline-none no-drag w-full mb-1',
+        'rounded-full px-3 py-2 text-sm transition-colors hover:bg-background-tertiary/60'
+      )}
+    >
+      {profile.avatarDataUrl ? (
+        <img
+          src={profile.avatarDataUrl}
+          alt=""
+          className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+        />
+      ) : (
+        <div className="w-7 h-7 rounded-full bg-background-tertiary flex items-center justify-center text-xs font-medium text-text-secondary flex-shrink-0">
+          {profileInitials(profile)}
+        </div>
+      )}
+      <span className="flex flex-col min-w-0 text-left leading-tight">
+        <span className="truncate font-medium text-text-primary">
+          {profile.name || profile.email}
+        </span>
+        {profile.email && profile.name && (
+          <span className="truncate text-xs text-text-secondary">{profile.email}</span>
+        )}
+      </span>
     </button>
   );
 };
@@ -245,8 +282,9 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
         )}
       </div>
 
-      {/* Settings pinned to bottom */}
+      {/* Profile + Settings pinned to bottom */}
       <div className="px-2 pt-2 pb-2 border-t border-border-secondary">
+        <CarosProfileChip onClick={() => handleNavClick(SETTINGS_NAV_ITEM.path)} />
         <NavRow
           item={SETTINGS_NAV_ITEM}
           active={isActive(SETTINGS_NAV_ITEM.path)}

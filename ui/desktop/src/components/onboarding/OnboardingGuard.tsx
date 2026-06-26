@@ -4,7 +4,6 @@ import { useConfig } from '../ConfigContext';
 import { useModelAndProvider } from '../ModelAndProviderContext';
 import { Goose } from '../icons';
 import { Button } from '../ui/button';
-import ProviderSelector from './ProviderSelector';
 import MicrosoftSignIn from './MicrosoftSignIn';
 import OnboardingSuccess from './OnboardingSuccess';
 import {
@@ -23,7 +22,7 @@ const i18n = defineMessages({
   },
   welcomeDescription: {
     id: 'onboardingGuard.welcomeDescription',
-    defaultMessage: 'Your local AI agent. Connect an AI model provider to get started.',
+    defaultMessage: 'Your AI agent for work. Sign in with your Microsoft account to get started.',
   },
   checkProviderErrorTitle: {
     id: 'onboardingGuard.checkProviderErrorTitle',
@@ -36,10 +35,6 @@ const i18n = defineMessages({
   retry: {
     id: 'onboardingGuard.retry',
     defaultMessage: 'Retry',
-  },
-  manualDivider: {
-    id: 'onboardingGuard.manualDivider',
-    defaultMessage: 'Or connect a provider manually',
   },
 });
 
@@ -58,7 +53,6 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
   const [isCheckingProvider, setIsCheckingProvider] = useState(true);
   const [hasProvider, setHasProvider] = useState(false);
   const [checkProviderError, setCheckProviderError] = useState(false);
-  const [hasSelection, setHasSelection] = useState(false);
   const [configuredProvider, setConfiguredProvider] = useState<string | null>(null);
   const [configuredProviderDisplayName, setConfiguredProviderDisplayName] = useState<string | null>(
     null
@@ -184,13 +178,9 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
   return (
     <div className="h-screen w-full bg-background-default overflow-hidden">
       <div className="h-full overflow-y-auto">
-        <div
-          className={`flex flex-col items-center p-4 pb-8 transition-all duration-500 ease-in-out ${hasSelection ? 'pt-8' : 'pt-[15vh]'}`}
-        >
+        <div className="flex flex-col items-center p-4 pb-8 pt-[15vh]">
           <div className="max-w-2xl w-full mx-auto">
-            <div
-              className={`text-left transition-all duration-500 ease-in-out overflow-hidden ${hasSelection ? 'max-h-0 opacity-0 mb-0' : 'max-h-60 opacity-100 mb-8'}`}
-            >
+            <div className="text-left mb-8">
               <div className="mb-4">
                 <Goose className="size-8" />
               </div>
@@ -200,21 +190,7 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
               </p>
             </div>
 
-            {!hasSelection && (
-              <div className="mb-8">
-                <MicrosoftSignIn onConfigured={handleConfigured} />
-                <div className="flex items-center gap-3 mt-8 text-text-muted text-sm">
-                  <div className="h-px flex-1 bg-border-subtle" />
-                  {intl.formatMessage(i18n.manualDivider)}
-                  <div className="h-px flex-1 bg-border-subtle" />
-                </div>
-              </div>
-            )}
-
-            <ProviderSelector
-              onConfigured={handleConfigured}
-              onFirstSelection={() => setHasSelection(true)}
-            />
+            <MicrosoftSignIn onConfigured={handleConfigured} />
           </div>
         </div>
       </div>

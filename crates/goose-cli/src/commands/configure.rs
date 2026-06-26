@@ -113,66 +113,30 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
     Ok(enabled)
 }
 
-async fn handle_first_time_setup(config: &Config) -> anyhow::Result<()> {
+async fn handle_first_time_setup(_config: &Config) -> anyhow::Result<()> {
     println!();
-    println!("{}", style("Welcome to goose! Let's get you set up.").dim());
-    println!(
-        "{}",
-        style("  you can rerun this command later to update your configuration").dim()
-    );
+    println!("{}", style("Welcome to Caros! Let's get you set up.").dim());
     println!();
 
     #[cfg(feature = "telemetry")]
     configure_telemetry_consent_dialog()?;
 
+    // Caros is locked to Microsoft Entra sign-in (no bring-your-own-key providers).
+    // `caros login` performs the device-code flow and configures the provider.
     println!();
-    cliclack::intro(style(" goose-configure ").on_cyan().black())?;
-
-    let setup_method = cliclack::select("How would you like to set up your provider?")
-        .item(
-            "openrouter",
-            "OpenRouter Login (Recommended)",
-            "Sign in with OpenRouter to automatically configure models",
-        )
-        .item(
-            "tetrate",
-            "Tetrate Agent Router Service Login",
-            "Sign in with Tetrate Agent Router Service to automatically configure models",
-        )
-        .item(
-            "manual",
-            "Manual Configuration",
-            "Choose a provider and enter credentials manually",
-        )
-        .interact()?;
-
-    match setup_method {
-        "openrouter" => {
-            if let Err(e) = handle_openrouter_auth().await {
-                let _ = config.clear();
-                println!(
-                    "\n  {} OpenRouter authentication failed: {} \n  Please try again or use manual configuration",
-                    style("Error").red().italic(),
-                    e,
-                );
-            }
-        }
-        "tetrate" => {
-            if let Err(e) = handle_tetrate_auth().await {
-                let _ = config.clear();
-                println!(
-                    "\n  {} Tetrate Agent Router Service authentication failed: {} \n  Please try again or use manual configuration",
-                    style("Error").red().italic(),
-                    e,
-                );
-            }
-        }
-        "manual" => handle_manual_provider_setup(config).await,
-        _ => unreachable!(),
-    }
+    println!(
+        "{}",
+        style("Caros connects to Azure OpenAI through your Microsoft work account.").dim()
+    );
+    println!(
+        "{}",
+        style("Run `caros login` to sign in — that configures your provider automatically.").bold()
+    );
+    println!();
     Ok(())
 }
 
+#[allow(dead_code)] // BYOK manual setup retained but unreachable; Caros uses `caros login`.
 async fn handle_manual_provider_setup(config: &Config) {
     match configure_provider_dialog().await {
         Ok(true) => {
@@ -295,17 +259,9 @@ async fn handle_existing_config() -> anyhow::Result<()> {
     println!();
 
     cliclack::intro(style(" goose-configure ").on_cyan().black())?;
+    // Provider/model configuration is intentionally omitted — Caros is locked to
+    // Microsoft sign-in (`caros login`); there is no bring-your-own-key path.
     let action = cliclack::select("What would you like to configure?")
-        .item(
-            "providers",
-            "Configure Providers",
-            "Change provider or update credentials",
-        )
-        .item(
-            "custom_providers",
-            "Custom Providers",
-            "Add custom provider with compatible API",
-        )
         .item("add", "Add Extension", "Connect to a new extension")
         .item(
             "toggle",

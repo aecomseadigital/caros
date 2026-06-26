@@ -1657,21 +1657,23 @@ export default function ChatInput({
           (e.g. on a small window), the secondary controls drop out so the
           model selector + send button always stay visible. */}
       <div ref={bottomBarRef} className="flex flex-row items-center gap-2 px-3 py-2 relative">
-        {/* Left: model selector */}
-        <Tooltip>
-          <div>
-            <ModelsBottomBar
-              sessionId={sessionId}
-              dropdownRef={dropdownRef}
-              setView={setView}
-              sessionModel={effectiveModel}
-              sessionProvider={effectiveProvider}
-              latestInference={latestInference}
-              onModelChanged={setModelOverride}
-              sessionLoaded={sessionLoaded}
-            />
-          </div>
-        </Tooltip>
+        {/* Left: model selector — hidden for Caros (server-side auto-routed; no model choice) */}
+        {effectiveProvider !== 'caros' && (
+          <Tooltip>
+            <div>
+              <ModelsBottomBar
+                sessionId={sessionId}
+                dropdownRef={dropdownRef}
+                setView={setView}
+                sessionModel={effectiveModel}
+                sessionProvider={effectiveProvider}
+                latestInference={latestInference}
+                onModelChanged={setModelOverride}
+                sessionLoaded={sessionLoaded}
+              />
+            </div>
+          </Tooltip>
+        )}
 
         {/* Left: working directory (leaf folder name only) */}
         {!isBottomBarNarrow && (

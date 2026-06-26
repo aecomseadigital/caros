@@ -37,11 +37,17 @@ export interface CarosToken {
   /** Absolute expiry, unix seconds (matches CAROS_TOKEN_EXPIRY the provider reads). */
   expiresAt: number;
   username: string;
+  name: string;
 }
 
 export interface CarosAuthStatus {
   signedIn: boolean;
-  username?: string;
+  /** Display name from the id token. */
+  name?: string;
+  /** UPN / email from the id token. */
+  email?: string;
+  /** Microsoft Graph profile photo as a data URL, when available. */
+  avatarDataUrl?: string;
   expiresAt?: number;
 }
 
@@ -110,7 +116,38 @@ function toToken(result: AuthenticationResult): CarosToken {
     accessToken: result.accessToken,
     expiresAt: result.expiresOn ? Math.floor(result.expiresOn.getTime() / 1000) : 0,
     username: result.account?.username ?? '',
+    name: result.account?.name ?? '',
   };
+}
+
+// Cached Graph profile photo: undefined = not yet fetched, null = none/unavailable.
+let cachedAvatar: string | null | undefined;
+
+/**
+ * Fetch the signed-in user's Microsoft Graph profile photo as a data URL.
+ * Uses a separate Graph (User.Read) token; returns null if Graph consent or a
+ * photo isn't available (callers fall back to initials).
+ */
+async function getAvatarDataUrl(): Promise<string | null> {
+  if (cachedAvatar !== undefined) return cachedAvatar;
+  cachedAvatar = null;
+  try {
+    const client = getApp();
+    const accounts = await client.getTokenCache().getAllAccounts();
+    if (accounts.length === 0) return null;
+    const result = await client.acquireTokenSilent({ account: accounts[0]!, scopes: ['User.Read'] });
+    const resp = await fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+      headers: { Authorization: `Bearer ${result.accessToken}` },
+    });
+    if (!resp.ok) return null;
+    const contentType = resp.headers.get('content-type') ?? 'image/jpeg';
+    const base64 = Buffer.from(await resp.arrayBuffer()).toString('base64');
+    cachedAvatar = `data:${contentType};base64,${base64}`;
+  } catch (e) {
+    console.warn('[caros-auth] could not fetch Graph avatar:', e);
+    cachedAvatar = null;
+  }
+  return cachedAvatar;
 }
 
 function resultPage(message: string): string {
@@ -209,6 +246,7 @@ export async function signOut(): Promise<void> {
   for (const account of await cache.getAllAccounts()) {
     await cache.removeAccount(account);
   }
+  cachedAvatar = undefined;
   try {
     fs.rmSync(cacheFilePath(), { force: true });
   } catch {
@@ -218,9 +256,15 @@ export async function signOut(): Promise<void> {
 
 export async function getStatus(): Promise<CarosAuthStatus> {
   const token = await signInSilent();
-  return token
-    ? { signedIn: true, username: token.username, expiresAt: token.expiresAt }
-    : { signedIn: false };
+  if (!token) return { signedIn: false };
+  const avatarDataUrl = await getAvatarDataUrl();
+  return {
+    signedIn: true,
+    name: token.name,
+    email: token.username,
+    expiresAt: token.expiresAt,
+    ...(avatarDataUrl ? { avatarDataUrl } : {}),
+  };
 }
 
 let renewalTimer: ReturnType<typeof setInterval> | undefined;

@@ -4103,20 +4103,11 @@
   "settingsView.tabApp": {
     "defaultMessage": "ऐप"
   },
-  "settingsView.tabAuth": {
-    "defaultMessage": "प्रामाणिक"
-  },
   "settingsView.tabChat": {
     "defaultMessage": "बातचीत"
   },
   "settingsView.tabKeyboard": {
     "defaultMessage": "कीबोर्ड"
-  },
-  "settingsView.tabLocalInference": {
-    "defaultMessage": "स्थानीय अनुमान"
-  },
-  "settingsView.tabModels": {
-    "defaultMessage": "मॉडल"
   },
   "settingsView.tabPrompts": {
     "defaultMessage": "संकेत"
@@ -4670,7 +4661,22 @@
   "carosSignIn.title": {
     "defaultMessage": "Sign in to continue"
   },
-  "onboardingGuard.manualDivider": {
-    "defaultMessage": "Or connect a provider manually"
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   }
 }

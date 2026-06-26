@@ -4103,20 +4103,11 @@
   "settingsView.tabApp": {
     "defaultMessage": "应用"
   },
-  "settingsView.tabAuth": {
-    "defaultMessage": "身份验证"
-  },
   "settingsView.tabChat": {
     "defaultMessage": "聊天"
   },
   "settingsView.tabKeyboard": {
     "defaultMessage": "键盘"
-  },
-  "settingsView.tabLocalInference": {
-    "defaultMessage": "本地推理"
-  },
-  "settingsView.tabModels": {
-    "defaultMessage": "模型"
   },
   "settingsView.tabPrompts": {
     "defaultMessage": "提示词"
@@ -4670,7 +4661,22 @@
   "carosSignIn.title": {
     "defaultMessage": "Sign in to continue"
   },
-  "onboardingGuard.manualDivider": {
-    "defaultMessage": "Or connect a provider manually"
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   }
 }
