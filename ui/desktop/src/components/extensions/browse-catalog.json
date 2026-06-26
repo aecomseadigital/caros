@@ -1,0 +1,267 @@
+[
+  {
+    "name": "AgentQL",
+    "description": "Transform unstructured web content into structured data",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=agentql-mcp&id=agentql-mcp&name=AgentQL&description=Transform%20unstructured%20web%20content%20into%20structured%20data&env=AGENTQL_API_KEY%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Alby",
+    "description": "Bitcoin Lightning Network integration",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40getalby%2Fmcp&id=alby-mcp&name=Alby&description=Bitcoin%20Lightning%20Network%20integration&env=NWC_CONNECTION_STRING%3DNWC%20connection%20secret%20from%20your%20lightning%20wallet"
+  },
+  {
+    "name": "Apify",
+    "description": "Extract data from any website with thousands of scrapers, crawlers, and automations on Apify Store ⚡",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40apify%2Factors-mcp-server&id=apify&name=Apify&description=Extract%20data%20from%20any%20website%20with%20thousands%20of%20scrapers%2C%20crawlers%2C%20and%20automations%20on%20Apify%20Store%20%E2%9A%A1&env=APIFY_TOKEN%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Asana",
+    "description": "Task automation, project tracking, and team collaboration",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40roychri%2Fmcp-server-asana&id=asana-mcp&name=Asana&description=Task%20automation%2C%20project%20tracking%2C%20and%20team%20collaboration&env=ASANA_ACCESS_TOKEN%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Beads",
+    "description": "Git-backed issue tracker for AI agent task management",
+    "install": "caros://extension?cmd=uvx&arg=beads-mcp&id=beads&name=Beads&description=Git-backed%20issue%20tracker%20for%20AI%20agent%20task%20management"
+  },
+  {
+    "name": "Blender",
+    "description": "3D modeling and animation integration (requires local server setup)",
+    "install": "caros://extension?cmd=uvx&arg=blender-mcp&id=blender-mcp&name=Blender&description=3D%20modeling%20and%20animation%20integration%20(requires%20local%20server%20setup)"
+  },
+  {
+    "name": "Browserbase",
+    "description": "Browser automation and web scraping",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40browserbasehq%2Fmcp-server-browserbase&id=browserbase-mcp&name=Browserbase&description=Browser%20automation%20and%20web%20scraping&env=BROWSERBASE_API_KEY%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Cash App",
+    "description": "Cash App brings local food ordering into the AI era. Discover nearby sellers, browse menus with calories and allergen info, customize orders, and complete checkout—all conversationally.",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fconnect.squareup.com%2Fv2%2Fmcp%2Fcash-app&id=cash-app&name=Cash%20App&description=Cash%20App%20brings%20local%20food%20ordering%20into%20the%20AI%20era.%20Discover%20nearby%20sellers%2C%20browse%20menus%20with%20calories%20and%20allergen%20info%2C%20customize%20orders%2C%20and%20complete%20checkout%E2%80%94all%20conversationally."
+  },
+  {
+    "name": "Chrome DevTools",
+    "description": "Control and inspect a live Chrome browser",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=chrome-devtools-mcp%40latest&id=chrome-devtools-mcp&name=Chrome%20DevTools&description=Control%20and%20inspect%20a%20live%20Chrome%20browser"
+  },
+  {
+    "name": "Cloudinary Asset Management",
+    "description": "Cloud-based image and video management",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=--package&arg=%40cloudinary%2Fasset-management&arg=--&arg=mcp&arg=start&id=cloudinary-asset-management-mcp&name=Cloudinary%20Asset%20Management&description=Cloud-based%20image%20and%20video%20management&env=CLOUDINARY_URL%3DYour%20Cloudinary%20URL%20(cloudinary%3A%2F%2Fapi_key%3Aapi_secret%40cloud_name)"
+  },
+  {
+    "name": "Cognee",
+    "description": "Knowledge graph and cognitive AI capabilities (requires local server setup)",
+    "install": null
+  },
+  {
+    "name": "Container Use",
+    "description": "Integrate container workflows with goose using the Container-Use MCP",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=mcp-remote&arg=https%3A%2F%2Fcontainer-use.com%2Fmcp&id=container-use&name=Container%20Use&description=Integrate%20container%20workflows%20with%20goose%20using%20the%20Container-Use%20MCP"
+  },
+  {
+    "name": "Context7",
+    "description": "Use up-to-date code and docs",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40upstash%2Fcontext7-mcp&id=context7&name=Context7&description=Use%20up-to-date%20code%20and%20docs"
+  },
+  {
+    "name": "Council of Mine",
+    "description": "LLM council debate with 9 distinct personas for decision-making",
+    "install": "caros://extension?cmd=uvx&arg=--from&arg=git%2Bhttps%3A%2F%2Fgithub.com%2Fblock%2Fmcp-council-of-mine&arg=mcp_council_of_mine&id=council-of-mine&name=Council%20of%20Mine&description=LLM%20council%20debate%20with%209%20distinct%20personas%20for%20decision-making"
+  },
+  {
+    "name": "DataHub",
+    "description": "Data discovery and metadata platform for exploring datasets, lineage, and queries",
+    "install": "caros://extension?cmd=uvx&arg=mcp-server-datahub%40latest&id=datahub-mcp&name=DataHub&description=Data%20discovery%20and%20metadata%20platform%20for%20exploring%20datasets%2C%20lineage%2C%20and%20queries&env=DATAHUB_GMS_URL%3DDataHub%20GMS%20URL%20(e.g.%2C%20https%3A%2F%2Fyour-instance.acryl.io%20or%20http%3A%2F%2Flocalhost%3A8080)&env=DATAHUB_GMS_TOKEN%3DDataHub%20Personal%20Access%20Token%20for%20authentication"
+  },
+  {
+    "name": "Dev.to",
+    "description": "Access Dev.to articles and content (requires local server setup)",
+    "install": "caros://extension?type=streamable_http&url=http%3A%2F%2Flocalhost%3A3000%2Fmcp&id=dev.to&name=Dev.to&description=Access%20Dev.to%20articles%20and%20content%20(requires%20local%20server%20setup)"
+  },
+  {
+    "name": "ElevenLabs",
+    "description": "Text-to-speech and voice synthesis",
+    "install": "caros://extension?cmd=uvx&arg=elevenlabs-mcp&id=elevenlabs-mcp&name=ElevenLabs&description=Text-to-speech%20and%20voice%20synthesis&env=ELEVENLABS_API_KEY%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Exa Search",
+    "description": "AI-powered web search with neural and keyword capabilities",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=exa-mcp-server&id=exa&name=Exa%20Search&description=AI-powered%20web%20search%20with%20neural%20and%20keyword%20capabilities&env=EXA_API_KEY%3DAPI%20key%20for%20Exa%20web%20search%20service"
+  },
+  {
+    "name": "Excalidraw",
+    "description": "Excalidraw MCP App for diagrammin",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fexcalidraw-mcp-app.vercel.app%2Fmcp&id=excalidraw-mcp-app&name=Excalidraw&description=Excalidraw%20MCP%20App%20for%20diagrammin"
+  },
+  {
+    "name": "Fetch",
+    "description": "Web content fetching and processing capabilities",
+    "install": "caros://extension?cmd=uvx&arg=mcp-server-fetch&id=fetch&name=Fetch&description=Web%20content%20fetching%20and%20processing%20capabilities"
+  },
+  {
+    "name": "Figma",
+    "description": "Convert Figma designs into code and extract design context (requires local setup)",
+    "install": "caros://extension?type=streamable_http&url=http%3A%2F%2F127.0.0.1%3A3845%2Fmcp&id=figma&name=Figma&description=Convert%20Figma%20designs%20into%20code%20and%20extract%20design%20context%20(requires%20local%20setup)"
+  },
+  {
+    "name": "GitHub",
+    "description": "GitHub repository management and operations",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fapi.githubcopilot.com%2Fmcp%2F&id=github-mcp&name=GitHub&description=GitHub%20repository%20management%20and%20operations&header=Authorization%3DBearer%20%3CYOUR_GITHUB_PERSONAL_ACCESS_TOKEN%3E"
+  },
+  {
+    "name": "GitMCP",
+    "description": "Gets latest documentation for any GitHub project",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=mcp-remote&arg=https%3A%2F%2Fgitmcp.io%2Fdocs&id=gitmcp&name=GitMCP&description=Gets%20latest%20documentation%20for%20any%20GitHub%20project"
+  },
+  {
+    "name": "goose Docs",
+    "description": "GitMCP for goose documentation",
+    "install": "caros://extension?cmd=npx&arg=mcp-remote&arg=https%3A%2F%2Fblock.gitmcp.io%2Fgoose%2F&id=goose-docs&name=goose%20Docs&description=GitMCP%20for%20goose%20documentation"
+  },
+  {
+    "name": "gotoHuman MCP Server",
+    "description": "Adds human approvals into your workflows",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40gotohuman%2Fmcp-server&id=gotoHuman-mcp&name=gotoHuman%20MCP%20Server&description=Adds%20human%20approvals%20into%20your%20workflows"
+  },
+  {
+    "name": "I Ching",
+    "description": "I Ching divination readings with Wilhelm-Baynes translation - provides traditional three coins method divination with complete hexagram meanings, judgments, and line interpretations",
+    "install": "caros://extension?cmd=i-ching-mcp-server&id=i-ching&name=I%20Ching&description=I%20Ching%20divination%20readings%20with%20Wilhelm-Baynes%20translation%20-%20provides%20traditional%20three%20coins%20method%20divination%20with%20complete%20hexagram%20meanings%2C%20judgments%2C%20and%20line%20interpretations"
+  },
+  {
+    "name": "JetBrains",
+    "description": "Integrate with any JetBrains IDE (requires local setup, dependent on your IDE version)",
+    "install": "caros://extension?cmd=&id=jetbrains&name=JetBrains&description=Integrate%20with%20any%20JetBrains%20IDE%20(requires%20local%20setup%2C%20dependent%20on%20your%20IDE%20version)"
+  },
+  {
+    "name": "Knowledge Graph Memory",
+    "description": "Graph-based memory system for persistent knowledge storage",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40modelcontextprotocol%2Fserver-memory&id=knowledge_graph_memory&name=Knowledge%20Graph%20Memory&description=Graph-based%20memory%20system%20for%20persistent%20knowledge%20storage"
+  },
+  {
+    "name": "Linux MCP Server",
+    "description": "Tools to allow LLM clients to interact with Linux systems remotely",
+    "install": "caros://extension?cmd=uvx&arg=linux-mcp-server&id=linux-mcp-server&name=Linux%20MCP%20Server&description=Tools%20to%20allow%20LLM%20clients%20to%20interact%20with%20Linux%20systems%20remotely"
+  },
+  {
+    "name": "MBot",
+    "description": "Control a MakeBlock mbot2 rover through MQTT (requires local setup)",
+    "install": null
+  },
+  {
+    "name": "MongoDB",
+    "description": "MongoDB database integration",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=mongodb-mcp-server&arg=--connection-string&arg=mongodb%3A%2F%2Flocalhost%3A27017&id=mongodb&name=MongoDB&description=MongoDB%20database%20integration"
+  },
+  {
+    "name": "Nano Banana",
+    "description": "AI-powered image generation and editing",
+    "install": "caros://extension?cmd=npx&arg=nano-banana-mcp&id=nano-banana-mcp&name=Nano%20Banana&description=AI-powered%20image%20generation%20and%20editing&env=GEMINI_API_KEY%3DAPI%20key%20from%20Google%20AI%20Studio"
+  },
+  {
+    "name": "Neighborhood",
+    "description": "Discover nearby restaurants, browse menus, and place takeout orders through natural conversation. Sellers are US-based.",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fconnect.squareup.com%2Fv2%2Fmcp%2Fneighborhood&id=neighborhood&name=Neighborhood&description=Discover%20nearby%20restaurants%2C%20browse%20menus%2C%20and%20place%20takeout%20orders%20through%20natural%20conversation.%20Sellers%20are%20US-based."
+  },
+  {
+    "name": "Neon",
+    "description": "Manage Neon Postgres databases, projects, and branches",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fmcp.neon.tech%2Fmcp&id=neon&name=Neon&description=Manage%20Neon%20Postgres%20databases%2C%20projects%2C%20and%20branches"
+  },
+  {
+    "name": "Netlify",
+    "description": "Web deployment and hosting automation",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40netlify%2Fmcp&id=netlify-mcp&name=Netlify&description=Web%20deployment%20and%20hosting%20automation&env=NETLIFY_ACCESS_TOKEN%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "NostrBook",
+    "description": "Nostr protocol integration for decentralized social",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40nostrbook%2Fmcp%40latest&id=nostrbook-mcp&name=NostrBook&description=Nostr%20protocol%20integration%20for%20decentralized%20social"
+  },
+  {
+    "name": "OpenMetadata",
+    "description": "Bring OpenMetadata's single source of truth across your data systems to agents",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=mcp-remote&arg=http%3A%2F%2Flocalhost%3A8585%2Fmcp&arg=--auth-server-url%3Dhttp%3A%2F%2Flocalhost%3A8585%2Fmcp&arg=--client-id%3Dopenmetadata&arg=--verbose&arg=--clean&arg=--header&arg=Authorization%3A%24%7BAUTH_HEADER%7D&id=openmetadata&name=OpenMetadata&description=Bring%20OpenMetadata's%20single%20source%20of%20truth%20across%20your%20data%20systems%20to%20agents&env=AUTH_HEADER%3DOpenMetadata%20Personal%20Access%20Token"
+  },
+  {
+    "name": "Ophis",
+    "description": "Natural-language intent DEX aggregator with a keyless MCP server for AI agents",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fmcp.ophis.fi%2Fmcp&id=ophis&name=Ophis&description=Natural-language%20intent%20DEX%20aggregator%20with%20a%20keyless%20MCP%20server%20for%20AI%20agents"
+  },
+  {
+    "name": "PDF Reader",
+    "description": "Read large and complex PDF documents",
+    "install": "caros://extension?cmd=uvx&arg=mcp-read-pdf&id=pdf_read&name=PDF%20Reader&description=Read%20large%20and%20complex%20PDF%20documents"
+  },
+  {
+    "name": "Pieces",
+    "description": "Provides access to your Pieces long-term memory. You need to have Pieces installed to use this.",
+    "install": "caros://extension?cmd=uvx&arg=--from&arg=pieces-cli&arg=pieces&arg=--ignore-onboarding&arg=mcp&arg=start&id=pieces&name=Pieces&description=Provides%20access%20to%20your%20Pieces%20long-term%20memory.%20You%20need%20to%20have%20Pieces%20installed%20to%20use%20this."
+  },
+  {
+    "name": "Playwright",
+    "description": "Interact with web pages through structured accessibility snapshots using Playwright",
+    "install": "caros://extension?cmd=npx&arg=%40playwright%2Fmcp%40latest&id=playwright&name=Playwright&description=Interact%20with%20web%20pages%20through%20structured%20accessibility%20snapshots%20using%20Playwright"
+  },
+  {
+    "name": "prompts.chat",
+    "description": "Access thousands of AI prompts directly in your AI assistant",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=%40fkadev%2Fprompts.chat-mcp%40latest&id=prompts-chat-mcp&name=prompts.chat&description=Access%20thousands%20of%20AI%20prompts%20directly%20in%20your%20AI%20assistant"
+  },
+  {
+    "name": "Reddit",
+    "description": "Reddit API integration for posts and comments",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=reddit-mcp&id=reddit-mcp&name=Reddit&description=Reddit%20API%20integration%20for%20posts%20and%20comments&env=REDDIT_CLIENT_ID%3DRequired%20environment%20variable&env=REDDIT_CLIENT_SECRET%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Rendex",
+    "description": "Capture screenshots, generate PDFs, and render HTML to images via AI agents",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fmcp.rendex.dev%2Fmcp&id=rendex-mcp&name=Rendex&description=Capture%20screenshots%2C%20generate%20PDFs%2C%20and%20render%20HTML%20to%20images%20via%20AI%20agents&header=Authorization%3DBearer%20%3CYOUR_RENDEX_API_KEY%3E"
+  },
+  {
+    "name": "Repomix",
+    "description": "Repository analysis and code organization",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=repomix-mcp&id=repomix-mcp&name=Repomix&description=Repository%20analysis%20and%20code%20organization"
+  },
+  {
+    "name": "Rube",
+    "description": "Connect with 500+ apps like Slack, Gmail, Notion and more through unified integrations",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Frube.app%2Fmcp&id=rube-mcp&name=Rube&description=Connect%20with%20500%2B%20apps%20like%20Slack%2C%20Gmail%2C%20Notion%20and%20more%20through%20unified%20integrations"
+  },
+  {
+    "name": "Scholar Sidekick",
+    "description": "Resolve, format, export, and verify academic citations (DOI, PMID, ISBN, arXiv) plus retraction and open-access checks",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=scholar-sidekick-mcp%40latest&id=scholar-sidekick&name=Scholar%20Sidekick&description=Resolve%2C%20format%2C%20export%2C%20and%20verify%20academic%20citations%20(DOI%2C%20PMID%2C%20ISBN%2C%20arXiv)%20plus%20retraction%20and%20open-access%20checks"
+  },
+  {
+    "name": "Selenium",
+    "description": "Web browser automation and testing",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=selenium-mcp&id=selenium-mcp&name=Selenium&description=Web%20browser%20automation%20and%20testing"
+  },
+  {
+    "name": "Square",
+    "description": "Square API for payments and business management",
+    "install": "caros://extension?cmd=npx&arg=square-mcp-server&arg=start&id=square-mcp&name=Square&description=Square%20API%20for%20payments%20and%20business%20management&env=ACCESS_TOKEN%3DRequired%20environment%20variable&env=SANDBOX%3DRequired%20environment%20variable"
+  },
+  {
+    "name": "Sugar",
+    "description": "Autonomous AI development system - delegate tasks, run 24/7, auto-discover work from errors and GitHub issues",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=sugarai-mcp&id=sugar&name=Sugar&description=Autonomous%20AI%20development%20system%20-%20delegate%20tasks%2C%20run%2024%2F7%2C%20auto-discover%20work%20from%20errors%20and%20GitHub%20issues"
+  },
+  {
+    "name": "Supabase",
+    "description": "Connect your Supabase projects to AI assistants. Manage tables, query data, deploy Edge Functions, and interact with your Supabase backend directly from your MCP client.",
+    "install": "caros://extension?type=streamable_http&url=https%3A%2F%2Fmcp.supabase.com%2Fmcp&id=supabase&name=Supabase&description=Connect%20your%20Supabase%20projects%20to%20AI%20assistants.%20Manage%20tables%2C%20query%20data%2C%20deploy%20Edge%20Functions%2C%20and%20interact%20with%20your%20Supabase%20backend%20directly%20from%20your%20MCP%20client."
+  },
+  {
+    "name": "Tavily Web Search",
+    "description": "Web search capabilities powered by Tavily",
+    "install": "caros://extension?cmd=npx&arg=-y&arg=tavily-mcp&id=tavily&name=Tavily%20Web%20Search&description=Web%20search%20capabilities%20powered%20by%20Tavily&env=TAVILY_API_KEY%3DAPI%20key%20for%20Tavily%20web%20search%20service"
+  },
+  {
+    "name": "YouTube Transcript",
+    "description": "YouTube video transcript extraction",
+    "install": "caros://extension?cmd=uvx&arg=--from&arg=git%2Bhttps%3A%2F%2Fgithub.com%2Fjkawamoto%2Fmcp-youtube-transcript&arg=mcp-youtube-transcript&id=youtube-transcript-mcp&name=YouTube%20Transcript&description=YouTube%20video%20transcript%20extraction"
+  }
+]

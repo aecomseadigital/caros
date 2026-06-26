@@ -11,6 +11,15 @@ affiliated with the goose project, the Agentic AI Foundation, or Block, Inc.
 
 **Caros** means "expensive" in Spanish and Italian languages. It is an anagram of **Oscar**, AECOM's internal AI assistant. 
 
+## Installation (Windows)
+
+Download the latest signed Windows build from the [releases page](https://github.com/aecomseadigital/caros/releases/latest):
+
+- **Desktop app** — [Caros-win32-x64.zip](https://github.com/aecomseadigital/caros/releases/latest/download/Caros-win32-x64.zip). Unzip anywhere and run `Caros.exe`.
+- **CLI** — [caros.exe](https://github.com/aecomseadigital/caros/releases/latest/download/caros.exe). Run `caros.exe login` to sign in, then `caros.exe` to start a session.
+
+Both binaries are code-signed and gated behind Microsoft Entra sign-in. macOS and Linux builds are not currently published.
+
 The remainder of this README is retained from the upstream goose project and describes
 the underlying agent; some branding, links, and references still point to goose.
 

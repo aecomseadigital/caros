@@ -6,6 +6,7 @@ import { useConfig, FixedExtensionEntry } from '../../ConfigContext';
 import { defineMessages, useIntl } from '../../../i18n';
 import ExtensionList from './subcomponents/ExtensionList';
 import ExtensionModal from './modal/ExtensionModal';
+import BrowseExtensionsModal from '../../extensions/BrowseExtensionsModal';
 import {
   createExtensionConfig,
   ExtensionFormData,
@@ -67,6 +68,7 @@ export default function ExtensionsSection({
   const [selectedExtension, setSelectedExtension] = useState<FixedExtensionEntry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isBrowseOpen, setIsBrowseOpen] = useState(false);
   const [deepLinkConfigStateVar, setDeepLinkConfigStateVar] = useState<
     ExtensionConfig | undefined | null
   >(deepLinkConfig);
@@ -231,7 +233,7 @@ export default function ExtensionsSection({
             <Button
               className="flex items-center gap-2 justify-center"
               variant="secondary"
-              onClick={() => window.open('https://goose-docs.ai/v1/extensions/', '_blank')}
+              onClick={() => setIsBrowseOpen(true)}
             >
               <GPSIcon size={12} />
               {intl.formatMessage(i18n.browseExtensions)}
@@ -279,6 +281,7 @@ export default function ExtensionsSection({
           />
         )}
       </div>
+      <BrowseExtensionsModal isOpen={isBrowseOpen} onClose={() => setIsBrowseOpen(false)} />
     </section>
   );
 }

@@ -8,6 +8,7 @@ import { GPSIcon } from '../ui/icons';
 import { useState, useEffect } from 'react';
 import kebabCase from 'lodash/kebabCase';
 import ExtensionModal from '../settings/extensions/modal/ExtensionModal';
+import BrowseExtensionsModal from './BrowseExtensionsModal';
 import {
   getDefaultFormData,
   ExtensionFormData,
@@ -58,6 +59,7 @@ export type ExtensionsViewOptions = {
 };
 
 export default function ExtensionsView({
+  setView,
   viewOptions,
 }: {
   onClose: () => void;
@@ -66,6 +68,7 @@ export default function ExtensionsView({
 }) {
   const intl = useIntl();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isBrowseOpen, setIsBrowseOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const { addExtension } = useConfig();
@@ -155,7 +158,7 @@ export default function ExtensionsView({
               <Button
                 className="flex items-center gap-2 justify-center"
                 variant="secondary"
-                onClick={() => window.open('https://goose-docs.ai/v1/extensions/', '_blank')}
+                onClick={() => setIsBrowseOpen(true)}
               >
                 <GPSIcon size={12} />
                 {intl.formatMessage(i18n.browseExtensions)}
@@ -197,6 +200,12 @@ export default function ExtensionsView({
           modalType={'add'}
         />
       )}
+
+      <BrowseExtensionsModal
+        isOpen={isBrowseOpen}
+        onClose={() => setIsBrowseOpen(false)}
+        setView={setView}
+      />
     </MainPanelLayout>
   );
 }

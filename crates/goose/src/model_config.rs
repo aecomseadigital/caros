@@ -32,12 +32,26 @@ pub fn model_config_from_user_config_with_session_settings(
         .with_inherited_session_settings_from(previous, request_params)
         .with_default_thinking_effort(config.get_goose_thinking_effort());
 
-    Ok(model.with_canonical_limits(provider_name))
+    Ok(apply_provider_context_defaults(provider_name, model))
+}
+
+fn apply_provider_context_defaults(provider_name: &str, model: ModelConfig) -> ModelConfig {
+    let model = model.with_canonical_limits(provider_name);
+    // The Caros gateway only routes to gpt-5.4-mini / gpt-5.4-nano (both 400k
+    // input context). The virtual `gpt-5.4-auto` model the client sends isn't in
+    // the canonical registry, so it would otherwise fall back to the 128k
+    // default. Pin caros to 400k unless an explicit limit (canonical hit,
+    // GOOSE_CONTEXT_LIMIT, or session setting) already applies.
+    if provider_name == "caros" && model.context_limit.is_none() {
+        model.with_context_limit(Some(400_000))
+    } else {
+        model
+    }
 }
 
 pub fn materialize_model_config(provider_name: &str, model: ModelConfig) -> Result<ModelConfig> {
     let model = materialize_model_config_inner(model, true)?;
-    Ok(model.with_canonical_limits(provider_name))
+    Ok(apply_provider_context_defaults(provider_name, model))
 }
 
 fn materialize_model_config_inner(

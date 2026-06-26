@@ -12,6 +12,7 @@ import { LocalMessageStorage } from '../utils/localMessageStorage';
 import { DirSwitcher } from './bottom_menu/DirSwitcher';
 import ModelsBottomBar from './settings/models/bottom_bar/ModelsBottomBar';
 import { BottomMenuExtensionSelection } from './bottom_menu/BottomMenuExtensionSelection';
+import { BottomMenuModeSelection } from './bottom_menu/BottomMenuModeSelection';
 import { cn } from '../utils';
 import { AlertType, useAlerts } from './alerts';
 import { useConfig } from './ConfigContext';
@@ -1714,6 +1715,9 @@ export default function ChatInput({
               tokenLimit={tokenLimit}
               alerts={alerts}
             />
+
+            {/* Right: mode / permission selector */}
+            <BottomMenuModeSelection sessionId={sessionId} />
 
             {/* Right: extension selector */}
             <BottomMenuExtensionSelection
