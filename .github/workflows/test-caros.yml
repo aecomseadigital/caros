@@ -1,0 +1,56 @@
+name: caros-tests
+
+# Hermetic test suite for the Caros-specific surfaces (gateway, provider, office, CLI login).
+# No live Azure and no human interaction — see CAROS_TEST_PLAN.md. The live smoke tier (T3)
+# is intentionally not run here.
+
+on:
+  push:
+    branches: [main, master, "caros-*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gateway:
+    name: Gateway (Node/TS)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: caros/services/caros-gateway
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: caros/services/caros-gateway/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build # also asserts tests are excluded from dist/
+      - run: npm test
+
+  rust:
+    name: Rust (provider + office + login)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: caros
+      - name: Format check (touched crates)
+        working-directory: caros
+        run: cargo fmt -p goose -p goose-cli -p goose-mcp --check
+      - name: Caros provider (auth header + metadata contract)
+        working-directory: caros
+        run: cargo test -p goose --lib providers::caros
+      - name: Office tools (docx/xlsx/pdf/pptx + zip-slip)
+        working-directory: caros
+        run: cargo test -p goose-mcp --features tokio/process computercontroller
+      # local-inference pulls llama-cpp-sys-2 (needs libclang + cmake); the login
+      # logic is pure, so test it without default features to keep CI lean.
+      - name: caros login (device-code poll state machine)
+        working-directory: caros
+        run: cargo test -p goose-cli --no-default-features --features rustls-tls,system-keyring --lib commands::login

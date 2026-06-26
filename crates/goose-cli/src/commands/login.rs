@@ -7,6 +7,31 @@ const TENANT: &str = "16ed5ab4-2b59-4e40-806d-8a30bdc9cf26";
 const CLIENT_ID: &str = "5284f3e5-40c4-43e3-92b2-512af17f64cc";
 const SCOPE: &str = "api://ea4c58eb-9223-46bd-89cc-06bf4652f43c/.default offline_access";
 
+/// Outcome of polling the Entra token endpoint during the device-code flow.
+#[derive(Debug, PartialEq)]
+enum PollResult {
+    /// Keep polling — the user hasn't completed sign-in yet (RFC 8628).
+    Pending,
+    /// Sign-in succeeded; carries the token response JSON.
+    Done(Value),
+    /// Terminal failure; carries a human-readable description.
+    Failed(String),
+}
+
+/// Classify one response from the device-code token endpoint.
+fn classify_poll(is_success: bool, body: &Value) -> PollResult {
+    if is_success {
+        return PollResult::Done(body.clone());
+    }
+    match body["error"].as_str().unwrap_or_default() {
+        "authorization_pending" | "slow_down" => PollResult::Pending,
+        other => {
+            let desc = body["error_description"].as_str().unwrap_or(other);
+            PollResult::Failed(desc.to_string())
+        }
+    }
+}
+
 /// Sign in to Caros via the Microsoft Entra device-code flow and store the
 /// resulting token so the `caros` provider can call the gateway.
 pub async fn handle_login() -> Result<()> {
@@ -53,17 +78,12 @@ pub async fn handle_login() -> Result<()> {
             .send()
             .await?;
 
-        if resp.status().is_success() {
-            break resp.json::<Value>().await?;
-        }
-
-        let err: Value = resp.json().await.unwrap_or(Value::Null);
-        match err["error"].as_str().unwrap_or_default() {
-            "authorization_pending" | "slow_down" => continue,
-            other => {
-                let desc = err["error_description"].as_str().unwrap_or(other);
-                return Err(anyhow!("sign-in failed: {desc}"));
-            }
+        let is_success = resp.status().is_success();
+        let body: Value = resp.json().await.unwrap_or(Value::Null);
+        match classify_poll(is_success, &body) {
+            PollResult::Pending => continue,
+            PollResult::Done(token) => break token,
+            PollResult::Failed(desc) => return Err(anyhow!("sign-in failed: {desc}")),
         }
     };
 
@@ -81,4 +101,54 @@ pub async fn handle_login() -> Result<()> {
 
     println!("Signed in to Caros. Provider set to 'caros' (model 'caros-auto').");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn poll_success_returns_token() {
+        let body = json!({"access_token": "tok", "refresh_token": "ref"});
+        assert_eq!(classify_poll(true, &body), PollResult::Done(body));
+    }
+
+    #[test]
+    fn poll_authorization_pending_keeps_polling() {
+        let body = json!({"error": "authorization_pending"});
+        assert_eq!(classify_poll(false, &body), PollResult::Pending);
+    }
+
+    #[test]
+    fn poll_slow_down_keeps_polling() {
+        let body = json!({"error": "slow_down"});
+        assert_eq!(classify_poll(false, &body), PollResult::Pending);
+    }
+
+    #[test]
+    fn poll_terminal_error_uses_description() {
+        let body = json!({"error": "expired_token", "error_description": "device code expired"});
+        assert_eq!(
+            classify_poll(false, &body),
+            PollResult::Failed("device code expired".to_string())
+        );
+    }
+
+    #[test]
+    fn poll_terminal_error_without_description_falls_back_to_code() {
+        let body = json!({"error": "access_denied"});
+        assert_eq!(
+            classify_poll(false, &body),
+            PollResult::Failed("access_denied".to_string())
+        );
+    }
+
+    #[test]
+    fn scope_requests_offline_access_for_refresh_token() {
+        assert!(
+            SCOPE.contains("offline_access"),
+            "offline_access is required for Entra to return a refresh token"
+        );
+    }
 }

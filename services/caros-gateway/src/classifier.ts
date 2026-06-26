@@ -35,11 +35,48 @@ export function concatMessages(messages: unknown): string {
     .join("\n");
 }
 
+/** True if any message carries an `image_url` content block (vision / OCR request). */
+export function hasImageContent(messages: unknown): boolean {
+  if (!Array.isArray(messages)) return false;
+  return (messages as ChatMessage[]).some(
+    (m) =>
+      Array.isArray(m.content) &&
+      m.content.some((c) => c != null && typeof c === "object" && (c as { type?: unknown }).type === "image_url"),
+  );
+}
+
+/**
+ * Force `detail: "high"` on every image_url block that omits it. Low detail
+ * flattens images to a ~85-token tile and corrupts fine text (OCR is the dominant
+ * use case), so the gateway never lets a caller silently get low-detail vision.
+ */
+export function ensureImageDetailHigh(messages: unknown): unknown {
+  if (!Array.isArray(messages)) return messages;
+  return (messages as ChatMessage[]).map((m) => {
+    if (!Array.isArray(m.content)) return m;
+    return {
+      ...m,
+      content: m.content.map((c) => {
+        if (c != null && typeof c === "object" && (c as { type?: unknown }).type === "image_url") {
+          const iu = (c as { image_url?: Record<string, unknown> }).image_url;
+          if (iu && typeof iu === "object" && iu.detail === undefined) {
+            return { ...c, image_url: { ...iu, detail: "high" } };
+          }
+        }
+        return c;
+      }),
+    };
+  });
+}
+
 /** Fast, zero-cost routing. Returns null when the request is genuinely ambiguous. */
 export function heuristicTier(body: Record<string, unknown>): ClassifyResult | null {
   const tools = body.tools;
   if (Array.isArray(tools) && tools.length > 0) return { tier: "mini", reason: "tools_present" };
   if (body.tool_choice && body.tool_choice !== "none") return { tier: "mini", reason: "tool_choice" };
+
+  // Vision/OCR: route to mini for fidelity headroom on noisy real-world screenshots.
+  if (hasImageContent(body.messages)) return { tier: "mini", reason: "image_present" };
 
   const text = concatMessages(body.messages);
   if (CODE_HINT.test(text)) return { tier: "mini", reason: "code_detected" };

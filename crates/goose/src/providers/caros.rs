@@ -97,6 +97,8 @@ impl ProviderDef for CarosProvider {
 mod tests {
     use super::*;
 
+    use goose_providers::base::ProviderDescriptor as _;
+
     #[tokio::test]
     async fn test_auth_header_is_bearer() {
         let provider = CarosAuthProvider {
@@ -105,5 +107,34 @@ mod tests {
         let (header, value) = provider.get_auth_header().await.unwrap();
         assert_eq!(header, "Authorization");
         assert_eq!(value, "Bearer abc123");
+    }
+
+    #[test]
+    fn test_metadata_contract() {
+        let meta = CarosProvider::metadata();
+        assert_eq!(meta.name, CAROS_PROVIDER_NAME);
+        assert_eq!(meta.default_model, CAROS_DEFAULT_MODEL);
+
+        // The token must be marked secret + required so it is keyring-backed and
+        // never written to plaintext config (CAROS_SECURITY_REVIEW S3.1).
+        let token_key = meta
+            .config_keys
+            .iter()
+            .find(|k| k.name == "CAROS_TOKEN")
+            .expect("CAROS_TOKEN config key must exist");
+        assert!(token_key.secret, "CAROS_TOKEN must be a secret");
+        assert!(token_key.required, "CAROS_TOKEN must be required");
+
+        // The gateway URL is defaulted to the APIM https endpoint (S4.1).
+        let gateway_key = meta
+            .config_keys
+            .iter()
+            .find(|k| k.name == "CAROS_GATEWAY_URL")
+            .expect("CAROS_GATEWAY_URL config key must exist");
+        assert_eq!(gateway_key.default.as_deref(), Some(CAROS_DEFAULT_GATEWAY));
+        assert!(
+            CAROS_DEFAULT_GATEWAY.starts_with("https://"),
+            "default gateway must be https to avoid leaking the bearer token"
+        );
     }
 }
