@@ -8,7 +8,7 @@ License, Version 2.0 — see [`LICENSE`](LICENSE) for the full license text and
 Caros is maintained by AECOM SINGAPORE PTE. LTD. for internal use. 
 "goose" and the goose logo are marks of their respective owners; this project is not endorsed by or affiliated with the goose project, the Agentic AI Foundation, or Block, Inc.
 
-## Parody: Caros wins Oscar
+## Parody: Caros 🦦 wins Oscar 🏆
 
 **Caros** means "expensive" in Spanish and Italian languages. It is an anagram of **Oscar**, AECOM's internal AI assistant. 
 The icon avatar features an otter, which is an iconic wild animal in Singapore.
