@@ -10,10 +10,10 @@ use super::openai_compatible::OpenAiCompatibleProvider;
 use futures::future::BoxFuture;
 
 const CAROS_PROVIDER_NAME: &str = "caros";
-pub const CAROS_DEFAULT_MODEL: &str = "caros-auto";
+pub const CAROS_DEFAULT_MODEL: &str = "gpt-5.4-auto";
 pub const CAROS_DOC_URL: &str = "https://apim-caros.azure-api.net";
 const CAROS_DEFAULT_GATEWAY: &str = "https://apim-caros.azure-api.net/caros/v1";
-pub const CAROS_KNOWN_MODELS: &[&str] = &["caros-auto"];
+pub const CAROS_KNOWN_MODELS: &[&str] = &["gpt-5.4-auto"];
 
 const ENTRA_TENANT: &str = "16ed5ab4-2b59-4e40-806d-8a30bdc9cf26";
 const ENTRA_CLIENT_ID: &str = "5284f3e5-40c4-43e3-92b2-512af17f64cc";
@@ -152,7 +152,8 @@ impl goose_providers::base::ProviderDescriptor for CarosProvider {
     fn metadata() -> ProviderMetadata {
         ProviderMetadata::new(
             CAROS_PROVIDER_NAME,
-            "Caros",
+            // Internal id stays `caros`; this is the user-facing display label only.
+            "aecom-asia-digital-dev",
             "Azure OpenAI via the Caros APIM gateway: Microsoft Entra sign-in, access gated by the hackathon app role, server-side model routing, and per-user usage logging",
             CAROS_DEFAULT_MODEL,
             CAROS_KNOWN_MODELS.to_vec(),

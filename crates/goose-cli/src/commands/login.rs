@@ -105,9 +105,9 @@ pub async fn handle_login() -> Result<()> {
         config.set_param("CAROS_TOKEN_EXPIRY", now + expires_in)?;
     }
     config.set_param("GOOSE_PROVIDER", "caros")?;
-    config.set_param("GOOSE_MODEL", "caros-auto")?;
+    config.set_param("GOOSE_MODEL", "gpt-5.4-auto")?;
 
-    println!("Signed in to Caros. Provider set to 'caros' (model 'caros-auto').");
+    println!("Signed in to Caros. Provider 'aecom-asia-digital-dev' (model 'gpt-5.4-auto').");
     Ok(())
 }
 

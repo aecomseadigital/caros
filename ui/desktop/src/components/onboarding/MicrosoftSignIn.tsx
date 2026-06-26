@@ -40,7 +40,7 @@ export default function MicrosoftSignIn({ onConfigured }: MicrosoftSignInProps) 
     try {
       const token = await window.electron.carosAuth.signIn();
       await pushCarosToken(upsert, token);
-      await onConfigured('caros', 'caros-auto');
+      await onConfigured('caros', 'gpt-5.4-auto');
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
