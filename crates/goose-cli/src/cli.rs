@@ -1473,10 +1473,7 @@ async fn handle_interactive_session(
     session_opts: SessionOptions,
     extension_opts: ExtensionOptions,
 ) -> Result<()> {
-    #[cfg(feature = "telemetry")]
-    if get_telemetry_choice().is_none() {
-        configure_telemetry_consent_dialog()?;
-    }
+    ensure_caros_session_ready().await?;
 
     let session_start = std::time::Instant::now();
     let session_type = if fork {
@@ -2005,15 +2002,24 @@ async fn handle_local_models_command(command: LocalModelsCommand) -> Result<()> 
     Ok(())
 }
 
-async fn handle_default_session() -> Result<()> {
-    if !Config::global().exists() {
-        return handle_configure().await;
-    }
-
+/// Caros is sign-in only: prompt telemetry consent on first run, then ensure a
+/// provider is configured by running the Microsoft device-code sign-in if needed.
+/// This replaces the old BYOK `goose configure` first-run path.
+async fn ensure_caros_session_ready() -> Result<()> {
     #[cfg(feature = "telemetry")]
     if get_telemetry_choice().is_none() {
         configure_telemetry_consent_dialog()?;
     }
+    if Config::global().get_goose_provider().is_err() {
+        println!("\nSign in to Caros to get started.");
+        crate::commands::login::handle_login().await?;
+        println!();
+    }
+    Ok(())
+}
+
+async fn handle_default_session() -> Result<()> {
+    ensure_caros_session_ready().await?;
 
     let goose_mode = Config::global().get_goose_mode().unwrap_or_default();
     let session_id = get_or_create_session_id(None, false, false, goose_mode).await?;
