@@ -164,7 +164,7 @@ pub fn configure_tetrate(config: &Config, api_key: String) -> Result<()> {
     config.set_secret("TETRATE_API_KEY", &api_key)?;
     crate::config::set_active_provider(
         config,
-        crate::providers::tetrate::TETRATE_PROVIDER_NAME,
+        "tetrate",
         TETRATE_DEFAULT_MODEL,
     )?;
     Ok(())

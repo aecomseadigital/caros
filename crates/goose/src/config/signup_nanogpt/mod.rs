@@ -120,8 +120,8 @@ pub fn configure_nanogpt(config: &Config, api_key: String) -> Result<()> {
     config.set_secret("NANOGPT_API_KEY", &api_key)?;
     crate::config::set_active_provider(
         config,
-        crate::providers::nanogpt::NANOGPT_PROVIDER_NAME,
-        crate::providers::nanogpt::NANOGPT_DEFAULT_MODEL,
+        "nano-gpt",
+        "anthropic/claude-sonnet-4.6",
     )?;
     Ok(())
 }

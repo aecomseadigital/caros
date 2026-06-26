@@ -3,8 +3,8 @@ use futures::StreamExt;
 use goose::agents::{Agent, AgentEvent, ExtensionConfig, SessionConfig};
 use goose::config::{GooseMode, DEFAULT_EXTENSION_DESCRIPTION, DEFAULT_EXTENSION_TIMEOUT};
 use goose::conversation::message::Message;
+use goose::providers::caros::CAROS_DEFAULT_MODEL;
 use goose::providers::create_with_named_model;
-use goose::providers::databricks::DATABRICKS_DEFAULT_MODEL;
 use goose::session::session_manager::SessionType;
 use std::path::PathBuf;
 
@@ -12,9 +12,9 @@ use std::path::PathBuf;
 async fn main() -> anyhow::Result<()> {
     let _ = dotenv();
 
-    let provider = create_with_named_model("databricks", Vec::new()).await?;
+    let provider = create_with_named_model("caros", Vec::new()).await?;
     let model_config =
-        goose::model_config::model_config_from_user_config("databricks", DATABRICKS_DEFAULT_MODEL)?;
+        goose::model_config::model_config_from_user_config("caros", CAROS_DEFAULT_MODEL)?;
 
     let agent = Agent::new();
 

@@ -4,7 +4,6 @@ use dotenvy::dotenv;
 use goose::conversation::message::Message;
 use goose::providers::anthropic::ANTHROPIC_DEFAULT_MODEL;
 use goose::providers::create_with_named_model;
-use goose::providers::databricks::DATABRICKS_DEFAULT_MODEL;
 use goose::providers::openai::OPEN_AI_DEFAULT_MODEL;
 use rmcp::model::{CallToolRequestParams, Content, Tool};
 use rmcp::object;
@@ -21,13 +20,6 @@ async fn main() -> Result<()> {
         Arc<dyn goose::providers::base::Provider>,
         goose_providers::model::ModelConfig,
     )> = vec![
-        (
-            create_with_named_model("databricks", Vec::new()).await?,
-            goose::model_config::model_config_from_user_config(
-                "databricks",
-                DATABRICKS_DEFAULT_MODEL,
-            )?,
-        ),
         (
             create_with_named_model("openai", Vec::new()).await?,
             goose::model_config::model_config_from_user_config("openai", OPEN_AI_DEFAULT_MODEL)?,

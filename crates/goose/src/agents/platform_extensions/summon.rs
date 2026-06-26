@@ -2563,7 +2563,7 @@ You review code."#;
 
     const PARENT_MODEL: &str = "claude-3-5-sonnet-20241022";
     const OVERRIDE_MODEL: &str = "claude-opus-4-6";
-    const PROVIDER: &str = "anthropic";
+    const PROVIDER: &str = "caros";
 
     fn session_with(parent: goose_providers::model::ModelConfig) -> crate::session::Session {
         crate::session::Session {

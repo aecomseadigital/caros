@@ -20,35 +20,11 @@ otel = [
     "dep:opentelemetry-stdout",
 ]
 code-mode = ["dep:pctx_code_mode"]
-local-inference = [
-    "dep:candle-core",
-    "dep:candle-nn",
-    "dep:candle-transformers",
-    "dep:hf-hub",
-    "dep:llama-cpp-2",
-    "dep:llama-cpp-sys-2",
-    "dep:tokenizers",
-    "dep:symphonia",
-    "dep:rubato",
-    "dep:byteorder",
-]
-aws-providers = [
-    "dep:aws-config",
-    "dep:aws-smithy-types",
-    "dep:aws-sdk-bedrockruntime",
-    "dep:aws-sdk-sagemakerruntime",
-    "dep:smithy-transport-reqwest",
-]
-cuda = ["local-inference", "candle-core/cuda", "candle-nn/cuda", "llama-cpp-2/cuda"]
-vulkan = ["local-inference", "llama-cpp-2/vulkan"]
-mlx = ["local-inference", "dep:mlx-rs", "dep:mlx-lm", "dep:mlx-lm-utils"]
 rustls-tls = [
     "dep:rustls",
     "reqwest/rustls",
     "rmcp/reqwest",
-    "smithy-transport-reqwest?/rustls",
     "sqlx/runtime-tokio-rustls",
-    "jsonwebtoken/aws_lc_rs",
     "oauth2/reqwest",
     "oauth2/rustls-tls",
     "hf-hub/rustls-tls",
@@ -57,15 +33,13 @@ rustls-tls = [
 native-tls = [
     "reqwest/native-tls",
     "rmcp/reqwest-native-tls",
-    "smithy-transport-reqwest?/native-tls",
     "sqlx/runtime-tokio-native-tls",
-    "jsonwebtoken/rust_crypto",
     "oauth2/reqwest",
     "oauth2/native-tls",
     "goose-providers/native-tls",
 ]
 system-keyring = ["dep:keyring"]
-portable-default = ["rustls-tls", "aws-providers", "telemetry", "otel"]
+portable-default = ["rustls-tls", "telemetry", "otel"]
 nostr = ["dep:nostr", "dep:nostr-sdk"]
 
 [lints]
@@ -149,7 +123,6 @@ smithy-transport-reqwest = { version = "0.1", default-features = false, features
 aws-sdk-sagemakerruntime = { version = "1.104", default-features = false, features = ["rt-tokio"], optional = true }
 
 # For GCP Vertex AI provider auth
-jsonwebtoken = { version = "10.2", default-features = false, features = ["use_pem"] }
 
 blake3 = { version = "1", default-features = false, features = ["std"] }
 fs2 = { workspace = true }

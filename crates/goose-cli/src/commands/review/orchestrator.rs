@@ -1003,7 +1003,7 @@ mod tests {
         let mut c = ck("perf");
         c.model = Some("goose-claude-4-sonnet".into()); // wrong provider
         let opts = ReviewOptions {
-            provider: Some("google".into()),
+            provider: Some("caros".into()),
             default_model: Some("gemini-3.1-pro-preview".into()),
             ..ReviewOptions::default()
         };
@@ -1020,7 +1020,7 @@ mod tests {
         let mut c = ck("perf");
         c.model = Some("goose-claude-4-sonnet".into());
         let opts = ReviewOptions {
-            provider: Some("google".into()),
+            provider: Some("caros".into()),
             default_model: None,
             ..ReviewOptions::default()
         };

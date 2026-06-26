@@ -12,7 +12,7 @@
 ;   ..\ui\desktop\out\release\Caros-Setup.exe
 
 #define AppName "Caros"
-#define AppVer "1.39.0"
+#define AppVer "0.1.0"
 #define AppPublisher "AECOM Singapore Pte. Ltd."
 #define DeskSrc "..\ui\desktop\out\Caros-win32-x64"
 #define CliExe  "..\ui\desktop\out\release\caros.exe"

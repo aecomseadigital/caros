@@ -17,7 +17,10 @@
   "pnpm": {
     "overrides": {
       "react": "^19.2.4",
-      "react-dom": "^19.2.4"
+      "react-dom": "^19.2.4",
+      "tar@7": "7.5.16",
+      "tmp": "0.2.6",
+      "js-yaml@4": "4.2.0"
     },
     "onlyBuiltDependencies": [
       "@modelcontextprotocol/ext-apps",
