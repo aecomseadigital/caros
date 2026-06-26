@@ -40,6 +40,78 @@ fn write_secrets_file(path: &Path, content: &str) -> std::io::Result<()> {
 const KEYRING_SERVICE: &str = "caros";
 #[cfg(feature = "system-keyring")]
 const KEYRING_USERNAME: &str = "secrets";
+
+/// Secrets whose serialized length exceeds this are kept out of the keyring blob.
+/// The Windows Credential Manager caps a credential at 2560 bytes; the Entra
+/// access + refresh tokens (CAROS_TOKEN/CAROS_REFRESH_TOKEN) together exceed it.
+/// On Windows they are DPAPI-encrypted to a side file while small secrets (API
+/// keys) stay in the keyring; reads transparently merge the side file back in.
+#[cfg(all(windows, feature = "system-keyring"))]
+const KEYRING_MAX_VALUE_LEN: usize = 1024;
+
+/// DPAPI (Windows Data Protection API) wrappers: encrypt the oversized-secrets
+/// side file with the current user's key — same protection class as the keyring,
+/// without the per-credential size limit.
+#[cfg(all(windows, feature = "system-keyring"))]
+mod dpapi {
+    use std::ptr;
+    use winapi::shared::minwindef::DWORD;
+    use winapi::um::dpapi::{CryptProtectData, CryptUnprotectData};
+    use winapi::um::winbase::LocalFree;
+    use winapi::um::wincrypt::DATA_BLOB;
+
+    unsafe fn take_blob(blob: &mut DATA_BLOB) -> Vec<u8> {
+        let out = std::slice::from_raw_parts(blob.pbData, blob.cbData as usize).to_vec();
+        LocalFree(blob.pbData as *mut _);
+        out
+    }
+
+    pub fn protect(plaintext: &[u8]) -> Result<Vec<u8>, String> {
+        unsafe {
+            let mut input = DATA_BLOB {
+                cbData: plaintext.len() as DWORD,
+                pbData: plaintext.as_ptr() as *mut u8,
+            };
+            let mut output: DATA_BLOB = std::mem::zeroed();
+            if CryptProtectData(
+                &mut input,
+                ptr::null(),
+                ptr::null_mut(),
+                ptr::null_mut(),
+                ptr::null_mut(),
+                0,
+                &mut output,
+            ) == 0
+            {
+                return Err("CryptProtectData failed".to_string());
+            }
+            Ok(take_blob(&mut output))
+        }
+    }
+
+    pub fn unprotect(ciphertext: &[u8]) -> Result<Vec<u8>, String> {
+        unsafe {
+            let mut input = DATA_BLOB {
+                cbData: ciphertext.len() as DWORD,
+                pbData: ciphertext.as_ptr() as *mut u8,
+            };
+            let mut output: DATA_BLOB = std::mem::zeroed();
+            if CryptUnprotectData(
+                &mut input,
+                ptr::null_mut(),
+                ptr::null_mut(),
+                ptr::null_mut(),
+                ptr::null_mut(),
+                0,
+                &mut output,
+            ) == 0
+            {
+                return Err("CryptUnprotectData failed".to_string());
+            }
+            Ok(take_blob(&mut output))
+        }
+    }
+}
 pub const CONFIG_YAML_NAME: &str = "config.yaml";
 
 #[derive(Error, Debug)]
@@ -631,11 +703,8 @@ impl Config {
                     let result =
                         self.handle_keyring_operation(|entry| entry.get_password(), service, None);
 
-                    match result {
-                        Ok(content) => {
-                            let values: HashMap<String, Value> = serde_json::from_str(&content)?;
-                            values
-                        }
+                    let mut values: HashMap<String, Value> = match result {
+                        Ok(content) => serde_json::from_str(&content)?,
                         Err(ConfigError::FallbackToFileStorage) => {
                             self.fallback_to_file_storage()?
                         }
@@ -646,7 +715,10 @@ impl Config {
                             self.fallback_to_file_storage()?
                         }
                         Err(e) => return Err(e),
-                    }
+                    };
+                    // Merge oversized secrets kept in the DPAPI-encrypted side file.
+                    self.merge_oversized_secrets(&mut values)?;
+                    values
                 }
                 SecretStorage::File { path } => self.read_secrets_from_file(path)?,
             };
@@ -888,11 +960,15 @@ impl Config {
         match &self.secrets {
             #[cfg(feature = "system-keyring")]
             SecretStorage::Keyring { service } => {
-                let json_value = serde_json::to_string(values)?;
+                // Secrets too large for the keyring's per-credential limit (e.g. the
+                // Entra access + refresh tokens) are spilled to a DPAPI-encrypted
+                // side file; only the small ones go in the keyring credential.
+                let keyring_values = self.spill_oversized_secrets(values)?;
+                let json_value = serde_json::to_string(&keyring_values)?;
                 match self.handle_keyring_operation(
                     |entry| entry.set_password(&json_value),
                     service,
-                    Some(values),
+                    Some(&keyring_values),
                 ) {
                     Ok(_) => {}
                     Err(ConfigError::FallbackToFileStorage) => {}
@@ -1025,6 +1101,93 @@ impl Config {
         let yaml_value = serde_yaml::to_string(values)?;
         write_secrets_file(&path, &yaml_value)?;
         Ok(())
+    }
+
+    /// Move secrets too large for the keyring's per-credential limit into a
+    /// DPAPI-encrypted side file, returning only the secrets that stay in the
+    /// keyring. Windows only — other platforms' keyrings have no comparable limit.
+    #[cfg(all(windows, feature = "system-keyring"))]
+    fn spill_oversized_secrets(
+        &self,
+        values: &HashMap<String, Value>,
+    ) -> Result<HashMap<String, Value>, ConfigError> {
+        let mut keyring_values = HashMap::new();
+        let mut overflow = HashMap::new();
+        for (k, v) in values {
+            let len = serde_json::to_string(v).map(|s| s.len()).unwrap_or(0);
+            if len > KEYRING_MAX_VALUE_LEN {
+                overflow.insert(k.clone(), v.clone());
+            } else {
+                keyring_values.insert(k.clone(), v.clone());
+            }
+        }
+        self.write_encrypted_overflow(&overflow)?;
+        Ok(keyring_values)
+    }
+
+    #[cfg(all(not(windows), feature = "system-keyring"))]
+    fn spill_oversized_secrets(
+        &self,
+        values: &HashMap<String, Value>,
+    ) -> Result<HashMap<String, Value>, ConfigError> {
+        Ok(values.clone())
+    }
+
+    /// Merge DPAPI-encrypted oversized secrets back into the secret map on read.
+    #[cfg(all(windows, feature = "system-keyring"))]
+    fn merge_oversized_secrets(
+        &self,
+        values: &mut HashMap<String, Value>,
+    ) -> Result<(), ConfigError> {
+        for (k, v) in self.read_encrypted_overflow()? {
+            values.entry(k).or_insert(v);
+        }
+        Ok(())
+    }
+
+    #[cfg(all(not(windows), feature = "system-keyring"))]
+    fn merge_oversized_secrets(
+        &self,
+        _values: &mut HashMap<String, Value>,
+    ) -> Result<(), ConfigError> {
+        Ok(())
+    }
+
+    #[cfg(all(windows, feature = "system-keyring"))]
+    fn encrypted_overflow_path() -> PathBuf {
+        Paths::config_dir().join("secrets.enc")
+    }
+
+    /// Write oversized secrets to the side file, DPAPI-encrypted. An empty map
+    /// clears the file (e.g. after sign-out) so stale tokens aren't resurrected.
+    #[cfg(all(windows, feature = "system-keyring"))]
+    fn write_encrypted_overflow(
+        &self,
+        overflow: &HashMap<String, Value>,
+    ) -> Result<(), ConfigError> {
+        let path = Self::encrypted_overflow_path();
+        if overflow.is_empty() {
+            let _ = std::fs::remove_file(&path);
+            return Ok(());
+        }
+        std::fs::create_dir_all(Paths::config_dir())?;
+        let plaintext = serde_json::to_vec(overflow)?;
+        let ciphertext = dpapi::protect(&plaintext)
+            .map_err(|e| ConfigError::KeyringError(format!("DPAPI encrypt failed: {e}")))?;
+        std::fs::write(&path, ciphertext)?;
+        Ok(())
+    }
+
+    #[cfg(all(windows, feature = "system-keyring"))]
+    fn read_encrypted_overflow(&self) -> Result<HashMap<String, Value>, ConfigError> {
+        let path = Self::encrypted_overflow_path();
+        if !path.exists() {
+            return Ok(HashMap::new());
+        }
+        let ciphertext = std::fs::read(&path)?;
+        let plaintext = dpapi::unprotect(&ciphertext)
+            .map_err(|e| ConfigError::KeyringError(format!("DPAPI decrypt failed: {e}")))?;
+        Ok(serde_json::from_slice(&plaintext)?)
     }
 
     pub fn invalidate_secrets_cache(&self) {

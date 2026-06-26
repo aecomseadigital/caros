@@ -7,6 +7,7 @@ use tokio::sync::Mutex;
 use super::api_client::{ApiClient, AuthMethod, AuthProvider};
 use super::base::{ConfigKey, ProviderDef, ProviderMetadata};
 use super::openai_compatible::OpenAiCompatibleProvider;
+use goose_providers::base::ModelInfo;
 use futures::future::BoxFuture;
 
 const CAROS_PROVIDER_NAME: &str = "caros";
@@ -150,13 +151,18 @@ impl AuthProvider for CarosAuthProvider {
 
 impl goose_providers::base::ProviderDescriptor for CarosProvider {
     fn metadata() -> ProviderMetadata {
-        ProviderMetadata::new(
+        ProviderMetadata::with_models(
             CAROS_PROVIDER_NAME,
             // Internal id stays `caros`; this is the user-facing display label only.
             "aecom-asia-digital-dev",
             "Azure OpenAI via the Caros APIM gateway: Microsoft Entra sign-in, access gated by the hackathon app role, server-side model routing, and per-user usage logging",
             CAROS_DEFAULT_MODEL,
-            CAROS_KNOWN_MODELS.to_vec(),
+            // The gateway routes to gpt-5.4-mini/nano, both 400k input context, so
+            // advertise 400k (the desktop reads context from provider metadata).
+            CAROS_KNOWN_MODELS
+                .iter()
+                .map(|&m| ModelInfo::new(m, 400_000))
+                .collect(),
             CAROS_DOC_URL,
             vec![
                 ConfigKey::new(
