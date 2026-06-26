@@ -13,6 +13,7 @@ use super::{
     avian::AvianProvider,
     azure::AzureProvider,
     base::{Provider, ProviderMetadata},
+    caros::CarosProvider,
     chatgpt_codex::ChatGptCodexProvider,
     claude_acp::ClaudeAcpProvider,
     claude_code::ClaudeCodeProvider,
@@ -69,6 +70,7 @@ async fn init_registry() -> RwLock<ProviderRegistry> {
         );
         registry.register::<AvianProvider>(false);
         registry.register::<AzureProvider>(false);
+        registry.register::<CarosProvider>(true);
         #[cfg(feature = "aws-providers")]
         registry.register::<BedrockProvider>(false);
         #[cfg(feature = "local-inference")]

@@ -788,6 +788,10 @@ enum Command {
     #[command(about = "Configure caros settings")]
     Configure {},
 
+    /// Sign in to Caros with your Microsoft account
+    #[command(about = "Sign in to Caros with your Microsoft account (device code)")]
+    Login {},
+
     /// Display caros configuration information
     #[command(about = "Display caros information")]
     Info {
@@ -1284,6 +1288,7 @@ pub struct InputConfig {
 fn get_command_name(command: &Option<Command>) -> &'static str {
     match command {
         Some(Command::Configure {}) => "configure",
+        Some(Command::Login {}) => "login",
         Some(Command::Doctor {}) => "doctor",
         Some(Command::Info { .. }) => "info",
         Some(Command::Mcp { .. }) => "mcp",
@@ -2063,6 +2068,7 @@ pub async fn cli() -> anyhow::Result<()> {
             Ok(())
         }
         Some(Command::Configure {}) => handle_configure().await,
+        Some(Command::Login {}) => crate::commands::login::handle_login().await,
         Some(Command::Doctor {}) => crate::commands::doctor::handle_doctor().await,
         Some(Command::Info { verbose, check }) => handle_info(verbose, check).await,
         Some(Command::Mcp { server }) => handle_mcp_command(server).await,
