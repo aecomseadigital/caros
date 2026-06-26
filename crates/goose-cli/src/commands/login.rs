@@ -96,6 +96,14 @@ pub async fn handle_login() -> Result<()> {
     if let Some(refresh) = token["refresh_token"].as_str() {
         config.set_secret("CAROS_REFRESH_TOKEN", &refresh.to_string())?;
     }
+    // Absolute expiry (unix secs) so the provider can refresh ahead of the ~1h TTL.
+    if let Some(expires_in) = token["expires_in"].as_u64() {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_secs())
+            .unwrap_or(0);
+        config.set_param("CAROS_TOKEN_EXPIRY", now + expires_in)?;
+    }
     config.set_param("GOOSE_PROVIDER", "caros")?;
     config.set_param("GOOSE_MODEL", "caros-auto")?;
 

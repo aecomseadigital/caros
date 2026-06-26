@@ -1,5 +1,8 @@
 use anyhow::Result;
 use async_trait::async_trait;
+use serde_json::Value;
+use std::time::{SystemTime, UNIX_EPOCH};
+use tokio::sync::Mutex;
 
 use super::api_client::{ApiClient, AuthMethod, AuthProvider};
 use super::base::{ConfigKey, ProviderDef, ProviderMetadata};
@@ -12,21 +15,135 @@ pub const CAROS_DOC_URL: &str = "https://apim-caros.azure-api.net";
 const CAROS_DEFAULT_GATEWAY: &str = "https://apim-caros.azure-api.net/caros/v1";
 pub const CAROS_KNOWN_MODELS: &[&str] = &["caros-auto"];
 
+const ENTRA_TENANT: &str = "16ed5ab4-2b59-4e40-806d-8a30bdc9cf26";
+const ENTRA_CLIENT_ID: &str = "5284f3e5-40c4-43e3-92b2-512af17f64cc";
+const ENTRA_SCOPE: &str = "api://ea4c58eb-9223-46bd-89cc-06bf4652f43c/.default offline_access";
+/// Refresh this many seconds before the access token actually expires.
+const REFRESH_SKEW_SECS: u64 = 300;
+
 pub struct CarosProvider;
 
+fn now_unix() -> u64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0)
+}
+
+fn entra_token_url() -> String {
+    format!("https://login.microsoftonline.com/{ENTRA_TENANT}/oauth2/v2.0/token")
+}
+
+/// True when the access token is expired or within the refresh skew window.
+/// Unknown expiry (`None`, e.g. an older login) means "don't proactively refresh".
+fn should_refresh(expiry: Option<u64>, now: u64, skew: u64) -> bool {
+    matches!(expiry, Some(exp) if now + skew >= exp)
+}
+
+#[derive(Debug)]
+struct RefreshedToken {
+    access: String,
+    expiry: Option<u64>,
+    refresh: Option<String>,
+}
+
+/// Exchange a refresh token for a fresh access token at the Entra token endpoint.
+/// Pure HTTP — no persistence, so it can be unit-tested against a mock server.
+async fn exchange_refresh_token(
+    token_url: &str,
+    client_id: &str,
+    scope: &str,
+    refresh_token: &str,
+) -> Result<RefreshedToken> {
+    let resp = reqwest::Client::new()
+        .post(token_url)
+        .form(&[
+            ("grant_type", "refresh_token"),
+            ("client_id", client_id),
+            ("scope", scope),
+            ("refresh_token", refresh_token),
+        ])
+        .send()
+        .await?;
+
+    if !resp.status().is_success() {
+        let body: Value = resp.json().await.unwrap_or(Value::Null);
+        let desc = body["error_description"]
+            .as_str()
+            .or_else(|| body["error"].as_str())
+            .unwrap_or("unknown error")
+            .to_string();
+        return Err(anyhow::anyhow!("token refresh failed: {desc}"));
+    }
+
+    let body: Value = resp.json().await?;
+    let access = body["access_token"]
+        .as_str()
+        .ok_or_else(|| anyhow::anyhow!("refresh response missing access_token"))?
+        .to_string();
+    Ok(RefreshedToken {
+        access,
+        expiry: body["expires_in"].as_u64().map(|s| now_unix() + s),
+        refresh: body["refresh_token"].as_str().map(str::to_string),
+    })
+}
+
+fn persist_refreshed(token: &RefreshedToken) {
+    let config = crate::config::Config::global();
+    let _ = config.set_secret("CAROS_TOKEN", &token.access);
+    if let Some(exp) = token.expiry {
+        let _ = config.set_param("CAROS_TOKEN_EXPIRY", exp);
+    }
+    if let Some(refresh) = &token.refresh {
+        let _ = config.set_secret("CAROS_REFRESH_TOKEN", refresh);
+    }
+}
+
+struct TokenState {
+    access: String,
+    expiry: Option<u64>,
+    refresh: Option<String>,
+}
+
 /// Attaches the Entra bearer token (acquired by `caros login` or pushed by the
-/// desktop MSAL sign-in) to every gateway request. APIM validates the token and
-/// the `hackathon` app role; the gateway classifies the request and routes it.
+/// desktop MSAL sign-in) to every gateway request, refreshing it ahead of the
+/// ~1h expiry when a refresh token is available. APIM validates the token and the
+/// `hackathon` app role; the gateway classifies the request and routes it.
 struct CarosAuthProvider {
-    token: String,
+    state: Mutex<TokenState>,
 }
 
 #[async_trait]
 impl AuthProvider for CarosAuthProvider {
     async fn get_auth_header(&self) -> Result<(String, String)> {
+        let mut state = self.state.lock().await;
+        if should_refresh(state.expiry, now_unix(), REFRESH_SKEW_SECS) {
+            if let Some(refresh) = state.refresh.clone() {
+                match exchange_refresh_token(
+                    &entra_token_url(),
+                    ENTRA_CLIENT_ID,
+                    ENTRA_SCOPE,
+                    &refresh,
+                )
+                .await
+                {
+                    Ok(refreshed) => {
+                        persist_refreshed(&refreshed);
+                        state.access = refreshed.access;
+                        state.expiry = refreshed.expiry;
+                        if refreshed.refresh.is_some() {
+                            state.refresh = refreshed.refresh; // Entra rotates refresh tokens
+                        }
+                    }
+                    Err(e) => {
+                        tracing::warn!("Caros token refresh failed, using existing token: {e}");
+                    }
+                }
+            }
+        }
         Ok((
             "Authorization".to_string(),
-            format!("Bearer {}", self.token),
+            format!("Bearer {}", state.access),
         ))
     }
 }
@@ -76,7 +193,19 @@ impl ProviderDef for CarosProvider {
                     )
                 })?;
 
-            let auth_provider = CarosAuthProvider { token };
+            let refresh: Option<String> = config
+                .get_secret("CAROS_REFRESH_TOKEN")
+                .ok()
+                .filter(|t: &String| !t.is_empty());
+            let expiry: Option<u64> = config.get_param("CAROS_TOKEN_EXPIRY").ok();
+
+            let auth_provider = CarosAuthProvider {
+                state: Mutex::new(TokenState {
+                    access: token,
+                    expiry,
+                    refresh,
+                }),
+            };
             let host = gateway.trim_end_matches('/').to_string();
             let api_client = ApiClient::new_with_tls(
                 host,
@@ -98,15 +227,71 @@ mod tests {
     use super::*;
 
     use goose_providers::base::ProviderDescriptor as _;
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
 
     #[tokio::test]
     async fn test_auth_header_is_bearer() {
         let provider = CarosAuthProvider {
-            token: "abc123".to_string(),
+            state: Mutex::new(TokenState {
+                access: "abc123".to_string(),
+                expiry: None, // unknown expiry -> never proactively refreshes (no network)
+                refresh: None,
+            }),
         };
         let (header, value) = provider.get_auth_header().await.unwrap();
         assert_eq!(header, "Authorization");
         assert_eq!(value, "Bearer abc123");
+    }
+
+    #[test]
+    fn test_should_refresh_window() {
+        let now = 1_000_000;
+        assert!(!should_refresh(None, now, REFRESH_SKEW_SECS)); // unknown -> no refresh
+        assert!(!should_refresh(Some(now + 1000), now, REFRESH_SKEW_SECS)); // far from expiry
+        assert!(should_refresh(Some(now + 100), now, REFRESH_SKEW_SECS)); // within skew
+        assert!(should_refresh(Some(now), now, REFRESH_SKEW_SECS)); // already expired
+    }
+
+    #[tokio::test]
+    async fn test_exchange_refresh_token_success() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/token"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(serde_json::json!({
+                "access_token": "new-access",
+                "expires_in": 3600,
+                "refresh_token": "rotated-refresh"
+            })))
+            .mount(&server)
+            .await;
+
+        let url = format!("{}/token", server.uri());
+        let r = exchange_refresh_token(&url, "client", "scope", "old-refresh")
+            .await
+            .unwrap();
+        assert_eq!(r.access, "new-access");
+        assert_eq!(r.refresh.as_deref(), Some("rotated-refresh"));
+        assert!(r.expiry.unwrap() > now_unix());
+    }
+
+    #[tokio::test]
+    async fn test_exchange_refresh_token_error_surfaces_description() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/token"))
+            .respond_with(ResponseTemplate::new(400).set_body_json(serde_json::json!({
+                "error": "invalid_grant",
+                "error_description": "refresh token expired"
+            })))
+            .mount(&server)
+            .await;
+
+        let url = format!("{}/token", server.uri());
+        let err = exchange_refresh_token(&url, "c", "s", "r")
+            .await
+            .unwrap_err();
+        assert!(err.to_string().contains("refresh token expired"));
     }
 
     #[test]
