@@ -77,7 +77,7 @@ const CarosProfileChip: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     <button
       type="button"
       onClick={onClick}
-      title={profile.email}
+      title={profile.name}
       className={cn(
         'flex flex-row items-center gap-3 outline-none no-drag w-full mb-1',
         'rounded-full px-3 py-2 text-sm transition-colors hover:bg-background-tertiary/60'
@@ -94,13 +94,9 @@ const CarosProfileChip: React.FC<{ onClick: () => void }> = ({ onClick }) => {
           {profileInitials(profile)}
         </div>
       )}
-      <span className="flex flex-col min-w-0 text-left leading-tight">
-        <span className="truncate font-medium text-text-primary">
-          {profile.name || profile.email}
-        </span>
-        {profile.email && profile.name && (
-          <span className="truncate text-xs text-text-secondary">{profile.email}</span>
-        )}
+      {/* Homepage shows name only; email is shown in Settings -> Account. */}
+      <span className="truncate min-w-0 text-left font-medium text-text-primary">
+        {profile.name || profile.email}
       </span>
     </button>
   );
