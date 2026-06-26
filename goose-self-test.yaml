@@ -10,6 +10,7 @@ activities:
   - Validate shell command execution and error handling
   - Analyze code structure and parsing capabilities
   - Test extension discovery and management
+  - Test office document generation (PPTX create, extend, extract)
   - Test load tool for knowledge injection and discovery
   - Test delegate tool for task delegation (sync and async)
   - Test error boundaries including nested delegation prevention
@@ -114,6 +115,12 @@ extensions:
     timeout: 600
     bundled: true
     description: Core tool for file operations, shell commands, and code analysis
+  - type: builtin
+    name: computercontroller
+    display_name: Computer Controller
+    timeout: 600
+    bundled: true
+    description: Web scraping, automation, and office document tools (docx/xlsx/pdf/pptx)
 
 prompt: |
   Execute the Goose Self-Testing Integration Suite in {{ workspace_dir }}.
@@ -168,6 +175,35 @@ prompt: |
   4. Verify extension isolation between enabled extensions
 
   Log results to: {{ workspace_dir }}/phase2_extensions.md
+  {% endif %}
+
+  {% if test_phases == "all" or "office" in test_phases %}
+  ## 📄 PHASE 2B: Office Document Tools (PPTX)
+
+  Test the in-process Rust `pptx_tool` (computercontroller extension). All operations are
+  file-level and run headless — no PowerPoint install required.
+
+  ### Create
+  1. Call `pptx_tool` with operation "create" to build {{ workspace_dir }}/deck.pptx with two slides:
+     - slides: [
+         {title: "Caros Self-Test", bullets: ["Generated headlessly", "Pure-Rust OOXML"]},
+         {title: "Second Slide", bullets: ["Bullet A", "Bullet B"]}
+       ]
+  2. Verify the tool reports 2 slides created and the file exists.
+
+  ### Extract
+  3. Call `pptx_tool` operation "extract_text" on {{ workspace_dir }}/deck.pptx.
+  4. Verify the output contains "Caros Self-Test", "Second Slide", and the bullet text.
+
+  ### Add slide
+  5. Call `pptx_tool` operation "add_slide" with title "Appended" and bullets ["Added later"].
+  6. Re-run extract_text and verify there are now 3 slides and "Appended" is present.
+
+  ### Package validation
+  7. Confirm the output is a valid OOXML/ZIP package — e.g. `unzip -l {{ workspace_dir }}/deck.pptx`
+     should list `[Content_Types].xml`, `ppt/presentation.xml`, and `ppt/slides/slide3.xml`.
+
+  Log results to: {{ workspace_dir }}/phase2b_office.md
   {% endif %}
 
   {% if test_phases == "all" or "delegation" in test_phases %}
@@ -398,6 +434,7 @@ prompt: |
   • Shell commands: [✓/✗]
   • Code analysis: [✓/✗]
   • Extensions: [✓/✗]
+  • Office tools (pptx): [✓/✗]
   • Load tool: [✓/✗]
   • Delegate (sync): [✓/✗]
   • Delegate (async): [✓/✗]

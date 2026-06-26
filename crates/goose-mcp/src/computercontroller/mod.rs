@@ -32,6 +32,7 @@ use std::os::unix::fs::PermissionsExt;
 
 mod docx_tool;
 mod pdf_tool;
+mod pptx_tool;
 mod xlsx_tool;
 
 mod platform;
@@ -306,6 +307,47 @@ pub struct XlsxToolParams {
     pub col: Option<u64>,
     /// New value for update_cell operation
     pub value: Option<String>,
+}
+
+/// Enum for operation parameter in pptx_tool
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum PptxOperation {
+    /// Extract the title and bullet text of every slide
+    ExtractText,
+    /// Create a new presentation (overwrites any existing file at the path)
+    Create,
+    /// Append a single slide to an existing presentation
+    AddSlide,
+}
+
+/// A single slide for create operations
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Clone, Default)]
+pub struct PptxSlide {
+    /// Slide title
+    #[serde(default)]
+    pub title: String,
+    /// Bullet lines for the slide body
+    #[serde(default)]
+    pub bullets: Vec<String>,
+}
+
+/// Parameters for the pptx_tool
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
+pub struct PptxToolParams {
+    /// Path to the PPTX file
+    pub path: String,
+    /// Operation to perform on the PPTX
+    pub operation: PptxOperation,
+    /// Slides for the create operation (each with a title and bullet lines)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub slides: Option<Vec<PptxSlide>>,
+    /// Slide title (for add_slide, or a single-slide create)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    /// Bullet lines, one per item (for add_slide, or a single-slide create)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bullets: Option<Vec<String>>,
 }
 
 /// ComputerController MCP Server using official RMCP SDK
@@ -1485,6 +1527,77 @@ impl ComputerControllerServer {
                 .map_err(|e| ErrorData::new(e.code, e.message, e.data))?;
 
         Ok(CallToolResult::success(result))
+    }
+
+    /// Process PowerPoint (PPTX) files to extract text and create/extend presentations
+    #[tool(
+        name = "pptx_tool",
+        description = "
+            Process PowerPoint (PPTX) files to read slides and build presentations.
+            Each slide is modeled as a title plus a list of bullet lines.
+            Supports operations:
+            - extract_text: Extract the title and bullets of every slide
+            - create: Create a new presentation. Provide either 'slides' (a list of
+              {title, bullets}) for a multi-slide deck, or 'title'/'bullets' for a
+              single slide. Overwrites any existing file at the path.
+            - add_slide: Append one slide (from 'title'/'bullets') to an existing deck.
+
+            Use this when there is a .pptx file that needs to be processed or created.
+            Note: this is a text-level generator; add_slide rebuilds the deck from
+            extracted slide text, so rich formatting from externally-authored decks
+            may not be preserved.
+        "
+    )]
+    pub async fn pptx_tool(
+        &self,
+        params: Parameters<PptxToolParams>,
+    ) -> Result<CallToolResult, ErrorData> {
+        let params = params.0;
+        let path = &params.path;
+
+        let slide_from_fields = || pptx_tool::Slide {
+            title: params.title.clone().unwrap_or_default(),
+            bullets: params.bullets.clone().unwrap_or_default(),
+        };
+
+        match params.operation {
+            PptxOperation::ExtractText => {
+                let result = pptx_tool::extract_text(path)
+                    .map_err(|e| ErrorData::new(e.code, e.message, e.data))?;
+                Ok(CallToolResult::success(result))
+            }
+            PptxOperation::Create => {
+                let slides: Vec<pptx_tool::Slide> = match params.slides {
+                    Some(slides) if !slides.is_empty() => slides
+                        .into_iter()
+                        .map(|s| pptx_tool::Slide {
+                            title: s.title,
+                            bullets: s.bullets,
+                        })
+                        .collect(),
+                    _ => vec![slide_from_fields()],
+                };
+                pptx_tool::write_deck(path, &slides)
+                    .map_err(|e| ErrorData::new(e.code, e.message, e.data))?;
+                Ok(CallToolResult::success(vec![Content::text(format!(
+                    "Created presentation with {} slide(s) at {}",
+                    slides.len(),
+                    path
+                ))]))
+            }
+            PptxOperation::AddSlide => {
+                let mut slides = pptx_tool::read_slides(path)
+                    .map_err(|e| ErrorData::new(e.code, e.message, e.data))?;
+                slides.push(slide_from_fields());
+                pptx_tool::write_deck(path, &slides)
+                    .map_err(|e| ErrorData::new(e.code, e.message, e.data))?;
+                Ok(CallToolResult::success(vec![Content::text(format!(
+                    "Added slide; presentation now has {} slide(s) at {}",
+                    slides.len(),
+                    path
+                ))]))
+            }
+        }
     }
 
     /// Manage cached files and data
