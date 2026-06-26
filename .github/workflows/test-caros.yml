@@ -16,14 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: caros/services/caros-gateway
+        working-directory: services/caros-gateway
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: caros/services/caros-gateway/package-lock.json
+          cache-dependency-path: services/caros-gateway/package-lock.json
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build # also asserts tests are excluded from dist/
@@ -38,19 +38,35 @@ jobs:
         with:
           components: rustfmt
       - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: caros
       - name: Format check (touched crates)
-        working-directory: caros
         run: cargo fmt -p goose -p goose-cli -p goose-mcp --check
       - name: Caros provider (auth header + metadata contract)
-        working-directory: caros
         run: cargo test -p goose --lib providers::caros
       - name: Office tools (docx/xlsx/pdf/pptx + zip-slip)
-        working-directory: caros
         run: cargo test -p goose-mcp --features tokio/process computercontroller
       # local-inference pulls llama-cpp-sys-2 (needs libclang + cmake); the login
       # logic is pure, so test it without default features to keep CI lean.
       - name: caros login (device-code poll state machine)
-        working-directory: caros
         run: cargo test -p goose-cli --no-default-features --features rustls-tls,system-keyring --lib commands::login
+
+  desktop:
+    name: Desktop (Electron/TS)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui/desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+      - name: Install workspace
+        working-directory: ui
+        run: pnpm install --frozen-lockfile
+      - run: pnpm run lint:check # tsc + eslint + i18n catalog parity (incl. MSAL files)
+      - run: pnpm run test:run
