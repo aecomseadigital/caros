@@ -67,7 +67,7 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: process.env.GITHUB_OWNER || 'yixuanzhong',
+          owner: process.env.GITHUB_OWNER || 'aecomseadigital',
           name: process.env.GITHUB_REPO || 'caros',
         },
         prerelease: false,

@@ -27,7 +27,7 @@ interface UpdateCheckResult {
 }
 
 export class GitHubUpdater {
-  private readonly owner = process.env.GITHUB_OWNER || 'yixuanzhong';
+  private readonly owner = process.env.GITHUB_OWNER || 'aecomseadigital';
   private readonly repo = process.env.GITHUB_REPO || 'caros';
   private readonly bundleName = process.env.GOOSE_BUNDLE_NAME || 'Caros';
   private readonly apiUrl = `https://api.github.com/repos/${this.owner}/${this.repo}/releases/latest`;

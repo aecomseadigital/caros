@@ -15,74 +15,22 @@ The icon avatar features an otter, which is an iconic wild animal in Singapore.
 
 ## Installation (Windows)
 
-Download the latest signed Windows build from the [releases page](https://github.com/aecomseadigital/caros/releases/latest):
+Get the latest signed build from the [releases page](https://github.com/aecomseadigital/caros/releases/latest):
 
-- **Desktop app** — [Caros-win32-x64.zip](https://github.com/aecomseadigital/caros/releases/latest/download/Caros-win32-x64.zip). Unzip anywhere and run `Caros.exe`.
-- **CLI** — [caros.exe](https://github.com/aecomseadigital/caros/releases/latest/download/caros.exe). Run `caros.exe login` to sign in, then `caros.exe` to start a session.
+- **Installer (recommended)** — [Caros-Setup.exe](https://github.com/aecomseadigital/caros/releases/latest/download/Caros-Setup.exe). A setup wizard that lets you install the **Desktop app**, the **CLI**, or both.
+- **Portable desktop** — [Caros-win32-x64.zip](https://github.com/aecomseadigital/caros/releases/latest/download/Caros-win32-x64.zip). Unzip anywhere and run `Caros.exe`; it self-updates from future releases.
+- **CLI only** — [caros.exe](https://github.com/aecomseadigital/caros/releases/latest/download/caros.exe). Run `caros.exe login` to sign in, then `caros.exe` to start a session.
 
-Both binaries are code-signed and gated behind Microsoft Entra sign-in. macOS and Linux builds are not currently published.
+All binaries are code-signed and gated behind Microsoft Entra sign-in. macOS and Linux builds are not currently published.
 
-The remainder of this README is retained from the upstream goose project and describes
-the underlying agent; some branding, links, and references still point to goose.
+## How Caros differs from goose
 
----
+Caros keeps goose's core agent engine but replaces the bring-your-own-model setup with a locked, AECOM-managed configuration:
 
-<div align="center">
+- **Single, locked provider.** Caros talks only to the AECOM **Caros gateway** (Azure OpenAI, `gpt-5.4`) — there is no provider selection or BYOK. The gateway performs server-side model routing (a `mini`/`nano` tier chosen per request), prompt-cache optimisation, and per-user usage logging.
+- **Microsoft Entra sign-in.** You sign in with your AECOM account — MSAL in the desktop app, `caros login` (device code) in the CLI — instead of pasting provider API keys. Access is gated by an app role.
+- **In-app extension browser.** "Browse extensions" opens a built-in, searchable catalog and installs directly via the `caros://` deep link, rather than linking out to an external docs site.
+- **400k context window.** The gateway models expose a 400,000-token input context.
+- **AECOM branding.** Caros name, otter icon, and AECOM ownership throughout.
 
-# goose
-
-_your native open source AI agent — desktop app, CLI, and API — for code, workflows, and everything in between_
-
-<p align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0"
-    ><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg"></a>
-  <a href="https://discord.gg/goose-oss"
-    ><img src="https://img.shields.io/discord/1287729918100246654?logo=discord&logoColor=white&label=Join+Us&color=blueviolet" alt="Discord"></a>
-  <a href="https://github.com/aaif-goose/goose/actions/workflows/ci.yml"
-     ><img src="https://img.shields.io/github/actions/workflow/status/aaif-goose/goose/ci.yml?branch=main" alt="CI"></a>
-  <a href="https://insights.linuxfoundation.org/project/goose"><img src="https://insights.linuxfoundation.org/api/badge/health-score?project=goose"></a>
-  <a href="https://repology.org/project/goose-cli/versions"><img src="https://repology.org/badge/tiny-repos/goose-cli.svg" alt="Packaging status"></a>
-</p>
-</div>
-
-goose is a general-purpose AI agent that runs on your machine. Not just for code — use it for research, writing, automation, data analysis, or anything you need to get done.
-
-A native desktop app for macOS, Linux, and Windows. A full CLI for terminal workflows. An API to embed it anywhere. Built in Rust for performance and portability.
-
-goose works with 15+ providers — Anthropic, OpenAI, Google, Ollama, OpenRouter, Azure, Bedrock, and more. Use API keys or your existing Claude, ChatGPT, or Gemini subscriptions via [ACP](https://goose-docs.ai/docs/guides/acp-providers). Connect to 70+ extensions via the [Model Context Protocol](https://modelcontextprotocol.io/) open standard.
-
-goose is part of the [Agentic AI Foundation (AAIF)](https://aaif.io/) at the Linux Foundation.
-
-# Get started
-
-**[Download the desktop app](https://goose-docs.ai/docs/getting-started/installation)** for macOS, Linux, and Windows.
-
-Or install the CLI:
-
-```bash
-curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
-```
-
-# Quick links
-- [Quickstart](https://goose-docs.ai/docs/quickstart)
-- [Installation](https://goose-docs.ai/docs/getting-started/installation)
-- [Tutorials](https://goose-docs.ai/docs/category/tutorials)
-- [Documentation](https://goose-docs.ai/docs/category/getting-started)
-- [Governance](https://github.com/aaif-goose/goose/blob/main/GOVERNANCE.md)
-- [Custom Distributions](https://github.com/aaif-goose/goose/blob/main/CUSTOM_DISTROS.md) — build your own goose distro with preconfigured providers, extensions, and branding
-
-## Need help?
-- [Diagnostics & Reporting](https://goose-docs.ai/docs/troubleshooting/diagnostics-and-reporting)
-- [Known Issues](https://goose-docs.ai/docs/troubleshooting/known-issues)
-
-# a little goose humor 🪿
-
-> Why did the developer choose goose as their AI agent?
-> 
-> Because it always helps them "migrate" their code to production! 🚀
-
-# goose around with us
-- [Discord](https://discord.gg/goose-oss)
-- [YouTube](https://www.youtube.com/@goose-oss)
-- [LinkedIn](https://www.linkedin.com/company/goose-oss)
-- [Twitter/X](https://x.com/goose_oss)
+This is a derivative work of goose (Apache 2.0). See [`NOTICE`](NOTICE) for the full, authoritative list of changes.
