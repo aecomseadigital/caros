@@ -1292,6 +1292,9 @@ fn shorten_path(path: &str, debug: bool) -> String {
     shortened.join("/")
 }
 
+/// Otter wordmark shown at the top of a new CLI session.
+const OTTER: &str = include_str!("otter.txt");
+
 pub fn display_session_info(
     resume: bool,
     provider: &str,
@@ -1317,6 +1320,7 @@ pub fn display_session_info(
 
     // Caros wordmark with session info on the right
     println!();
+    println!("{}", style(OTTER).cyan());
     println!(
         "  {}  {} {} {} {} {}",
         style("  caros ❯").cyan().bold(),

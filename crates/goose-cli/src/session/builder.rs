@@ -675,9 +675,17 @@ pub async fn build_session(session_config: SessionBuilderConfig) -> CliSession {
     configure_session_prompts(&session, config, &session_config, &session_id).await;
 
     if !session_config.quiet {
+        // Show the provider's friendly display name (e.g. "aecom-asia-digital-dev")
+        // rather than the internal id (e.g. "caros").
+        let provider_display = goose::providers::providers()
+            .await
+            .into_iter()
+            .find(|(m, _)| m.name == effective_provider_name)
+            .map(|(m, _)| m.display_name.clone())
+            .unwrap_or_else(|| effective_provider_name.clone());
         output::display_session_info(
             session_config.resume,
-            &effective_provider_name,
+            &provider_display,
             &effective_model_name,
             &Some(session_id),
         );
