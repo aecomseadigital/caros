@@ -49,11 +49,15 @@
       <value>{{gw-secret}}</value>
     </set-header>
 
-    <!-- 4. (Optional) Per-user token cap. Add when desired:
+    <!-- 4. Per-user AOAI token cap (keyed on the validated JWT oid) + request-rate cap.
+         Defense-in-depth so a single authorized token cannot exhaust the shared AOAI
+         account's TPM quota or run up unbounded pay-as-you-go cost. Tune the limits to
+         the deployment quota. -->
     <azure-openai-token-limit
         counter-key="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{"anon"}).FirstOrDefault())"
         tokens-per-minute="150000" estimate-prompt-tokens="true" remaining-tokens-header-name="x-tokens-remaining" />
-    -->
+    <rate-limit-by-key calls="120" renewal-period="60"
+        counter-key="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{"anon"}).FirstOrDefault())" />
   </inbound>
   <backend>
     <base />

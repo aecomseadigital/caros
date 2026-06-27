@@ -64,7 +64,10 @@ async function handleChatCompletions(req: Request, res: Response): Promise<void>
       upstream = await callChatCompletions(deployment, outBody);
     }
   } catch (err) {
-    res.status(502).json({ error: { message: `upstream call failed: ${(err as Error).message}`, type: "caros_gateway" } });
+    // Log details server-side only; the raw error can include the AOAI endpoint host
+    // (DNS/TLS failures), so don't reflect it back to the caller.
+    console.error("[caros-gateway] upstream AOAI call failed:", err);
+    res.status(502).json({ error: { message: "upstream call failed", type: "caros_gateway" } });
     return;
   }
 

@@ -35,6 +35,20 @@ fn entra_token_url() -> String {
     format!("https://login.microsoftonline.com/{ENTRA_TENANT}/oauth2/v2.0/token")
 }
 
+/// The Caros bearer is a live Entra access token. `CAROS_GATEWAY_URL` is env/config
+/// overridable (env is read first), so a poisoned profile/recipe could point it at an
+/// attacker host and the bearer would be pushed there. Refuse any non-https scheme so
+/// the token is never sent in cleartext.
+fn ensure_https_gateway(host: &str) -> Result<()> {
+    if host.to_ascii_lowercase().starts_with("https://") {
+        Ok(())
+    } else {
+        Err(anyhow::anyhow!(
+            "CAROS_GATEWAY_URL must be https:// to protect the Caros bearer token (got: {host})"
+        ))
+    }
+}
+
 /// True when the access token is expired or within the refresh skew window.
 /// Unknown expiry (`None`, e.g. an older login) means "don't proactively refresh".
 fn should_refresh(expiry: Option<u64>, now: u64, skew: u64) -> bool {
@@ -214,6 +228,7 @@ impl ProviderDef for CarosProvider {
                 }),
             };
             let host = gateway.trim_end_matches('/').to_string();
+            ensure_https_gateway(&host)?;
             let api_client = ApiClient::new_with_tls(
                 host,
                 AuthMethod::Custom(Box::new(auth_provider)),
@@ -299,6 +314,17 @@ mod tests {
             .await
             .unwrap_err();
         assert!(err.to_string().contains("refresh token expired"));
+    }
+
+    #[test]
+    fn test_ensure_https_gateway() {
+        assert!(ensure_https_gateway("https://apim-caros.azure-api.net/caros/v1").is_ok());
+        assert!(ensure_https_gateway("HTTPS://apim-caros.azure-api.net").is_ok());
+        // The bearer must never go to a cleartext or attacker-controlled scheme.
+        assert!(ensure_https_gateway("http://evil.example/caros/v1").is_err());
+        assert!(ensure_https_gateway("http://localhost:8080").is_err());
+        assert!(ensure_https_gateway("ftp://x").is_err());
+        assert!(ensure_https_gateway("apim-caros.azure-api.net").is_err());
     }
 
     #[test]

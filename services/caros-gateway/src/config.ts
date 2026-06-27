@@ -44,7 +44,11 @@ export const config = {
   sharedSecret: optional("GATEWAY_SHARED_SECRET", ""),
   // Secure by default: if no shared secret is configured, requests are REJECTED
   // (the gateway has a public ingress). Local dev opts out with ALLOW_INSECURE_NO_SECRET=true.
-  allowInsecureNoSecret: optional("ALLOW_INSECURE_NO_SECRET", "false") === "true",
+  // Hard guard: the escape hatch is ignored in production even if the env var is set,
+  // so a deploy-time misconfig cannot open the public ingress to anonymous traffic.
+  allowInsecureNoSecret:
+    optional("ALLOW_INSECURE_NO_SECRET", "false") === "true" &&
+    process.env.NODE_ENV !== "production",
   appInsightsConnectionString: optional("APPLICATIONINSIGHTS_CONNECTION_STRING", ""),
   headers: {
     secret: optional("GATEWAY_SECRET_HEADER", "x-gateway-secret"),

@@ -25,15 +25,25 @@ function getCodeChunk(
   totalLines: number;
   githubUrl: string;
 } {
-  const baseDir = path.resolve(getCodebaseDir());
-  const fullPath = path.resolve(path.join(baseDir, filePath));
+  const baseDir = fs.realpathSync(path.resolve(getCodebaseDir()));
+  const requested = path.resolve(baseDir, filePath);
 
-  if (!fullPath.startsWith(baseDir + "/")) {
+  const contained = (p: string): boolean => p === baseDir || p.startsWith(baseDir + path.sep);
+
+  // Lexical containment first: rejects ../ traversal and absolute paths outside base
+  // (uses path.sep so a Windows backslash path can't slip past a hard-coded "/").
+  if (!contained(requested)) {
     throw new Error("Invalid file path - directory traversal not allowed");
   }
 
-  if (!fs.existsSync(fullPath)) {
+  if (!fs.existsSync(requested)) {
     throw new Error(`File not found: ${filePath}`);
+  }
+
+  // Resolve symlinks and re-check, so a symlink under baseDir cannot escape it.
+  const fullPath = fs.realpathSync(requested);
+  if (!contained(fullPath)) {
+    throw new Error("Invalid file path - directory traversal not allowed");
   }
 
   const stat = fs.statSync(fullPath);

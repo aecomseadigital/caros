@@ -19,6 +19,7 @@ import {
 } from '@azure/msal-node';
 import { app, BrowserWindow, ipcMain, safeStorage, shell } from 'electron';
 import { Buffer } from 'node:buffer';
+import { randomBytes } from 'node:crypto';
 import http from 'node:http';
 import type { AddressInfo } from 'node:net';
 import fs from 'node:fs';
@@ -161,6 +162,9 @@ export async function signIn(): Promise<CarosToken> {
   const client = getApp();
   const crypto = new CryptoProvider();
   const { verifier, challenge } = await crypto.generatePkceCodes();
+  // CSRF/replay guard for the loopback redirect: only accept a callback that echoes
+  // this exact state, so a co-resident process can't inject its own auth code.
+  const state = randomBytes(32).toString('hex');
 
   return await new Promise<CarosToken>((resolve, reject) => {
     let settled = false;
@@ -186,6 +190,11 @@ export async function signIn(): Promise<CarosToken> {
         const desc = reqUrl.searchParams.get('error_description') ?? error;
         res.end(resultPage('Sign-in failed. You can close this window.'));
         finish(() => reject(new Error(desc)));
+        return;
+      }
+      if (reqUrl.searchParams.get('state') !== state) {
+        res.end(resultPage('Sign-in failed. You can close this window.'));
+        finish(() => reject(new Error('Caros sign-in failed: OAuth state mismatch')));
         return;
       }
       try {
@@ -218,6 +227,7 @@ export async function signIn(): Promise<CarosToken> {
           redirectUri,
           codeChallenge: challenge,
           codeChallengeMethod: 'S256',
+          state,
         });
         await shell.openExternal(authUrl);
       } catch (e) {
