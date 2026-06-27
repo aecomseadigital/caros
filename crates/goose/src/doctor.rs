@@ -83,7 +83,7 @@ async fn ensure_working_provider(
             save_and_set(agent, session_id, working, model_config).await?;
             let preamble = log.join("\n");
             return Ok(Some(Message::assistant().with_text(format!(
-                "**Goose Doctor**\n\n{}\n\n\
+                "**Caros Doctor**\n\n{}\n\n\
                  Your configured model wasn't working, so I switched to \
                  **{} / {}**. You can continue chatting now.",
                 preamble, pname, new_model,
@@ -101,7 +101,7 @@ async fn ensure_working_provider(
         save_and_set(agent, session_id, working, model_config).await?;
         let preamble = log.join("\n");
         return Ok(Some(Message::assistant().with_text(format!(
-            "**Goose Doctor**\n\n{}\n\n\
+            "**Caros Doctor**\n\n{}\n\n\
              Switched to **{} / {}**. You can continue chatting now.",
             preamble, name, model,
         ))));
@@ -109,8 +109,8 @@ async fn ensure_working_provider(
 
     let preamble = log.join("\n");
     Ok(Some(Message::assistant().with_text(format!(
-        "**Goose Doctor**\n\n{}\n\n\
-         No working provider found. Run `goose configure` to set one up.",
+        "**Caros Doctor**\n\n{}\n\n\
+         No working provider found. Run `caros configure` to set one up.",
         preamble,
     ))))
 }
@@ -243,7 +243,7 @@ async fn try_other_providers(
 fn describe_error(e: &ProviderError) -> String {
     match e {
         ProviderError::Authentication(_) => {
-            "Authentication failed — check your API key. Run `goose configure` to update it."
+            "Authentication failed — check your API key. Run `caros configure` to update it."
                 .to_string()
         }
         ProviderError::CreditsExhausted { top_up_url, .. } => {

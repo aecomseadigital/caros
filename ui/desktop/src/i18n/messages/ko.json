@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "익스텐션 검색..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "자동"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "자동 모드 선택"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "현재 모드: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "구성"
   },

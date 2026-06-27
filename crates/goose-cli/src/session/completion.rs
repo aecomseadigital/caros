@@ -445,7 +445,7 @@ impl Hinter for GooseCompleter {
 
         match cache.hint_status {
             HintStatus::Interrupted => {
-                Some("Interrupted, what should goose work on instead?".to_string())
+                Some("Interrupted, what should caros work on instead?".to_string())
             }
             HintStatus::MaybeExit => {
                 Some("Press Ctrl+C again to exit, or type new instructions to continue".to_string())

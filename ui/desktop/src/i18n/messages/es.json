@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "buscar extensiones..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "automático"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "Selección automática del modo"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "Modo actual: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "Configurar"
   },

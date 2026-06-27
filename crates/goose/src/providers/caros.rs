@@ -12,8 +12,8 @@ use futures::future::BoxFuture;
 
 const CAROS_PROVIDER_NAME: &str = "caros";
 pub const CAROS_DEFAULT_MODEL: &str = "gpt-5.4-auto";
-pub const CAROS_DOC_URL: &str = "https://apim-caros.azure-api.net";
-const CAROS_DEFAULT_GATEWAY: &str = "https://apim-caros.azure-api.net/caros/v1";
+pub const CAROS_DOC_URL: &str = "https://apim-caros-dev.azure-api.net";
+const CAROS_DEFAULT_GATEWAY: &str = "https://apim-caros-dev.azure-api.net/caros/v1";
 pub const CAROS_KNOWN_MODELS: &[&str] = &["gpt-5.4-auto"];
 
 const ENTRA_TENANT: &str = "16ed5ab4-2b59-4e40-806d-8a30bdc9cf26";
@@ -318,13 +318,13 @@ mod tests {
 
     #[test]
     fn test_ensure_https_gateway() {
-        assert!(ensure_https_gateway("https://apim-caros.azure-api.net/caros/v1").is_ok());
-        assert!(ensure_https_gateway("HTTPS://apim-caros.azure-api.net").is_ok());
+        assert!(ensure_https_gateway("https://apim-caros-dev.azure-api.net/caros/v1").is_ok());
+        assert!(ensure_https_gateway("HTTPS://apim-caros-dev.azure-api.net").is_ok());
         // The bearer must never go to a cleartext or attacker-controlled scheme.
         assert!(ensure_https_gateway("http://evil.example/caros/v1").is_err());
         assert!(ensure_https_gateway("http://localhost:8080").is_err());
         assert!(ensure_https_gateway("ftp://x").is_err());
-        assert!(ensure_https_gateway("apim-caros.azure-api.net").is_err());
+        assert!(ensure_https_gateway("apim-caros-dev.azure-api.net").is_err());
     }
 
     #[test]

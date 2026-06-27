@@ -1396,7 +1396,7 @@ async fn import_app(
     })?;
 
     let mut app = GooseApp::from_html(&body.html).map_err(|e| ErrorResponse {
-        message: format!("Invalid Goose App HTML: {}", e),
+        message: format!("Invalid Caros App HTML: {}", e),
         status: StatusCode::BAD_REQUEST,
     })?;
 

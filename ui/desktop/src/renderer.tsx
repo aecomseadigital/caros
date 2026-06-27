@@ -39,7 +39,7 @@ function handleIntlError(err: { code: string; message?: string }) {
   if (!isLauncher) {
     const gooseApiHost = await window.electron.getGoosedHostPort();
     if (gooseApiHost === null) {
-      window.alert('failed to start goose backend process');
+      window.alert('failed to start caros backend process');
       return;
     }
     client.setConfig({

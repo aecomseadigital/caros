@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "拡張機能を検索..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "自動"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "モードの自動選択"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "現在のモード: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "設定"
   },

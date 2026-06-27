@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "एक्सटेंशन खोजें..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "स्वचालित"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "स्वचालित मोड चयन"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "वर्तमान मोड: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "कॉन्फ़िगर करें"
   },

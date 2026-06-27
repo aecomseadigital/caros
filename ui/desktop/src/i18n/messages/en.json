@@ -158,6 +158,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "search extensions..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "auto"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "Automatic mode selection"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "Current mode: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "Configure"
   },
@@ -1302,7 +1311,7 @@
     "defaultMessage": "Configure"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Configure your project's .goosehints file to provide additional context to Goose"
+    "defaultMessage": "Configure your project's .goosehints file to provide additional context to Caros"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Project Hints (.goosehints)"
@@ -2952,7 +2961,7 @@
     "defaultMessage": "Enter parameter name..."
   },
   "recipeFormFields.parametersDescription": {
-    "defaultMessage": "Parameters will be automatically detected from '{{parameter_name}}' syntax in instructions/prompt/activities or you can manually add them below."
+    "defaultMessage": "Parameters will be automatically detected from '{{parameter_name}''}' syntax in instructions/prompt/activities or you can manually add them below."
   },
   "recipeFormFields.parametersLabel": {
     "defaultMessage": "Parameters"
@@ -2970,7 +2979,7 @@
     "defaultMessage": "Define the expected structure of the AI's response using JSON Schema format"
   },
   "recipeFormFields.templateVarHint": {
-    "defaultMessage": "Use '{{parameter_name}}' to define parameters that can be filled in when running the recipe."
+    "defaultMessage": "Use '{{parameter_name}''}' to define parameters that can be filled in when running the recipe."
   },
   "recipeFormFields.titleLabel": {
     "defaultMessage": "Title"

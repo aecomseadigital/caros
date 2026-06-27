@@ -148,7 +148,7 @@ impl<T, E: std::fmt::Display> ResultExt<T> for Result<T, E> {
 }
 
 pub(super) const DEFAULT_PROVIDER_ID: &str = "goose";
-pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Goose (Default)";
+pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Caros (Default)";
 const PROVIDER_CONFIG_STATUS_CHECK_CONCURRENCY: usize = 16;
 
 /// In-memory state for an active ACP session.
@@ -2204,7 +2204,7 @@ impl GooseAcpAgent {
             .agent_capabilities(capabilities)
             .auth_methods(vec![AuthMethod::Agent(
                 AuthMethodAgent::new("goose-provider", "Configure Provider")
-                    .description("Run `goose configure` to set up your AI provider and API key"),
+                    .description("Run `caros configure` to set up your AI provider and API key"),
             )]))
     }
 

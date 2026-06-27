@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "uzantıları ara..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "otomatik"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "Otomatik mod seçimi"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "Geçerli mod: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "Yapılandır"
   },

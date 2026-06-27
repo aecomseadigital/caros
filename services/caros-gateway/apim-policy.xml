@@ -1,5 +1,5 @@
 <!--
-  Caros APIM inbound policy for the gateway API (applied on the `caros` API in apim-caros).
+  Caros APIM inbound policy for the gateway API (applied on the `caros` API in apim-caros-dev).
 
   Access gating uses contralib-api APP ROLES (not the Hackathon security group / groups claim):
   the user's access token carries `roles: ["...","hackathon",...]` when they are assigned the
@@ -7,9 +7,9 @@
 
   Prerequisites:
     - Backend (API "Web service URL") = https://caros-gw.graybush-e753c860.westus.azurecontainerapps.io
-    - Named value `gw-secret` exists in apim-caros (plain, or Key Vault-backed once the APIM MI has
+    - Named value `gw-secret` exists in apim-caros-dev (plain, or Key Vault-backed once the APIM MI has
       Key Vault Secrets User on kv-caros). Must match the Container App secret `gw-secret`.
-    - (Optional, for emit-token-metric) an Application Insights logger attached to apim-caros.
+    - (Optional, for emit-token-metric) an Application Insights logger attached to apim-caros-dev.
 
   Captured values baked in:
     tenant   16ed5ab4-2b59-4e40-806d-8a30bdc9cf26
@@ -55,7 +55,7 @@
          the deployment quota. -->
     <azure-openai-token-limit
         counter-key="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{"anon"}).FirstOrDefault())"
-        tokens-per-minute="150000" estimate-prompt-tokens="true" remaining-tokens-header-name="x-tokens-remaining" />
+        tokens-per-minute="60000" estimate-prompt-tokens="true" remaining-tokens-header-name="x-tokens-remaining" />
     <rate-limit-by-key calls="120" renewal-period="60"
         counter-key="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("oid", new string[]{"anon"}).FirstOrDefault())" />
   </inbound>

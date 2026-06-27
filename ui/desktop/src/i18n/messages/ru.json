@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "поиск расширений..."
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "автоматически"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "Автоматический выбор режима"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "Текущий режим: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "Настроить"
   },

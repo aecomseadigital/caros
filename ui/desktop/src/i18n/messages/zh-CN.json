@@ -143,6 +143,15 @@
   "bottomMenuExtensionSelection.searchExtensions": {
     "defaultMessage": "搜索扩展…"
   },
+  "bottomMenuModeSelection.autoFallback": {
+    "defaultMessage": "自动"
+  },
+  "bottomMenuModeSelection.automaticModeDescription": {
+    "defaultMessage": "自动模式选择"
+  },
+  "bottomMenuModeSelection.currentModeTitle": {
+    "defaultMessage": "当前模式: {label} - {description}"
+  },
   "cardButtons.configure": {
     "defaultMessage": "配置"
   },

@@ -1,7 +1,7 @@
 {
   "name": "caros-app",
   "productName": "Caros",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Caros App",
   "engines": {
     "node": "^24.10.0",

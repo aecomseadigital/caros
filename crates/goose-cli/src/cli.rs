@@ -986,10 +986,10 @@ enum Command {
         long_about = "Runs a caros session tied to your terminal window.\n\
                       Each terminal maintains its own persistent session that resumes automatically.\n\n\
                       Setup:\n  \
-                        eval \"$(goose term init zsh)\"  # zsh/bash\n  \
-                        let init = ($nu.cache-dir | path join \"goose-term-init.nu\"); ^goose term init nu | save --force $init; source $init\n\n\
+                        eval \"$(caros term init zsh)\"  # zsh/bash\n  \
+                        let init = ($nu.cache-dir | path join \"goose-term-init.nu\"); ^caros term init nu | save --force $init; source $init\n\n\
                       Usage:\n  \
-                        goose term run \"list files in this directory\"\n  \
+                        caros term run \"list files in this directory\"\n  \
                         @goose \"create a python script\"  # using alias\n  \
                         @g \"quick question\"  # short alias"
     )]
@@ -1187,17 +1187,17 @@ enum TermCommand {
     #[command(
         about = "Print shell initialization script",
         long_about = "Prints shell configuration to set up terminal-integrated sessions.\n\
-                      Each terminal gets a persistent goose session that automatically resumes.\n\n\
+                      Each terminal gets a persistent caros session that automatically resumes.\n\n\
                       Setup:\n  \
-                        echo 'eval \"$(goose term init zsh)\"' >> ~/.zshrc\n  \
+                        echo 'eval \"$(caros term init zsh)\"' >> ~/.zshrc\n  \
                         source ~/.zshrc\n\n\
                         Nushell:\n  \
                         let init = ($nu.cache-dir | path join \"goose-term-init.nu\")\n  \
-                        ^goose term init nu | save --force $init\n  \
+                        ^caros term init nu | save --force $init\n  \
                         source $init\n\n\
-                      With --default (anything typed that isn't a command goes to goose):\n  \
-                        echo 'eval \"$(goose term init zsh --default)\"' >> ~/.zshrc\n  \
-                        ^goose term init nu --default | save --force $init"
+                      With --default (anything typed that isn't a command goes to caros):\n  \
+                        echo 'eval \"$(caros term init zsh --default)\"' >> ~/.zshrc\n  \
+                        ^caros term init nu --default | save --force $init"
     )]
     Init {
         /// Shell type (bash, zsh, fish, nu, powershell)
@@ -1228,7 +1228,7 @@ enum TermCommand {
         about = "Run a prompt in the terminal session",
         long_about = "Run a prompt in the terminal-integrated session.\n\n\
                       Examples:\n  \
-                        goose term run list files in this directory\n  \
+                        caros term run list files in this directory\n  \
                         @goose list files  # using alias\n  \
                         @g why did that fail  # short alias"
     )]
@@ -1613,7 +1613,7 @@ fn parse_run_input(
         (Some(file), _, _) => {
             let contents = std::fs::read_to_string(file).unwrap_or_else(|err| {
                 eprintln!(
-                    "Instruction file not found — did you mean to use goose run --text?\n{}",
+                    "Instruction file not found — did you mean to use caros run --text?\n{}",
                     err
                 );
                 std::process::exit(1);
@@ -1922,7 +1922,7 @@ async fn handle_local_models_command(command: LocalModelsCommand) -> Result<()> 
                     );
                     if variant.supported {
                         println!(
-                            "    Download: goose local-models download '{}'",
+                            "    Download: caros local-models download '{}'",
                             variant.download_id
                         );
                     }
