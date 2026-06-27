@@ -22,6 +22,58 @@ export const defaultLogger: Logger = {
   error: (...args) => console.error('[goosed]', ...args),
 };
 
+// Reap orphaned goosed servers (Windows). goosed is spawned `detached` on Windows, so a
+// crash / force-kill of the Electron parent leaves it running with no one to reap it (the
+// normal `will-quit` cleanup never fires). On startup we kill any goosed.exe whose parent
+// Caros/electron process is no longer alive — children of *live* instances are left alone,
+// which is also robust against PID reuse (the parent PID must map to a live Caros, not just
+// any process). No-op on non-Windows.
+export const reapOrphanedGoosed = (logger: Logger = defaultLogger): Promise<void> => {
+  if (process.platform !== 'win32') return Promise.resolve();
+  return new Promise<void>((resolve) => {
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+    const script =
+      "$main = @{}; " +
+      "Get-CimInstance Win32_Process -Filter \"Name='Caros.exe' OR Name='electron.exe'\" | " +
+      'ForEach-Object { $main[[int]$_.ProcessId] = $true }; ' +
+      "Get-CimInstance Win32_Process -Filter \"Name='goosed.exe'\" | ForEach-Object { " +
+      'if (-not $main.ContainsKey([int]$_.ParentProcessId)) { ' +
+      'try { Stop-Process -Id $_.ProcessId -Force -ErrorAction Stop; Write-Output $_.ProcessId } catch {} } }';
+    try {
+      const ps = spawn(
+        'powershell.exe',
+        ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', script],
+        { windowsHide: true }
+      );
+      let out = '';
+      ps.stdout?.on('data', (d: Buffer) => (out += d.toString()));
+      ps.on('error', (e) => {
+        logger.error('reapOrphanedGoosed: failed to run', e);
+        done();
+      });
+      ps.on('exit', () => {
+        const killed = out
+          .split(/\r?\n/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (killed.length) {
+          logger.info(`Reaped ${killed.length} orphaned goosed process(es): ${killed.join(', ')}`);
+        }
+        done();
+      });
+    } catch (e) {
+      logger.error('reapOrphanedGoosed: spawn threw', e);
+      done();
+    }
+    setTimeout(done, 10000); // safety: never block startup on this
+  });
+};
+
 export const findAvailablePort = (): Promise<number> => {
   return new Promise((resolve, _reject) => {
     const server = createServer();

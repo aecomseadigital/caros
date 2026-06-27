@@ -188,6 +188,8 @@ type ElectronAPI = {
   getAutoDownloadDisabled: () => Promise<boolean>;
   // Recipe warning functions
   closeWindow: () => void;
+  /** Report the user's verdict for an intercepted window close (see 'request-window-close'). */
+  resolveWindowClose: (action: 'tray' | 'quit' | 'abort') => void;
   hasAcceptedRecipeBefore: (recipe: Recipe) => Promise<boolean>;
   recordRecipeHash: (recipe: Recipe) => Promise<boolean>;
   openDirectoryInExplorer: (directoryPath: string) => Promise<boolean>;
@@ -352,6 +354,8 @@ const electronAPI: ElectronAPI = {
     return ipcRenderer.invoke('get-auto-download-disabled');
   },
   closeWindow: () => ipcRenderer.send('close-window'),
+  resolveWindowClose: (action: 'tray' | 'quit' | 'abort') =>
+    ipcRenderer.send('resolve-window-close', action),
   hasAcceptedRecipeBefore: (recipe: Recipe) =>
     ipcRenderer.invoke('has-accepted-recipe-before', recipe),
   recordRecipeHash: (recipe: Recipe) => ipcRenderer.invoke('record-recipe-hash', recipe),

@@ -1,0 +1,46 @@
+# Cross-tool benchmark — Oscar vs. Copilot Chat (Basic) vs. Caros
+# Read the README guardrails before running anything against the web tools.
+
+default: smoke
+
+# One-time setup: node deps + Chromium
+install:
+    npm install
+    npm run browsers
+
+# Pull + subset open datasets (needs: pip install datasets)
+fetch n="120":
+    python datasets/fetch_datasets.py --n {{n}}
+
+# Interactive one-time login → saves .auth/<target>.json
+login target:
+    node providers/lib/browser.js --login {{target}}
+
+# Offline smoke: Caros only, committed sample data, deterministic asserts (no judge key)
+smoke:
+    npx promptfoo eval -c promptfooconfig.yaml --filter-providers caros --tests datasets/sample/qa.jsonl
+
+
+# One-prompt web adapter smoke after selectors + auth are complete
+smoke-web target:
+    node scripts/web_smoke.mjs {{target}}
+
+# Open an authenticated web UI and write output/<target>-selector-candidates.json
+discover-selectors target:
+    node scripts/discover_selectors.mjs {{target}}
+
+# Run one track against all (consented) targets; raise reps for latency stability
+track name reps="5":
+    npx promptfoo eval -c promptfooconfig.yaml --tests datasets/{{name}}/{{name}}.jsonl --repeat {{reps}}
+
+# Full curated run (all tracks via the config default + per-track overrides)
+eval:
+    npm run eval
+
+# Side-by-side viewer
+view:
+    npm run view
+
+# Build the executive report from the latest results
+report:
+    npm run report

@@ -87,6 +87,18 @@ module.exports = {
       },
     },
     {
+      // Windows installer (Squirrel) — produces "Caros …Setup.exe" + RELEASES + .nupkg,
+      // which Electron's native autoUpdater + update.electronjs.org use for in-place updates.
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: {
+        name: 'Caros',
+        authors: 'AECOM SINGAPORE PTE. LTD.',
+        description: 'Caros — Azure OpenAI agent (desktop)',
+        setupIcon: 'src/images/icon.ico',
+      },
+    },
+    {
       name: '@electron-forge/maker-deb',
       config: {
         name: 'Caros',

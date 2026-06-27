@@ -17,6 +17,7 @@ import { isRecipeParamsCancelled } from './acp/errors';
 import { toast, ToastContainer } from 'react-toastify';
 import AnnouncementModal from './components/AnnouncementModal';
 import TelemetryConsentPrompt from './components/TelemetryConsentPrompt';
+import CloseConfirmationModal from './components/CloseConfirmationModal';
 import OnboardingGuard from './components/onboarding/OnboardingGuard';
 import { createSession } from './sessions';
 
@@ -721,6 +722,7 @@ export default function App() {
           </HashRouter>
           <AnnouncementModal />
           <TelemetryConsentPrompt />
+          <CloseConfirmationModal />
         </ModelAndProviderProvider>
       </FeaturesProvider>
     </ThemeProvider>

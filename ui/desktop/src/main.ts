@@ -26,7 +26,7 @@ import os from 'node:os';
 import { execFileSync, spawn, execFile } from 'child_process';
 import 'dotenv/config';
 import { checkServerStatus } from './goosed';
-import { startGoosed } from './goosed';
+import { startGoosed, reapOrphanedGoosed } from './goosed';
 import { registerCarosAuthIpc } from './msal';
 import { createClient, createConfig } from './api/client';
 import { expandTilde } from './utils/pathUtils';
@@ -173,12 +173,20 @@ const validLanguageSettings = new Set<Settings['language']>([
   'system',
   'en',
   'es',
+  'fr',
+  'de',
+  'it',
+  'pt',
+  'id',
+  'ms',
+  'vi',
   'hi',
   'ja',
   'ko',
   'ru',
   'tr',
   'zh-CN',
+  'zh-TW',
 ]);
 
 function isValidLanguageSetting(value: unknown): value is Settings['language'] {
@@ -343,6 +351,12 @@ app.on('certificate-error', (event, _webContents, url, _error, certificate, call
 
 app.whenReady().then(() => {
   appConfig.GOOSE_LOCALE = getConfiguredGooseLocale();
+});
+
+// Reap any goosed servers orphaned by a previous crash/force-kill (their parent Caros is
+// gone) before we spawn our own. Children of other live instances are left untouched.
+app.whenReady().then(() => {
+  reapOrphanedGoosed(log).catch((e) => log.error('Orphan reaper error:', e));
 });
 
 // Main-process net.fetch: pin to the exact cert goosed generated.
@@ -1325,9 +1339,33 @@ const createChat = async (app: App, options: CreateChatOptions = {}) => {
 
   windowMap.set(windowId, mainWindow);
 
+  // Intercept the close (X) so the renderer can offer "close to tray" / warn about an
+  // in-flight session. A real quit (Cmd+Q, tray Quit, restart) sets isQuitting and is let
+  // through. If the renderer is gone/crashed it can't decide, so the window closes normally.
+  mainWindow.on('close', (event) => {
+    if (isQuitting || mainWindow.isDestroyed()) {
+      return;
+    }
+    // Only intercept once the renderer can answer; otherwise let the window close normally.
+    if (!reactReadyWindowIds.has(windowId)) {
+      return;
+    }
+    if (mainWindow.webContents.isDestroyed() || mainWindow.webContents.isCrashed()) {
+      return;
+    }
+    event.preventDefault();
+    if (windowsAwaitingCloseDecision.has(windowId)) {
+      return;
+    }
+    windowsAwaitingCloseDecision.add(windowId);
+    mainWindow.webContents.send('request-window-close');
+  });
+
   // Handle window closure
   mainWindow.on('closed', () => {
     windowMap.delete(windowId);
+    windowsAwaitingCloseDecision.delete(windowId);
+    reactReadyWindowIds.delete(windowId);
 
     pendingInitialMessages.delete(windowId);
     pendingDeepLinks.delete(windowId);
@@ -1427,6 +1465,19 @@ const createLauncher = () => {
 
 // Track tray instance
 let tray: Tray | null = null;
+
+// Set on the first real quit signal (before-quit / restart) so the per-window close
+// interceptor lets windows close instead of routing through the tray/confirm flow.
+let isQuitting = false;
+
+// Window ids whose close is currently awaiting the renderer's verdict (modal showing),
+// so a second X click doesn't open a second prompt.
+const windowsAwaitingCloseDecision = new Set<number>();
+
+// Window ids whose renderer has mounted React (and can therefore answer
+// 'request-window-close'). A close before this is not intercepted — there's nothing to lose
+// yet and no listener to respond, so blocking it would strand the window.
+const reactReadyWindowIds = new Set<number>();
 
 const destroyTray = () => {
   if (tray) {
@@ -1690,6 +1741,10 @@ ipcMain.on('react-ready', (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
   const windowId = window?.id;
 
+  if (windowId !== undefined) {
+    reactReadyWindowIds.add(windowId);
+  }
+
   // Send any pending initial message for this window
   if (windowId && pendingInitialMessages.has(windowId)) {
     const initialMessage = pendingInitialMessages.get(windowId)!;
@@ -1772,6 +1827,7 @@ const validSettingKeys: Set<string> = new Set([
   'sessionSharing',
   'seenAnnouncementIds',
   'disableAutoDownload',
+  'closeAction',
 ]);
 
 ipcMain.handle('set-setting', (_event, key: SettingKey, value: unknown) => {
@@ -1783,6 +1839,11 @@ ipcMain.handle('set-setting', (_event, key: SettingKey, value: unknown) => {
 
   if (key === 'language' && !isValidLanguageSetting(value)) {
     console.error(`Invalid language setting rejected: ${String(value)}`);
+    return;
+  }
+
+  if (key === 'closeAction' && value !== 'ask' && value !== 'tray' && value !== 'quit') {
+    console.error(`Invalid closeAction setting rejected: ${String(value)}`);
     return;
   }
 
@@ -1847,7 +1908,14 @@ ipcMain.handle('set-menu-bar-icon', async (_event, show: boolean) => {
   if (show) {
     createTray();
   } else {
-    destroyTray();
+    // Don't strand a window that was closed to the tray: only remove the tray icon when
+    // every window is currently visible (a hidden window needs the tray to be restored).
+    const anyHidden = BrowserWindow.getAllWindows().some(
+      (w) => !w.isDestroyed() && !w.isVisible()
+    );
+    if (!anyHidden) {
+      destroyTray();
+    }
   }
   return true;
 });
@@ -2689,6 +2757,39 @@ async function appMain() {
     }
   });
 
+  // The renderer's verdict for an intercepted close (see the 'close' handler in createChat).
+  ipcMain.on('resolve-window-close', (event, action: 'tray' | 'quit' | 'abort') => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window) {
+      return;
+    }
+    windowsAwaitingCloseDecision.delete(window.id);
+    if (window.isDestroyed()) {
+      return;
+    }
+
+    if (action === 'tray') {
+      // Keep goosed alive: hide rather than close, so the in-flight turn keeps running.
+      if (!tray) {
+        createTray();
+      }
+      if (tray) {
+        window.hide();
+      } else {
+        // No tray available (e.g. icon missing) — minimize so the window stays reachable.
+        window.minimize();
+      }
+      return;
+    }
+
+    if (action === 'quit') {
+      // destroy() (not close()) so we don't re-enter the 'close' interceptor; 'closed'
+      // still fires and releases this window's goosed lease.
+      window.destroy();
+    }
+    // 'abort' → do nothing; the window stays open.
+  });
+
   ipcMain.on('notify', (event, data) => {
     try {
       // Validate notification data
@@ -2808,6 +2909,8 @@ async function appMain() {
 
   // Handle app restart
   ipcMain.on('restart-app', () => {
+    // app.exit() skips 'before-quit', so set the flag here to bypass the close interceptor.
+    isQuitting = true;
     app.relaunch();
     app.exit(0);
   });
@@ -2963,6 +3066,13 @@ async function getAllowList(): Promise<string[]> {
     return [];
   }
 }
+
+app.on('before-quit', () => {
+  // A real quit is underway (Cmd+Q, tray Quit, app.quit(), auto-update install). Mark it so
+  // the per-window close interceptor stops routing to the tray/confirm flow and lets windows
+  // close. Fires before the window 'close' events that app.quit() triggers.
+  isQuitting = true;
+});
 
 app.on('will-quit', async () => {
   const goosedLeases = new Set(goosedLeasesByWindowId.values());

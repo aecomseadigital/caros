@@ -28,7 +28,27 @@ export interface SessionSharingConfig {
   baseUrl: string;
 }
 
-export type LanguageSetting = 'system' | 'en' | 'es' | 'hi' | 'ja' | 'ko' | 'ru' | 'tr' | 'zh-CN';
+export type LanguageSetting =
+  | 'system'
+  | 'en'
+  | 'es'
+  | 'fr'
+  | 'de'
+  | 'it'
+  | 'pt'
+  | 'id'
+  | 'ms'
+  | 'vi'
+  | 'hi'
+  | 'ja'
+  | 'ko'
+  | 'ru'
+  | 'tr'
+  | 'zh-CN'
+  | 'zh-TW';
+
+/** What happens when the user closes the main window (clicks the X). */
+export type CloseAction = 'ask' | 'tray' | 'quit';
 
 export interface Settings {
   // Desktop app settings
@@ -38,6 +58,7 @@ export interface Settings {
   enableWakelock: boolean;
   enableNotifications: boolean;
   spellcheckEnabled: boolean;
+  closeAction: CloseAction;
   externalGoosed: ExternalGoosedConfig;
   globalShortcut?: string | null;
   keyboardShortcuts: KeyboardShortcuts;
@@ -76,6 +97,7 @@ export const defaultSettings: Settings = {
   enableWakelock: false,
   enableNotifications: true,
   spellcheckEnabled: true,
+  closeAction: 'ask',
   keyboardShortcuts: defaultKeyboardShortcuts,
   externalGoosed: {
     enabled: false,

@@ -1,4 +1,19 @@
 {
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
   "alertBox.autoCompactAt": {
     "defaultMessage": "Otomatik sıkıştırma eşiği"
   },
@@ -158,6 +173,18 @@
   "cardButtons.launch": {
     "defaultMessage": "Başlat"
   },
+  "carosSignIn.button": {
+    "defaultMessage": "Sign in with Microsoft"
+  },
+  "carosSignIn.description": {
+    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
+  },
+  "carosSignIn.signingIn": {
+    "defaultMessage": "Waiting for sign-in…"
+  },
+  "carosSignIn.title": {
+    "defaultMessage": "Sign in to continue"
+  },
   "chat.notification.taskComplete.body": {
     "defaultMessage": "Caros'yi tekrar odağa almak için buraya tıklayın."
   },
@@ -223,6 +250,36 @@
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Yanıt Stilleri"
+  },
+  "closeDialog.busy.confirm": {
+    "defaultMessage": "Evet, şimdi kapat"
+  },
+  "closeDialog.busy.message": {
+    "defaultMessage": "Dönüşü bekleyen oturum(lar) algılandı. Şimdi kapatırsanız dönüş kaybolur. Şimdi kapatmak istiyor musunuz?"
+  },
+  "closeDialog.busy.title": {
+    "defaultMessage": "Oturumlar hâlâ çalışıyor"
+  },
+  "closeDialog.busy.wait": {
+    "defaultMessage": "Hayır, bekleyeceğim"
+  },
+  "closeDialog.cancel": {
+    "defaultMessage": "İptal"
+  },
+  "closeDialog.prompt": {
+    "defaultMessage": "Ne yapmak istiyorsunuz:"
+  },
+  "closeDialog.quit": {
+    "defaultMessage": "Hemen kapat"
+  },
+  "closeDialog.remember": {
+    "defaultMessage": "Seçimimi hatırla"
+  },
+  "closeDialog.title": {
+    "defaultMessage": "caros'u kapat"
+  },
+  "closeDialog.tray": {
+    "defaultMessage": "Sistem tepsisine küçült"
   },
   "configSettings.configReset": {
     "defaultMessage": "Yapılandırma Sıfırlama"
@@ -316,6 +373,9 @@
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Caros kullanıcı girişi istemeden önce maksimum aracı dönüşü"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Derin bağlantı oluşturmak için tıklayın"
@@ -3962,6 +4022,21 @@
   "settings.close": {
     "defaultMessage": "Kapat"
   },
+  "settings.closeBehavior.ask": {
+    "defaultMessage": "Her zaman sor"
+  },
+  "settings.closeBehavior.description": {
+    "defaultMessage": "caros penceresini kapattığınızda ne olacağını seçin"
+  },
+  "settings.closeBehavior.quit": {
+    "defaultMessage": "Hemen kapat"
+  },
+  "settings.closeBehavior.title": {
+    "defaultMessage": "Pencere kapatılırken"
+  },
+  "settings.closeBehavior.tray": {
+    "defaultMessage": "Sistem tepsisine küçült"
+  },
   "settings.costTracking.description": {
     "defaultMessage": "Model fiyatlandırmasını ve kullanım maliyetlerini göster"
   },
@@ -3992,14 +4067,32 @@
   "settings.language.english": {
     "defaultMessage": "İngilizce"
   },
+  "settings.language.french": {
+    "defaultMessage": "Fransızca"
+  },
+  "settings.language.german": {
+    "defaultMessage": "Almanca"
+  },
   "settings.language.hindi": {
     "defaultMessage": "Hintçe"
+  },
+  "settings.language.indonesian": {
+    "defaultMessage": "Endonezce"
+  },
+  "settings.language.italian": {
+    "defaultMessage": "İtalyanca"
   },
   "settings.language.japanese": {
     "defaultMessage": "Japonca"
   },
   "settings.language.korean": {
     "defaultMessage": "Korece"
+  },
+  "settings.language.malay": {
+    "defaultMessage": "Malayca"
+  },
+  "settings.language.portuguese": {
+    "defaultMessage": "Portekizce"
   },
   "settings.language.russian": {
     "defaultMessage": "Rusça"
@@ -4016,8 +4109,14 @@
   "settings.language.turkish": {
     "defaultMessage": "Türkçe"
   },
+  "settings.language.vietnamese": {
+    "defaultMessage": "Vietnamca"
+  },
   "settings.language.zhCN": {
     "defaultMessage": "Çince (Basitleştirilmiş)"
+  },
+  "settings.language.zhTW": {
+    "defaultMessage": "Çince (Geleneksel)"
   },
   "settings.menuBarIcon.description": {
     "defaultMessage": "Menü çubuğunda caros'yi göster"
@@ -4096,6 +4195,9 @@
   },
   "settings.version.title": {
     "defaultMessage": "Sürüm"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   },
   "settingsView.tabApp": {
     "defaultMessage": "Uygulama"
@@ -4645,38 +4747,5 @@
   },
   "userMessage.forkSessionTitle": {
     "defaultMessage": "Düzenlenen mesajla yeni bir oturum oluşturun"
-  },
-  "carosSignIn.button": {
-    "defaultMessage": "Sign in with Microsoft"
-  },
-  "carosSignIn.description": {
-    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
-  },
-  "carosSignIn.signingIn": {
-    "defaultMessage": "Waiting for sign-in…"
-  },
-  "carosSignIn.title": {
-    "defaultMessage": "Sign in to continue"
-  },
-  "account.heading": {
-    "defaultMessage": "Account"
-  },
-  "account.notSignedIn": {
-    "defaultMessage": "Not signed in."
-  },
-  "account.signOut": {
-    "defaultMessage": "Sign out"
-  },
-  "account.signedInAs": {
-    "defaultMessage": "Signed in with your Microsoft work account."
-  },
-  "account.signingOut": {
-    "defaultMessage": "Signing out…"
-  },
-  "settingsView.tabAccount": {
-    "defaultMessage": "Account"
-  },
-  "costTracker.tokensTooltip": {
-    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

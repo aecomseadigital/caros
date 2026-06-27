@@ -1,4 +1,19 @@
 {
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
   "alertBox.autoCompactAt": {
     "defaultMessage": "Автосжимать при"
   },
@@ -158,6 +173,18 @@
   "cardButtons.launch": {
     "defaultMessage": "Запустить"
   },
+  "carosSignIn.button": {
+    "defaultMessage": "Sign in with Microsoft"
+  },
+  "carosSignIn.description": {
+    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
+  },
+  "carosSignIn.signingIn": {
+    "defaultMessage": "Waiting for sign-in…"
+  },
+  "carosSignIn.title": {
+    "defaultMessage": "Sign in to continue"
+  },
   "chat.notification.taskComplete.body": {
     "defaultMessage": "Нажмите здесь, чтобы сфокусироваться на Caros."
   },
@@ -223,6 +250,36 @@
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Стили ответов"
+  },
+  "closeDialog.busy.confirm": {
+    "defaultMessage": "Да, закрыть сейчас"
+  },
+  "closeDialog.busy.message": {
+    "defaultMessage": "Обнаружены сеансы, ожидающие возврата. Если закрыть сейчас, возврат будет потерян. Закрыть сейчас?"
+  },
+  "closeDialog.busy.title": {
+    "defaultMessage": "Сеансы всё ещё выполняются"
+  },
+  "closeDialog.busy.wait": {
+    "defaultMessage": "Нет, я подожду"
+  },
+  "closeDialog.cancel": {
+    "defaultMessage": "Отмена"
+  },
+  "closeDialog.prompt": {
+    "defaultMessage": "Выберите действие:"
+  },
+  "closeDialog.quit": {
+    "defaultMessage": "Закрыть немедленно"
+  },
+  "closeDialog.remember": {
+    "defaultMessage": "Запомнить мой выбор"
+  },
+  "closeDialog.title": {
+    "defaultMessage": "Закрыть caros"
+  },
+  "closeDialog.tray": {
+    "defaultMessage": "Свернуть в системный трей"
   },
   "configSettings.configReset": {
     "defaultMessage": "Конфигурация сброшена"
@@ -316,6 +373,9 @@
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Максимальное число ходов агента до запроса ввода от пользователя"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "Нажмите, чтобы создать диплинк"
@@ -3962,6 +4022,21 @@
   "settings.close": {
     "defaultMessage": "Закрыть"
   },
+  "settings.closeBehavior.ask": {
+    "defaultMessage": "Всегда спрашивать"
+  },
+  "settings.closeBehavior.description": {
+    "defaultMessage": "Выберите, что происходит при закрытии окна caros"
+  },
+  "settings.closeBehavior.quit": {
+    "defaultMessage": "Закрыть немедленно"
+  },
+  "settings.closeBehavior.title": {
+    "defaultMessage": "При закрытии окна"
+  },
+  "settings.closeBehavior.tray": {
+    "defaultMessage": "Свернуть в системный трей"
+  },
   "settings.costTracking.description": {
     "defaultMessage": "Показывать цены моделей и стоимость использования"
   },
@@ -3992,14 +4067,32 @@
   "settings.language.english": {
     "defaultMessage": "Английский"
   },
+  "settings.language.french": {
+    "defaultMessage": "Французский"
+  },
+  "settings.language.german": {
+    "defaultMessage": "Немецкий"
+  },
   "settings.language.hindi": {
     "defaultMessage": "Хинди"
+  },
+  "settings.language.indonesian": {
+    "defaultMessage": "Индонезийский"
+  },
+  "settings.language.italian": {
+    "defaultMessage": "Итальянский"
   },
   "settings.language.japanese": {
     "defaultMessage": "Японский"
   },
   "settings.language.korean": {
     "defaultMessage": "Корейский"
+  },
+  "settings.language.malay": {
+    "defaultMessage": "Малайский"
+  },
+  "settings.language.portuguese": {
+    "defaultMessage": "Португальский"
   },
   "settings.language.russian": {
     "defaultMessage": "Русский"
@@ -4016,8 +4109,14 @@
   "settings.language.turkish": {
     "defaultMessage": "Турецкий"
   },
+  "settings.language.vietnamese": {
+    "defaultMessage": "Вьетнамский"
+  },
   "settings.language.zhCN": {
     "defaultMessage": "Китайский (упрощенный)"
+  },
+  "settings.language.zhTW": {
+    "defaultMessage": "Китайский (традиционный)"
   },
   "settings.menuBarIcon.description": {
     "defaultMessage": "Показывать caros в строке меню"
@@ -4096,6 +4195,9 @@
   },
   "settings.version.title": {
     "defaultMessage": "Версия"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   },
   "settingsView.tabApp": {
     "defaultMessage": "Приложение"
@@ -4645,38 +4747,5 @@
   },
   "userMessage.forkSessionTitle": {
     "defaultMessage": "Создать новый сеанс с измененным сообщением"
-  },
-  "carosSignIn.button": {
-    "defaultMessage": "Sign in with Microsoft"
-  },
-  "carosSignIn.description": {
-    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
-  },
-  "carosSignIn.signingIn": {
-    "defaultMessage": "Waiting for sign-in…"
-  },
-  "carosSignIn.title": {
-    "defaultMessage": "Sign in to continue"
-  },
-  "account.heading": {
-    "defaultMessage": "Account"
-  },
-  "account.notSignedIn": {
-    "defaultMessage": "Not signed in."
-  },
-  "account.signOut": {
-    "defaultMessage": "Sign out"
-  },
-  "account.signedInAs": {
-    "defaultMessage": "Signed in with your Microsoft work account."
-  },
-  "account.signingOut": {
-    "defaultMessage": "Signing out…"
-  },
-  "settingsView.tabAccount": {
-    "defaultMessage": "Account"
-  },
-  "costTracker.tokensTooltip": {
-    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

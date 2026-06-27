@@ -1,4 +1,19 @@
 {
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
   "alertBox.autoCompactAt": {
     "defaultMessage": "자동 압축 기준"
   },
@@ -158,6 +173,18 @@
   "cardButtons.launch": {
     "defaultMessage": "실행"
   },
+  "carosSignIn.button": {
+    "defaultMessage": "Sign in with Microsoft"
+  },
+  "carosSignIn.description": {
+    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
+  },
+  "carosSignIn.signingIn": {
+    "defaultMessage": "Waiting for sign-in…"
+  },
+  "carosSignIn.title": {
+    "defaultMessage": "Sign in to continue"
+  },
   "chat.notification.taskComplete.body": {
     "defaultMessage": "Caros에 다시 초점을 맞추려면 여기를 클릭하세요."
   },
@@ -223,6 +250,36 @@
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "응답 스타일"
+  },
+  "closeDialog.busy.confirm": {
+    "defaultMessage": "예, 지금 닫기"
+  },
+  "closeDialog.busy.message": {
+    "defaultMessage": "반환 대기 중인 세션이 감지되었습니다. 지금 닫으면 반환이 손실됩니다. 지금 닫으시겠습니까?"
+  },
+  "closeDialog.busy.title": {
+    "defaultMessage": "세션이 아직 실행 중입니다"
+  },
+  "closeDialog.busy.wait": {
+    "defaultMessage": "아니요, 기다리겠습니다"
+  },
+  "closeDialog.cancel": {
+    "defaultMessage": "취소"
+  },
+  "closeDialog.prompt": {
+    "defaultMessage": "다음 중 무엇을 하시겠습니까:"
+  },
+  "closeDialog.quit": {
+    "defaultMessage": "즉시 닫기"
+  },
+  "closeDialog.remember": {
+    "defaultMessage": "내 선택 기억하기"
+  },
+  "closeDialog.title": {
+    "defaultMessage": "caros 닫기"
+  },
+  "closeDialog.tray": {
+    "defaultMessage": "시스템 트레이로 닫기"
   },
   "configSettings.configReset": {
     "defaultMessage": "구성 재설정"
@@ -316,6 +373,9 @@
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "caros가 사용자 입력을 요청하기 전 최대 에이전트 턴 수"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "딥링크를 생성하려면 클릭하세요."
@@ -3962,6 +4022,21 @@
   "settings.close": {
     "defaultMessage": "닫기"
   },
+  "settings.closeBehavior.ask": {
+    "defaultMessage": "항상 묻기"
+  },
+  "settings.closeBehavior.description": {
+    "defaultMessage": "caros 창을 닫을 때 수행할 동작을 선택하세요"
+  },
+  "settings.closeBehavior.quit": {
+    "defaultMessage": "즉시 닫기"
+  },
+  "settings.closeBehavior.title": {
+    "defaultMessage": "창을 닫을 때"
+  },
+  "settings.closeBehavior.tray": {
+    "defaultMessage": "시스템 트레이로 닫기"
+  },
   "settings.costTracking.description": {
     "defaultMessage": "모델 가격 및 사용 비용을 표시합니다."
   },
@@ -3992,14 +4067,32 @@
   "settings.language.english": {
     "defaultMessage": "영어"
   },
+  "settings.language.french": {
+    "defaultMessage": "프랑스어"
+  },
+  "settings.language.german": {
+    "defaultMessage": "독일어"
+  },
   "settings.language.hindi": {
     "defaultMessage": "힌디어"
+  },
+  "settings.language.indonesian": {
+    "defaultMessage": "인도네시아어"
+  },
+  "settings.language.italian": {
+    "defaultMessage": "이탈리아어"
   },
   "settings.language.japanese": {
     "defaultMessage": "일본어"
   },
   "settings.language.korean": {
     "defaultMessage": "한국어"
+  },
+  "settings.language.malay": {
+    "defaultMessage": "말레이어"
+  },
+  "settings.language.portuguese": {
+    "defaultMessage": "포르투갈어"
   },
   "settings.language.russian": {
     "defaultMessage": "러시아어"
@@ -4016,8 +4109,14 @@
   "settings.language.turkish": {
     "defaultMessage": "터키어"
   },
+  "settings.language.vietnamese": {
+    "defaultMessage": "베트남어"
+  },
   "settings.language.zhCN": {
     "defaultMessage": "중국어(간체)"
+  },
+  "settings.language.zhTW": {
+    "defaultMessage": "중국어(번체)"
   },
   "settings.menuBarIcon.description": {
     "defaultMessage": "메뉴 막대에 caros를 표시합니다."
@@ -4096,6 +4195,9 @@
   },
   "settings.version.title": {
     "defaultMessage": "버전"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   },
   "settingsView.tabApp": {
     "defaultMessage": "앱"
@@ -4645,38 +4747,5 @@
   },
   "userMessage.forkSessionTitle": {
     "defaultMessage": "편집한 메시지로 새 세션 만들기"
-  },
-  "carosSignIn.button": {
-    "defaultMessage": "Sign in with Microsoft"
-  },
-  "carosSignIn.description": {
-    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
-  },
-  "carosSignIn.signingIn": {
-    "defaultMessage": "Waiting for sign-in…"
-  },
-  "carosSignIn.title": {
-    "defaultMessage": "Sign in to continue"
-  },
-  "account.heading": {
-    "defaultMessage": "Account"
-  },
-  "account.notSignedIn": {
-    "defaultMessage": "Not signed in."
-  },
-  "account.signOut": {
-    "defaultMessage": "Sign out"
-  },
-  "account.signedInAs": {
-    "defaultMessage": "Signed in with your Microsoft work account."
-  },
-  "account.signingOut": {
-    "defaultMessage": "Signing out…"
-  },
-  "settingsView.tabAccount": {
-    "defaultMessage": "Account"
-  },
-  "costTracker.tokensTooltip": {
-    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }

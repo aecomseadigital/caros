@@ -20,7 +20,7 @@ import BlockLogoBlack from './icons/block-lockup_black.png';
 import BlockLogoWhite from './icons/block-lockup_white.png';
 import TelemetrySettings from './TelemetrySettings';
 import { trackSettingToggled } from '../../../utils/analytics';
-import type { LanguageSetting } from '../../../utils/settings';
+import type { CloseAction, LanguageSetting } from '../../../utils/settings';
 
 const i18n = defineMessages({
   appearanceTitle: { id: 'settings.appearance.title', defaultMessage: 'Appearance' },
@@ -77,12 +77,34 @@ const i18n = defineMessages({
     id: 'settings.language.zhCN',
     defaultMessage: 'Chinese (Simplified)',
   },
+  languageChineseTraditional: {
+    id: 'settings.language.zhTW',
+    defaultMessage: 'Chinese (Traditional)',
+  },
   languageRussian: { id: 'settings.language.russian', defaultMessage: 'Russian' },
   languageTurkish: { id: 'settings.language.turkish', defaultMessage: 'Turkish' },
   languageHindi: { id: 'settings.language.hindi', defaultMessage: 'Hindi' },
   languageJapanese: { id: 'settings.language.japanese', defaultMessage: 'Japanese' },
   languageSpanish: { id: 'settings.language.spanish', defaultMessage: 'Spanish' },
   languageKorean: { id: 'settings.language.korean', defaultMessage: 'Korean' },
+  languageFrench: { id: 'settings.language.french', defaultMessage: 'French' },
+  languageGerman: { id: 'settings.language.german', defaultMessage: 'German' },
+  languageItalian: { id: 'settings.language.italian', defaultMessage: 'Italian' },
+  languagePortuguese: { id: 'settings.language.portuguese', defaultMessage: 'Portuguese' },
+  languageIndonesian: { id: 'settings.language.indonesian', defaultMessage: 'Indonesian' },
+  languageMalay: { id: 'settings.language.malay', defaultMessage: 'Malay' },
+  languageVietnamese: { id: 'settings.language.vietnamese', defaultMessage: 'Vietnamese' },
+  closeBehaviorTitle: {
+    id: 'settings.closeBehavior.title',
+    defaultMessage: 'When closing the window',
+  },
+  closeBehaviorDesc: {
+    id: 'settings.closeBehavior.description',
+    defaultMessage: 'Choose what happens when you close the caros window',
+  },
+  closeBehaviorAsk: { id: 'settings.closeBehavior.ask', defaultMessage: 'Always ask' },
+  closeBehaviorTray: { id: 'settings.closeBehavior.tray', defaultMessage: 'Close to system tray' },
+  closeBehaviorQuit: { id: 'settings.closeBehavior.quit', defaultMessage: 'Close immediately' },
   helpTitle: { id: 'settings.help.title', defaultMessage: 'Help & feedback' },
   helpDesc: {
     id: 'settings.help.description',
@@ -146,13 +168,27 @@ const i18n = defineMessages({
 const LANGUAGE_OPTIONS: Array<{ value: LanguageSetting; message: keyof typeof i18n }> = [
   { value: 'system', message: 'languageSystem' },
   { value: 'en', message: 'languageEnglish' },
+  { value: 'de', message: 'languageGerman' },
   { value: 'es', message: 'languageSpanish' },
+  { value: 'fr', message: 'languageFrench' },
+  { value: 'id', message: 'languageIndonesian' },
+  { value: 'it', message: 'languageItalian' },
+  { value: 'ms', message: 'languageMalay' },
+  { value: 'pt', message: 'languagePortuguese' },
+  { value: 'vi', message: 'languageVietnamese' },
   { value: 'hi', message: 'languageHindi' },
   { value: 'ja', message: 'languageJapanese' },
   { value: 'ko', message: 'languageKorean' },
   { value: 'ru', message: 'languageRussian' },
   { value: 'tr', message: 'languageTurkish' },
   { value: 'zh-CN', message: 'languageChineseSimplified' },
+  { value: 'zh-TW', message: 'languageChineseTraditional' },
+];
+
+const CLOSE_ACTION_OPTIONS: Array<{ value: CloseAction; message: keyof typeof i18n }> = [
+  { value: 'ask', message: 'closeBehaviorAsk' },
+  { value: 'tray', message: 'closeBehaviorTray' },
+  { value: 'quit', message: 'closeBehaviorQuit' },
 ];
 
 interface AppSettingsSectionProps {
@@ -169,6 +205,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showPricing, setShowPricing] = useState(true);
   const [language, setLanguage] = useState<LanguageSetting>('system');
+  const [closeAction, setCloseAction] = useState<CloseAction>('ask');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const updateSectionRef = useRef<HTMLDivElement>(null);
   const shouldShowUpdates = !window.appConfig.get('GOOSE_VERSION');
@@ -196,6 +233,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
   useEffect(() => {
     window.electron.getSetting('showPricing').then(setShowPricing);
     window.electron.getSetting('language').then((value) => setLanguage(value ?? 'system'));
+    window.electron.getSetting('closeAction').then((value) => setCloseAction(value ?? 'ask'));
   }, []);
 
   useEffect(() => {
@@ -307,9 +345,26 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
     }
   };
 
+  const handleCloseActionChange = async (value: string) => {
+    const nextAction = CLOSE_ACTION_OPTIONS.find((option) => option.value === value)?.value;
+    if (!nextAction || nextAction === closeAction) {
+      return;
+    }
+
+    setCloseAction(nextAction);
+    try {
+      await window.electron.setSetting('closeAction', nextAction);
+    } catch (error) {
+      console.error('Failed to update close behavior setting:', error);
+      setCloseAction(closeAction);
+    }
+  };
+
   const intl = useIntl();
   const selectedLanguage =
     LANGUAGE_OPTIONS.find((option) => option.value === language) ?? LANGUAGE_OPTIONS[0];
+  const selectedCloseAction =
+    CLOSE_ACTION_OPTIONS.find((option) => option.value === closeAction) ?? CLOSE_ACTION_OPTIONS[0];
 
   return (
     <div className="space-y-4 pr-4 pb-8 mt-1">
@@ -471,6 +526,32 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
             <DropdownMenuContent align="start" className="w-[260px]">
               <DropdownMenuRadioGroup value={language} onValueChange={handleLanguageChange}>
                 {LANGUAGE_OPTIONS.map((option) => (
+                  <DropdownMenuRadioItem key={option.value} value={option.value}>
+                    {intl.formatMessage(i18n[option.message])}
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardContent>
+      </Card>
+
+      <Card className="rounded-lg">
+        <CardHeader className="pb-0">
+          <CardTitle className="mb-1">{intl.formatMessage(i18n.closeBehaviorTitle)}</CardTitle>
+          <CardDescription>{intl.formatMessage(i18n.closeBehaviorDesc)}</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4 px-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex w-full max-w-[260px] items-center justify-between gap-2 rounded-md border border-border-primary bg-background-primary px-3 py-2 text-sm text-text-primary transition-colors hover:border-border-primary">
+              <span className="truncate">
+                {intl.formatMessage(i18n[selectedCloseAction.message])}
+              </span>
+              <ChevronDown className="h-4 w-4 shrink-0" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-[260px]">
+              <DropdownMenuRadioGroup value={closeAction} onValueChange={handleCloseActionChange}>
+                {CLOSE_ACTION_OPTIONS.map((option) => (
                   <DropdownMenuRadioItem key={option.value} value={option.value}>
                     {intl.formatMessage(i18n[option.message])}
                   </DropdownMenuRadioItem>

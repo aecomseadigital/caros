@@ -251,6 +251,36 @@
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Response Styles"
   },
+  "closeDialog.busy.confirm": {
+    "defaultMessage": "Yes, close now"
+  },
+  "closeDialog.busy.message": {
+    "defaultMessage": "Session(s) pending return detected. If you close now, return will be lost. Do you want to close now?"
+  },
+  "closeDialog.busy.title": {
+    "defaultMessage": "Sessions still running"
+  },
+  "closeDialog.busy.wait": {
+    "defaultMessage": "No, I'll wait"
+  },
+  "closeDialog.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "closeDialog.prompt": {
+    "defaultMessage": "Do you want to:"
+  },
+  "closeDialog.quit": {
+    "defaultMessage": "Close immediately"
+  },
+  "closeDialog.remember": {
+    "defaultMessage": "Remember my selection"
+  },
+  "closeDialog.title": {
+    "defaultMessage": "Close caros"
+  },
+  "closeDialog.tray": {
+    "defaultMessage": "Close to system tray"
+  },
   "configSettings.configReset": {
     "defaultMessage": "Configuration Reset"
   },
@@ -3992,6 +4022,21 @@
   "settings.close": {
     "defaultMessage": "Close"
   },
+  "settings.closeBehavior.ask": {
+    "defaultMessage": "Always ask"
+  },
+  "settings.closeBehavior.description": {
+    "defaultMessage": "Choose what happens when you close the caros window"
+  },
+  "settings.closeBehavior.quit": {
+    "defaultMessage": "Close immediately"
+  },
+  "settings.closeBehavior.title": {
+    "defaultMessage": "When closing the window"
+  },
+  "settings.closeBehavior.tray": {
+    "defaultMessage": "Close to system tray"
+  },
   "settings.costTracking.description": {
     "defaultMessage": "Show model pricing and usage costs"
   },
@@ -4022,14 +4067,32 @@
   "settings.language.english": {
     "defaultMessage": "English"
   },
+  "settings.language.french": {
+    "defaultMessage": "French"
+  },
+  "settings.language.german": {
+    "defaultMessage": "German"
+  },
   "settings.language.hindi": {
     "defaultMessage": "Hindi"
+  },
+  "settings.language.indonesian": {
+    "defaultMessage": "Indonesian"
+  },
+  "settings.language.italian": {
+    "defaultMessage": "Italian"
   },
   "settings.language.japanese": {
     "defaultMessage": "Japanese"
   },
   "settings.language.korean": {
     "defaultMessage": "Korean"
+  },
+  "settings.language.malay": {
+    "defaultMessage": "Malay"
+  },
+  "settings.language.portuguese": {
+    "defaultMessage": "Portuguese"
   },
   "settings.language.russian": {
     "defaultMessage": "Russian"
@@ -4046,8 +4109,14 @@
   "settings.language.turkish": {
     "defaultMessage": "Turkish"
   },
+  "settings.language.vietnamese": {
+    "defaultMessage": "Vietnamese"
+  },
   "settings.language.zhCN": {
     "defaultMessage": "Chinese (Simplified)"
+  },
+  "settings.language.zhTW": {
+    "defaultMessage": "Chinese (Traditional)"
   },
   "settings.menuBarIcon.description": {
     "defaultMessage": "Show caros in the menu bar"

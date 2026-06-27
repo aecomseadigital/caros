@@ -4574,7 +4574,7 @@ dependencies = [
 
 [[package]]
 name = "goose"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "agent-client-protocol",
  "agent-client-protocol-schema",
@@ -4711,7 +4711,7 @@ dependencies = [
 
 [[package]]
 name = "goose-acp-macros"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "quote",
  "syn 2.0.117",
@@ -4719,7 +4719,7 @@ dependencies = [
 
 [[package]]
 name = "goose-cli"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anstream",
  "anyhow",
@@ -4773,7 +4773,7 @@ dependencies = [
 
 [[package]]
 name = "goose-mcp"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -4804,7 +4804,7 @@ dependencies = [
 
 [[package]]
 name = "goose-providers"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -4840,7 +4840,7 @@ dependencies = [
 
 [[package]]
 name = "goose-sdk"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "agent-client-protocol",
  "agent-client-protocol-schema",
@@ -4853,7 +4853,7 @@ dependencies = [
 
 [[package]]
 name = "goose-sdk-types"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "agent-client-protocol",
  "agent-client-protocol-schema",
@@ -4864,7 +4864,7 @@ dependencies = [
 
 [[package]]
 name = "goose-server"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anyhow",
  "aws-lc-rs",
@@ -4910,7 +4910,7 @@ dependencies = [
 
 [[package]]
 name = "goose-test"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clap",
  "serde_json",
@@ -4918,7 +4918,7 @@ dependencies = [
 
 [[package]]
 name = "goose-test-support"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "axum",
  "env-lock",

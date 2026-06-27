@@ -1,0 +1,12 @@
+node_modules/
+.auth/
+output/
+runs/
+datasets/qa/
+datasets/rag/
+datasets/reasoning/
+datasets/coding/
+!datasets/sample/
+*.log
+.env
+.DS_Store

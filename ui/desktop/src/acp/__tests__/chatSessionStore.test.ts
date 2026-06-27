@@ -219,6 +219,28 @@ describe('acpChatSessionStore', () => {
     expect(acpChatSessionStore.getSnapshot(currentSessionId)).toBeUndefined();
   });
 
+  it('hasAnyBusySession reflects active chat states', () => {
+    const idleId = sessionId('busy-test-idle');
+    const workingId = sessionId('busy-test-working');
+
+    acpChatSessionActions.setChatState(idleId, ChatState.Idle);
+    expect(acpChatSessionStore.hasAnyBusySession()).toBe(false);
+
+    for (const state of [
+      ChatState.Thinking,
+      ChatState.Streaming,
+      ChatState.WaitingForUserInput,
+      ChatState.Compacting,
+      ChatState.RestartingAgent,
+    ]) {
+      acpChatSessionActions.setChatState(workingId, state);
+      expect(acpChatSessionStore.hasAnyBusySession()).toBe(true);
+    }
+
+    acpChatSessionActions.setChatState(workingId, ChatState.LoadingConversation);
+    expect(acpChatSessionStore.hasAnyBusySession()).toBe(false);
+  });
+
   it('ignores stale prompt attempts and leaves the current attempt active', () => {
     const currentSessionId = sessionId('session-1');
 

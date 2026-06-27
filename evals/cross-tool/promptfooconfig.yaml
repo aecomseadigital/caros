@@ -1,0 +1,80 @@
+# Cross-tool benchmark — orchestration.
+# Drives all three targets through one shared prompt set and grades per row.
+#
+# Run a track:   npm run eval -- --tests datasets/qa/qa.jsonl
+# Offline smoke: npm run eval -- --filter-providers caros --tests datasets/sample/qa.jsonl
+#
+# Grading is per-row (each dataset row carries its own `assert`) so a single config
+# handles all four tracks. Auto-graders (exact match / regex) need no judge; only
+# open-ended rows use `llm-rubric`, which routes to the independent judge below.
+
+description: Oscar vs. Microsoft Copilot Chat (Basic) vs. Caros
+
+# --- Targets --------------------------------------------------------------------
+# Each is a custom JS provider. `label` is what shows in the side-by-side view and
+# the executive report. Selectors for the web tools are config-driven because the
+# live DOM is only knowable on the operator's machine — fill them in after a manual
+# pass with `npx playwright codegen <url>`.
+providers:
+  - id: file://providers/caros.js
+    label: Caros
+    config:
+      bin: ${CAROS_BIN}
+      # agentic `coding` rows set vars.recipe to use `caros run --recipe` instead
+      extraArgs: ['--quiet']
+
+  - id: file://providers/oscar.js
+    label: Oscar
+    config:
+      url: ${OSCAR_URL}
+      authState: .auth/oscar.json
+      selectors:
+        input: 'TODO: textarea selector'        # e.g. 'textarea[name="message"]'
+        send: 'TODO: send button selector'
+        assistantTurn: 'TODO: assistant bubble'  # last-of repeated selector
+        streaming: 'TODO: in-progress indicator'  # present while generating
+
+  - id: file://providers/copilot.js
+    label: Copilot Chat (Basic)
+    config:
+      url: ${COPILOT_URL}
+      authState: .auth/copilot.json
+      selectors:
+        input: 'TODO: textarea selector'
+        send: 'TODO: send button selector'
+        assistantTurn: 'TODO: assistant bubble'
+        streaming: 'TODO: stop-generating button'
+
+# --- Prompt ---------------------------------------------------------------------
+# Tool-neutral: the dataset row already contains the fully composed user message in
+# `vars.prompt` (question, plus any in-prompt source passages for the RAG track).
+prompts:
+  - '{{prompt}}'
+
+# --- Tests ----------------------------------------------------------------------
+# Default to the committed offline sample. Override per track at the CLI:
+#   npm run eval -- --tests datasets/reasoning/reasoning.jsonl
+tests: datasets/sample/qa.jsonl
+
+# --- Defaults applied to every row ----------------------------------------------
+defaultTest:
+  options:
+    # Independent judge — Claude family, different from the GPT/AOAI targets, to
+    # reduce self-preference bias. Used only by `llm-rubric` asserts.
+    provider:
+      id: anthropic:messages:claude-opus-4-8
+  # Latency (latencyMs) is recorded automatically; ttftMs/totalMs/deployment land in
+  # each result's metadata via the providers. The report reads both.
+  #
+  # Note: the public/synthetic data-class guard is enforced inside the web providers
+  # (providers/lib/policy.js), not as a scored assertion — so it never pollutes
+  # accuracy numbers. Per-row accuracy `assert`s come from each dataset row.
+
+# --- Eval options ---------------------------------------------------------------
+# Operators raise repeats for latency stability: `--repeat 5`. Keep concurrency low
+# so the web UIs (esp. Copilot) are paced like a human; the providers also sleep.
+evaluateOptions:
+  maxConcurrency: 1
+  repeat: 1
+
+outputPath: output/results.json

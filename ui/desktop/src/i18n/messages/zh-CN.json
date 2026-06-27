@@ -1,4 +1,19 @@
 {
+  "account.heading": {
+    "defaultMessage": "Account"
+  },
+  "account.notSignedIn": {
+    "defaultMessage": "Not signed in."
+  },
+  "account.signOut": {
+    "defaultMessage": "Sign out"
+  },
+  "account.signedInAs": {
+    "defaultMessage": "Signed in with your Microsoft work account."
+  },
+  "account.signingOut": {
+    "defaultMessage": "Signing out…"
+  },
   "alertBox.autoCompactAt": {
     "defaultMessage": "自动压缩阈值"
   },
@@ -158,6 +173,18 @@
   "cardButtons.launch": {
     "defaultMessage": "启动"
   },
+  "carosSignIn.button": {
+    "defaultMessage": "Sign in with Microsoft"
+  },
+  "carosSignIn.description": {
+    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
+  },
+  "carosSignIn.signingIn": {
+    "defaultMessage": "Waiting for sign-in…"
+  },
+  "carosSignIn.title": {
+    "defaultMessage": "Sign in to continue"
+  },
   "chat.notification.taskComplete.body": {
     "defaultMessage": "点击这里让 Caros 窗口回到前台。"
   },
@@ -223,6 +250,36 @@
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "回复风格"
+  },
+  "closeDialog.busy.confirm": {
+    "defaultMessage": "是的，立即关闭"
+  },
+  "closeDialog.busy.message": {
+    "defaultMessage": "检测到有会话尚未返回。如果现在关闭，返回结果将会丢失。是否要立即关闭？"
+  },
+  "closeDialog.busy.title": {
+    "defaultMessage": "会话仍在运行"
+  },
+  "closeDialog.busy.wait": {
+    "defaultMessage": "不，我再等等"
+  },
+  "closeDialog.cancel": {
+    "defaultMessage": "取消"
+  },
+  "closeDialog.prompt": {
+    "defaultMessage": "你想要："
+  },
+  "closeDialog.quit": {
+    "defaultMessage": "立即关闭"
+  },
+  "closeDialog.remember": {
+    "defaultMessage": "记住我的选择"
+  },
+  "closeDialog.title": {
+    "defaultMessage": "关闭 caros"
+  },
+  "closeDialog.tray": {
+    "defaultMessage": "关闭到系统托盘"
   },
   "configSettings.configReset": {
     "defaultMessage": "配置已重置"
@@ -316,6 +373,9 @@
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
     "defaultMessage": "Caros 请求用户输入前的最大 agent 轮次"
+  },
+  "costTracker.tokensTooltip": {
+    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   },
   "createEditRecipe.clickToGenerateDeeplink": {
     "defaultMessage": "点击生成深层链接"
@@ -3962,6 +4022,21 @@
   "settings.close": {
     "defaultMessage": "关闭"
   },
+  "settings.closeBehavior.ask": {
+    "defaultMessage": "每次询问"
+  },
+  "settings.closeBehavior.description": {
+    "defaultMessage": "选择关闭 caros 窗口时执行的操作"
+  },
+  "settings.closeBehavior.quit": {
+    "defaultMessage": "立即关闭"
+  },
+  "settings.closeBehavior.title": {
+    "defaultMessage": "关闭窗口时"
+  },
+  "settings.closeBehavior.tray": {
+    "defaultMessage": "关闭到系统托盘"
+  },
   "settings.costTracking.description": {
     "defaultMessage": "显示模型定价和使用费用"
   },
@@ -3992,14 +4067,32 @@
   "settings.language.english": {
     "defaultMessage": "英语"
   },
+  "settings.language.french": {
+    "defaultMessage": "法语"
+  },
+  "settings.language.german": {
+    "defaultMessage": "德语"
+  },
   "settings.language.hindi": {
     "defaultMessage": "印地语"
+  },
+  "settings.language.indonesian": {
+    "defaultMessage": "印度尼西亚语"
+  },
+  "settings.language.italian": {
+    "defaultMessage": "意大利语"
   },
   "settings.language.japanese": {
     "defaultMessage": "日语"
   },
   "settings.language.korean": {
     "defaultMessage": "韩语"
+  },
+  "settings.language.malay": {
+    "defaultMessage": "马来语"
+  },
+  "settings.language.portuguese": {
+    "defaultMessage": "葡萄牙语"
   },
   "settings.language.russian": {
     "defaultMessage": "俄语"
@@ -4016,8 +4109,14 @@
   "settings.language.turkish": {
     "defaultMessage": "土耳其语"
   },
+  "settings.language.vietnamese": {
+    "defaultMessage": "越南语"
+  },
   "settings.language.zhCN": {
     "defaultMessage": "简体中文"
+  },
+  "settings.language.zhTW": {
+    "defaultMessage": "中文（繁体）"
   },
   "settings.menuBarIcon.description": {
     "defaultMessage": "在菜单栏显示 caros"
@@ -4096,6 +4195,9 @@
   },
   "settings.version.title": {
     "defaultMessage": "版本"
+  },
+  "settingsView.tabAccount": {
+    "defaultMessage": "Account"
   },
   "settingsView.tabApp": {
     "defaultMessage": "应用"
@@ -4645,38 +4747,5 @@
   },
   "userMessage.forkSessionTitle": {
     "defaultMessage": "用编辑过的消息创建新会话"
-  },
-  "carosSignIn.button": {
-    "defaultMessage": "Sign in with Microsoft"
-  },
-  "carosSignIn.description": {
-    "defaultMessage": "Caros uses your Microsoft work account. Access requires the Caros app role."
-  },
-  "carosSignIn.signingIn": {
-    "defaultMessage": "Waiting for sign-in…"
-  },
-  "carosSignIn.title": {
-    "defaultMessage": "Sign in to continue"
-  },
-  "account.heading": {
-    "defaultMessage": "Account"
-  },
-  "account.notSignedIn": {
-    "defaultMessage": "Not signed in."
-  },
-  "account.signOut": {
-    "defaultMessage": "Sign out"
-  },
-  "account.signedInAs": {
-    "defaultMessage": "Signed in with your Microsoft work account."
-  },
-  "account.signingOut": {
-    "defaultMessage": "Signing out…"
-  },
-  "settingsView.tabAccount": {
-    "defaultMessage": "Account"
-  },
-  "costTracker.tokensTooltip": {
-    "defaultMessage": "Input: {inputTokens} tokens · Output: {outputTokens} tokens"
   }
 }
